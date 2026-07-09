@@ -331,11 +331,7 @@
                       </div>
                     </div>
                     <p>
-                      لورم ایوم متن ساختگی با تولید آسان نامفهوم از صنعت چاپ با
-                      استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه
-                      و در ستون و سطرآنان است که لازم است و برای شرایط فعلی
-                      تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای
-                      کاربردی می باشد. کتابهای زیادی در شصت و س
+<%= course.creator.bio %>
                     </p>
                     <div class="details-buttons-area">
                       <ul class="social-icons justify-content-center w-100">
@@ -401,8 +397,8 @@
                         </div>
                       </div>  
                       <% } %>                  <ul class="review-contents">
-                        <% if (comments.length > 0) { %> <%
-                        comments.forEach(comment => { %>
+                        <% if (comments.length > 0) { %> 
+                          <%  comments.forEach(comment => { %>
                         <li
                           class="comment-item"
                           id="comment-<%= comment._id %>"
@@ -416,13 +412,13 @@
                           <div class="cont">
                             <h6 class="subtitle"><%= comment.user.name %></h6>
                             <div class="ratings cl-theme">
-                              <% const rating = parseInt(comment.rating) || 0; %>
+                              <% const rating = Number(comment.rating) || 0; %>
                               <% for (let i = 5; i >= 1; i--) { %>
-                                <span class="star-container">
-                                  <i class="fa fa-star <%= i >= rating ? 'gold-star' : 'gray-star' %>"></i>
-                                </span>
+                                  <span class="star-container">
+                                    <i class="fa fa-star <%= i <= rating ? 'gold-star' : 'gray-star' %>"></i>
+                                  </span>
                               <% } %>
-                            </div>
+                          </div>
 
                             <p><%= comment.content %></p>
 
@@ -555,8 +551,7 @@
                         <% const replyRating = parseInt(reply.rating) || 0; %>
                         <% for (let i = 5; i >= 1; i--) { %>
                           <span class="star-container">
-                            <i class="fa fa-star <%= i >= replyRating ? 'gold-star' : 'gray-star' %>" style="font-size: 12px;"></i>
-                          </span>
+                            <i class="fa fa-star <%= i <= replyRating ? 'gold-star' : 'gray-star' %>" style="font-size: 12px;"></i>                          </span>
                         <% } %>
                       </div>
                       
@@ -692,13 +687,24 @@
                 </li>
               </ul>
             </div>
-
+            <% const isStudent = locals.isUserRegistered || false; %>
+            <% if (!isStudent) { %>
             <div class="event_info_price">
               <h4>قیمت - <%= course.price %> تومان</h4>
             </div>
+            <% } %>
+
 <!-- دکمه‌های ثبت نام و افزودن به سبد خرید -->
 <div class="event_info_register">
   <% if (user) { %>
+    <% const isStudent = locals.isUserRegistered || false; %>
+    <% if (isStudent) { %>
+      <!-- قبلاً خریده -->
+      <div style="background: linear-gradient(135deg, #2ecc71, #27ae60); color: white; padding: 16px 20px; border-radius: 16px; text-align: center; font-size: 16px; font-weight: 700; box-shadow: 0 10px 20px rgba(46,204,113,0.3);">
+        <i class="fa fa-check-circle"></i> شما دانشجوی این دوره هستید
+      </div>
+
+    <% } else { %>
     <!-- اگر کاربر لاگین کرده -->
     <button class="btn_one add-to-cart-btn" 
     data-course-id="<%= course._id.toString() %>" 
@@ -710,6 +716,8 @@
     <a class="btn_one" href="/cart" style="margin-top: 10px; display: block; text-align: center; background: #28a745;">
       <i class="fa fa-shopping-cart"></i> مشاهده سبد خرید
     </a>
+    <% } %>
+
   <% } else { %>
     <!-- اگر کاربر لاگین نکرده -->
     <a class="btn_one" href="/auth/login">
@@ -1209,58 +1217,48 @@ document.querySelectorAll(".delete-reply-btn").forEach((button) => {
       
         // ============= تابع اصلی مدیریت ستاره‌ها =============
         function setupStarSystem(stars, ratingInput) {
-          function highlightStars(rating) {
-            const starsArray = Array.from(stars);
-            starsArray.forEach((star) => {
-              const starRating = parseInt(star.getAttribute("data-rating"));
-              if (starRating >= rating) {
+    function highlightStars(rating) {
+        const starsArray = Array.from(stars);
+        starsArray.forEach((star) => {
+            const starRating = parseInt(star.getAttribute("data-rating"));
+            if (starRating <= rating) {  // ← اینو عوض کن
                 star.classList.remove("fa-star-o");
                 star.classList.add("fa-star");
                 star.style.color = "#FFD700";
-              } else {
+            } else {
                 star.classList.remove("fa-star");
                 star.classList.add("fa-star-o");
                 star.style.color = "#FFD700";
-              }
-            });
-          }
-      
-          function setRating(rating) {
-            ratingInput.value = rating;
+            }
+        });
+    }
+
+    function setRating(rating) {
+        ratingInput.value = rating;
+        highlightStars(rating);
+    }
+
+    stars.forEach((star) => {
+        star.addEventListener("click", function () {
+            const rating = parseInt(this.getAttribute("data-rating"));
+            setRating(rating);
+        });
+
+        star.addEventListener("mouseenter", function () {
+            const rating = parseInt(this.getAttribute("data-rating"));
             highlightStars(rating);
-          }
-      
-          stars.forEach((star) => {
-            star.addEventListener("click", function () {
-              const rating = parseInt(this.getAttribute("data-rating"));
-              setRating(rating);
-            });
-      
-            star.addEventListener("mouseenter", function () {
-              const rating = parseInt(this.getAttribute("data-rating"));
-              highlightStars(rating);
-            });
-      
-            star.addEventListener("mouseleave", function () {
-              const currentRating = parseInt(ratingInput.value);
-              if (currentRating === 0) {
+        });
+
+        star.addEventListener("mouseleave", function () {
+            const currentRating = parseInt(ratingInput.value);
+            if (currentRating === 0) {
                 resetStars();
-              } else {
+            } else {
                 highlightStars(currentRating);
-              }
-            });
-          });
-      
-          function resetStars() {
-            stars.forEach((star) => {
-              star.classList.remove("fa-star");
-              star.classList.add("fa-star-o");
-              star.style.color = "#FFD700";
-            });
-          }
-      
-          resetStars();
-        }
+            }
+        });
+    });
+}
       
         // ============= مدیریت نمایش/مخفی کردن فرم Reply =============
         const showReplyButtons = document.querySelectorAll(".show-reply-form");

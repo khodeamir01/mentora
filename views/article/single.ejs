@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html dir="rtl" lang="fa">
 <head>
@@ -472,21 +473,31 @@
 <!-- هدر مقاله -->
 <header class="article-hero">
     <div class="hero-content">
-        <span class="hero-category">
-            <i class="fa fa-folder"></i> <%= article.category?.title || 'مقالات' %>
-        </span>
+
         
         <h1 class="hero-title"><%= article.title %></h1>
         
         <div class="hero-meta">
             <span>
-                <img src="<%= article.author?.avatar ? '/img/avatar/' + article.author.avatar : '/img/defualtPic.png' %>" 
+                <img src="<%= article.author?.avatar ?  article.author.avatar : '/img/defualtPic.png' %>" 
                      alt="<%= article.author?.name %>">
                 <strong><%= article.author?.name %></strong>
             </span>
             <span><i class="fa fa-calendar"></i> <%= new Date(article.createdAt).toLocaleDateString('fa-IR') %></span>
             <span><i class="fa fa-eye"></i> <%= article.views %> بازدید</span>
             <span><i class="fa fa-clock-o"></i> <%= Math.ceil(article.content.length / 1000) %> دقیقه مطالعه</span>
+        </div>
+        <div class="hero-categories">
+            <% if (article.category.title && article.category.length > 0) { %>
+                    <span class="hero-category">
+                        <i class="fa fa-tag"></i> <%= article.category.title  %>
+                    </span>
+
+            <% } else { %>
+                <span class="hero-category">
+                    <i class="fa fa-folder"></i> <%= article.category?.title || 'مقالات' %>
+                </span>
+            <% } %>
         </div>
     </div>
 </header>
@@ -528,7 +539,7 @@
         <% if (article.comments && article.comments.length > 0) { %>
             <% article.comments.forEach(comment => { %>
                 <div class="comment-item">
-                    <img src="<%= comment.user?.avatar ? '/img/avatar/' + comment.user.avatar : '/img/defualtPic.png' %>" 
+                    <img src="<%= comment.user?.avatar %>" 
                          alt="" class="comment-avatar">
                     <div class="comment-body">
                         <span class="comment-author"><%= comment.user?.name || 'ناشناس' %></span>
@@ -581,10 +592,28 @@ async function submitComment(e, articleId) {
     const data = await res.json();
     
     if (data.success) {
-        location.reload();
-    } else {
-        Swal.fire({ icon: 'error', title: 'خطا', text: data.error });
-    }
+              Swal.fire({
+                icon: "success",
+                title: "موفقیت",
+                text: "نظر شما با موفقیت ثبت شد",
+                confirmButtonText: "رفتن به صفحه اصلی",
+                showCancelButton: true,
+                cancelButtonText: "ماندن در صفحه",
+                reverseButtons: true,
+              }).then((result) => {
+                if (result.isConfirmed || result.isDismissed) {
+                    location.reload();
+                }
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "خطا",
+                text: data.error || "مشکلی در ثبت نظر پیش آمد",
+                confirmButtonText: "باشه",
+              });
+            }
+          
 }
 
 // ========== رنگ‌آمیزی کدها با Prism ==========

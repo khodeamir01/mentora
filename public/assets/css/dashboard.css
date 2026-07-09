@@ -18,14 +18,96 @@ body {
   min-height: 100vh;
 }
 
+.glass-header {
+  background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.8));
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 24px;
+  padding: 30px 35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+}
+
+.glass-header h2 {
+  font-size: 26px;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.glass-header h2 i {
+  color: #667eea;
+  font-size: 30px;
+}
+
+.header-subtitle {
+  color: #888;
+  font-size: 14px;
+  margin: 0 0 15px 0;
+}
+
+.header-stats {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.header-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #f0f0f0;
+  color: #555;
+}
+
+.header-stat i {
+  font-size: 13px;
+}
+
+.header-stat.published {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.header-stat.draft {
+  background: #fff8e1;
+  color: #f57f17;
+}
+
+.header-stat.views {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.header-actions .date {
+  color: #888;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
 /* ========== سایدبار ========== */
 .sidebar {
   width: 260px;
-  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
-  color: white;
-  position: fixed;
-  right: 0;
+  background: linear-gradient(180deg, #363150 0%, #15122b 100%); position: fixed;
   top: 0;
+  color: whitesmoke;
   bottom: 0;
   z-index: 100;
   overflow-y: auto;
@@ -760,7 +842,76 @@ body {
   background: #2e7d32;
   color: white;
 }
+/* ============================================
+   چارت‌های کنار هم - کوچک
+   ============================================ */
 
+   .charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+    max-width: 100%;
+}
+
+.chart-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 12px 14px;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.chart-card-header h3 {
+    margin: 0;
+    font-size: 13px;
+    color: #fff;
+    font-weight: 600;
+}
+
+.chart-card-header span {
+    font-size: 10px;
+    color: #94a3b8;
+}
+
+.chart-box {
+    position: relative;
+    flex: 1;
+    height: 120px;
+}
+
+.chart-box canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* ریسپانسیو */
+@media (max-width: 768px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .chart-card {
+        height: 200px;
+    }
+    
+    .chart-box {
+        height: 140px;
+    }
+}
 /* ========== ریسپانسیو ========== */
 @media (max-width: 768px) {
   .sidebar {

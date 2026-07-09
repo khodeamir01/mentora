@@ -16,7 +16,7 @@ const upload = multer({
 
 router.get("/create", auth, roleGuard("AUTHOR"), Controller.showCreateArticlePage) 
 router.get("/", Controller.getAll);
-router.get("/:slug", Controller.getOne);
+router.get("/:slug", auth, Controller.getOne);
 
 
 

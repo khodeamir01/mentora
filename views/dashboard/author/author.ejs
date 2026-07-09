@@ -10,45 +10,120 @@
     <script src="/js/sweetAlert2.js"></script>
 </head>
 <body>
-<div class="dashboard-layout">
+    <div class="dashboard-layout dashboard-section">
     
     <%- include('../partials/_sidebar') %>
 
     <main class="main-content">
         
-        <div class="page-header">
-            <h2><i class="fa fa-pencil"></i> پنل نویسنده</h2>
-            <div style="display: flex; gap: 10px; align-items: center;">
-                <span class="date"><%= new Date().toLocaleDateString('fa-IR') %></span>
+        <div class="page-header glass-header">
+            <div>
+                <h2>
+                    <i class="fa fa-pencil-square-o"></i>
+                    پنل نویسنده
+                </h2>
+                <p class="header-subtitle">
+                    مدیریت مقالات، آمار و پیش‌نویس‌های شما
+                </p>
+            </div>
+        
+            <div class="header-actions">
+                <span class="date">
+                    <i class="fa fa-calendar"></i>
+                    <%= new Date().toLocaleDateString('fa-IR') %>
+                </span>
+        
                 <a href="/articles/create" class="btn-dashboard btn-primary-dash">
-                    <i class="fa fa-plus"></i> مقاله جدید
+                    <i class="fa fa-plus"></i>
+                    مقاله جدید
                 </a>
             </div>
         </div>
 
         <!-- آمار -->
-        <div class="stats-grid">
-            <div class="stat-card blue">
-                <div class="stat-icon"><i class="fa fa-file-text"></i></div>
+<!-- Chart.js -->
+
+<div class="dashboard-wrap">
+
+    <div class="dashboard-header">
+        <div>
+            <h2 class="dashboard-title">داشبورد مقالات</h2>
+            <p class="dashboard-subtitle">نمای کلی از وضعیت مقاله‌ها، انتشار و بازدیدها</p>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card blue">
+            <div class="stat-top">
+                <div class="stat-icon">
+                    <i class="fa fa-file-text"></i>
+                </div>
                 <div class="stat-number"><%= myArticles.length %></div>
-                <div class="stat-label">کل مقالات</div>
             </div>
-            <div class="stat-card green">
-                <div class="stat-icon"><i class="fa fa-check-circle"></i></div>
+            <div class="stat-label">کل مقالات</div>
+            <div class="progress-line"></div>
+        </div>
+
+        <div class="stat-card green">
+            <div class="stat-top">
+                <div class="stat-icon">
+                    <i class="fa fa-check-circle"></i>
+                </div>
                 <div class="stat-number"><%= myArticles.filter(a => a.status === 'published').length %></div>
-                <div class="stat-label">منتشر شده</div>
             </div>
-            <div class="stat-card orange">
-                <div class="stat-icon"><i class="fa fa-edit"></i></div>
+            <div class="stat-label">منتشر شده</div>
+            <div class="progress-line"></div>
+        </div>
+
+        <div class="stat-card orange">
+            <div class="stat-top">
+                <div class="stat-icon">
+                    <i class="fa fa-edit"></i>
+                </div>
                 <div class="stat-number"><%= myArticles.filter(a => a.status === 'draft').length %></div>
-                <div class="stat-label">پیش‌نویس</div>
             </div>
-            <div class="stat-card teal">
-                <div class="stat-icon"><i class="fa fa-eye"></i></div>
+            <div class="stat-label">پیش‌نویس</div>
+            <div class="progress-line"></div>
+        </div>
+
+        <div class="stat-card teal">
+            <div class="stat-top">
+                <div class="stat-icon">
+                    <i class="fa fa-eye"></i>
+                </div>
                 <div class="stat-number"><%= myArticles.reduce((sum, a) => sum + (a.views || 0), 0) %></div>
-                <div class="stat-label">بازدید کل</div>
+            </div>
+            <div class="stat-label">بازدید کل</div>
+            <div class="progress-line"></div>
+        </div>
+    </div>
+
+    <div class="charts-grid">
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <h3>وضعیت مقالات</h3>
+                <span>Published / Draft</span>
+            </div>
+            <div class="chart-box">
+                <canvas id="statusChart"></canvas>
             </div>
         </div>
+
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <h3>بازدید مقالات</h3>
+                <span>Views per Article</span>
+            </div>
+            <div class="chart-box">
+                <canvas id="viewsChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
 
         <!-- لیست مقالات -->
         <div class="content-card">
@@ -76,9 +151,13 @@
                                             <img src="/img/blog/<%= article.cover || '/img/blog/default.jpg' %>" 
                                                  style="width: 50px; height: 50px; border-radius: 8px; object-fit: cover;">
                                             <div>
-                                                <strong> <%= article.title %></strong>
-                                                <br>
-                                                <small style="color: #888;">/<%= article.slug %></small>
+                                                <div class="article-title">
+                                                    <%= article.title %>
+                                                </div>
+                                                
+                                                <div class="article-slug">
+                                                    /<%= article.slug %>
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
@@ -89,6 +168,7 @@
                                             <span class="badge badge-warning">پیش‌نویس</span>
                                         <% } %>
                                     </td>
+                                    <td><%= article.category?.title || 'بدون دسته' %></td>
                                     <td>
                                         <i class="fa fa-eye" style="color: #ccc;"></i> <%= article.views || 0 %>
                                     </td>
@@ -122,18 +202,29 @@
                 </div>
             <% } else { %>
                 <div class="empty-state">
-                    <i class="fa fa-file-text-o"></i>
-                    <p>هنوز مقاله‌ای ننوشته‌اید</p>
-                    <a href="/articles/create" class="btn-dashboard btn-primary-dash mt-3">
-                        <i class="fa fa-plus"></i> نوشتن اولین مقاله
+
+                    <i class="fa fa-pencil-square-o"></i>
+                    
+                    <h3>اولین مقاله‌ات رو بنویس 🚀</h3>
+                    
+                    <p>
+                    هنوز مقاله‌ای ثبت نکرده‌ای.
+                    </p>
+                    
+                    <a href="/articles/create"
+                    class="btn-dashboard btn-primary-dash">
+                    
+                    نوشتن مقاله
+                    
                     </a>
-                </div>
+                    
+                    </div>
             <% } %>
         </div>
 
     </main>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     async function deleteArticle(id) {
     const result = await Swal.fire({
@@ -183,7 +274,134 @@
         });
     }
 }
+const articles = JSON.parse('<%- JSON.stringify(myArticles).replace(/\\/g, "\\\\").replace(/'/g, "\\'") %>')
+
+
+    const publishedCount = articles.filter(a => a.status === 'published').length;
+    const draftCount = articles.filter(a => a.status === 'draft').length;
+    const totalViews = articles.reduce((sum, a) => sum + (a.views || 0), 0);
+
+    // Doughnut Chart - Status
+    const statusCtx = document.getElementById('statusChart').getContext('2d');
+    new Chart(statusCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['منتشر شده', 'پیش‌نویس'],
+            datasets: [{
+                data: [publishedCount, draftCount],
+                backgroundColor: ['#22c55e', '#f59e0b'],
+                borderColor: ['#ffffff', '#ffffff'],
+                borderWidth: 3,
+                hoverOffset: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '68%',
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                        padding: 20,
+                        font: {
+                            family: 'IRANSans, Vazirmatn, sans-serif',
+                            size: 13
+                        }
+                    }
+                },
+                tooltip: {
+                    bodyFont: {
+                        family: 'IRANSans, Vazirmatn, sans-serif'
+                    },
+                    titleFont: {
+                        family: 'IRANSans, Vazirmatn, sans-serif'
+                    }
+                }
+            }
+        }
+    });
+
+    // Bar Chart - Views (با ستون‌های باریک)
+    const viewsCtx = document.getElementById('viewsChart').getContext('2d');
+
+    const labels = articles.slice(0, 8).map((a, index) => {
+        const title = a.title || `مقاله ${index + 1}`;
+        return title.length > 14 ? title.substring(0, 14) + '…' : title;
+    });
+
+    const viewsData = articles.slice(0, 8).map(a => a.views || 0);
+
+    new Chart(viewsCtx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'بازدید',
+                data: viewsData,
+                backgroundColor: [
+                    '#38bdf8',
+                    '#60a5fa',
+                    '#818cf8',
+                    '#a78bfa',
+                    '#22d3ee',
+                    '#34d399',
+                    '#f59e0b',
+                    '#fb7185'
+                ],
+                borderRadius: 6,
+                borderSkipped: false,
+                barPercentage: 0.4,        // ← این ستون‌ها رو باریک میکنه
+                categoryPercentage: 0.6    // ← این فاصله بین دسته‌ها رو تنظیم میکنه
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    bodyFont: {
+                        family: 'IRANSans, Vazirmatn, sans-serif'
+                    },
+                    titleFont: {
+                        family: 'IRANSans, Vazirmatn, sans-serif'
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        font: {
+                            family: 'IRANSans, Vazirmatn, sans-serif',
+                            size: 12
+                        }
+                    },
+                    grid: {
+                        display: false
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        font: {
+                            family: 'IRANSans, Vazirmatn, sans-serif',
+                            size: 12
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(255,255,255,0.06)'
+                    }
+                }
+            }
+        }
+    });
 </script>
+
 
 </body>
 </html>

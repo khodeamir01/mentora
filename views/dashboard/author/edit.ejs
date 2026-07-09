@@ -48,6 +48,16 @@
                         <label>عنوان</label>
                         <input type="text" name="title" class="form-control" value="<%= article.title %>" >
                     </div>
+                    <div class="form-group">
+                        <label><i class="fa fa-link"></i> اسلاگ</label>
+                        <input type="text" name="slug" class="form-control" 
+                               value="<%= article.slug %>" 
+                               dir="ltr" 
+                               style="font-family: monospace;">
+                        <small style="color: #888; font-size: 11px; margin-top: 5px; display: block;">
+                            <i class="fa fa-globe"></i> آدرس: /articles/<strong><%= article.slug %></strong>
+                        </small>
+                    </div>
                     
                     
                     <div class="form-group">
@@ -58,6 +68,20 @@
                     <div class="form-group">
                         <label>برچسب‌ها (با کاما جدا کنید)</label>
                         <input type="text" name="tags" class="form-control" value="<%= article.tags?.join(', ') || '' %>">
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fa fa-folder"></i> دسته‌بندی</label>
+                        <select name="category" class="form-control">
+                            <option value="">انتخاب دسته‌بندی...</option>
+                            <% if (categories && categories.length > 0) { %>
+                                <% categories.forEach(cat => { %>
+                                    <option value="<%= cat._id %>" <%= article.category?.toString() === cat._id.toString() ? 'selected' : '' %>>
+                                        <%= cat.title %>
+                                    </option>
+                                <% }); %>
+                            <% } %>
+                        </select>
                     </div>
                     
                     <div class="form-group">
@@ -89,29 +113,41 @@
 </div>
 
 <script>
-const articleId = '<%= article._id %>';
+ 
 
-// آپدیت مقاله
+ const articleId = '<%= article._id %>';
+
+
+// ========== آپدیت مقاله ==========
 async function updateArticle(status) {
-    const form = document.getElementById('editForm');
-    const formData = new FormData(form);
-    formData.append('status', status);
+    const body = {
+        title: document.querySelector('[name="title"]')?.value || '',
+        description: document.querySelector('[name="description"]')?.value || '',
+        content: document.querySelector('[name="content"]')?.value || '',
+        tags: document.querySelector('[name="tags"]')?.value || '',
+        category: document.querySelector('[name="category"]')?.value || '',  // ← اضافه کن
+        slug: document.querySelector('[name="slug"]')?.value || '',  // ← اضافه کن
+        status: status
+    };
 
     Swal.fire({ title: 'در حال ذخیره...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
 
     try {
         const res = await fetch(`/articles/${articleId}`, {
             method: 'PUT',
-            body: formData
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
         });
         const data = await res.json();
 
         Swal.fire({
             icon: data.success ? 'success' : 'error',
-            title: data.success ? (status === 'published' ? 'منتشر شد! 🎉' : 'ذخیره شد! 📝') : 'خطا',
-            text: data.message || data.error
+            title: data.success ? 'ذخیره شد ✓' : 'خطا',
+            text: data.message || data.error,
+            timer: 1500,
+            showConfirmButton: false
         }).then(() => {
-            if (data.success) location.reload();
+            if (data.success) window.location.href = '/';
         });
     } catch (err) {
         Swal.fire({ icon: 'error', title: 'خطا', text: 'خطا در ارتباط با سرور' });

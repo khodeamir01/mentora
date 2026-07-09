@@ -3,6 +3,7 @@ const Session = require("./../models/Session");
 const CourseUser = require("./../models/Course-User");
 const Category = require("./../models/Category");
 const Comment = require("./../models/Comment");
+
 const { isValidObjectId } = require("mongoose");
 const mongoose = require("mongoose");
 
@@ -211,90 +212,62 @@ exports.getAllByCategory = async (req, res) => {
 };
 
 exports.getOneCourse = async (req, res) => {
-  
   const user = req.user;
-  const {href} = req.params;
+  const { href } = req.params;
   
-  const course = await Course
-    .findOne({href})
-    .populate(
-      "creator",
-      "-password -phone -email -username -role  -__v -createdAt -updatedAt"
-    ).lean();
+  const course = await Course.findOne({ href })
+    .populate("creator", "-password -phone -email -username -role -__v -createdAt -updatedAt")
+    .lean();
   
-    const relatedCourses = await Course.find({
-      _id: { $ne: course._id },
-      categoryID: course.categoryID
-  }).populate('creator')
-  .limit(4);
-  
+  const relatedCourses = await Course.find({
+    _id: { $ne: course._id },
+    categoryID: course.categoryID
+  })
+    .populate('creator')
+    .limit(4);
   
   const categories = await Category.find().sort({ title: 1 });
 
-      const comments = await Comment.find({ course: course._id })
-      .populate("user", "name avatar roles") // populate کاربر کامنت اصلی
-      .populate({
-        path: "replies.user", // populate کاربر داخل replies
-        model: "User",
-        select: "name avatar roles" // فقط فیلدهای مورد نیاز
-      })
-      .sort({ createdAt: -1 })
-      .lean();
-      
-      if (!comments) {
-        return res.render("course_details.ejs", { comments: [], error: "درس یافت نشد" });
-      }
-
-      if (!course) {
-      return res.render("course_details.ejs", { 
-        course: null, 
-        comments: [], 
-        categories: [], 
-        user: null, 
-        relatedCourses: [], 
-        error: "دوره مورد نظر یافت نشد" 
-      });
-      };
-
-      const sessions = await Session.find({ course: course._id })
-      .populate("course", "name")
-      .sort({ createdAt: 1 }) // یا sort بر اساس شماره جلسه
-      .lean();
-
-      if (!sessions) {
-        return res.render("course_details.ejs", { 
-          course: null, 
-          comments: [], 
-          categories: [],
-          sessions: [], 
-          user: null, 
-          relatedCourses: [], 
-          error: "جلسه مورد نظر یافت نشد" 
-        });
-        };
-
-  
-    return res.render("course_details.ejs", {
-      course: course,
-      categories: categories,
-      user: user,
-      relatedCourses: relatedCourses,
-      comments: comments,
-      sessions: sessions
-  
+  const comments = await Comment.find({ course: course._id })
+    .populate("user", "name avatar roles")
+    .populate({
+      path: "replies.user",
+      model: "User",
+      select: "name avatar roles"
     })
+    .sort({ createdAt: -1 })
+    .lean();
 
-  // const sessions = await Session.find({ course: course._id }).lean();
-  // const comments = await Comments
-  //   .find({ course: course._id, isAccept: 1 })
-  //   .populate("creator", "-password")
-  //   .lean();
-  // const courseStudentCount = await CourseUser
-  //   .find({ course: course._id })
-  //   const isUserRegisteredInThisCourse = !!(await CourseUser.find({
-  //     user: req.user._id,
-  //     course: course._id
-  //   }))
-    
-  res.json({ course, comments, sessions, courseStudentCount, isUserRegisteredInThisCourse });
+  const sessions = await Session.find({ course: course._id })
+    .populate("course", "name")
+    .sort({ createdAt: 1 })
+    .lean();
+
+  // چک کن کاربر این دوره رو خریده یا نه
+  let isUserRegistered = false;
+  if (user) {
+    const enrollment = await CourseUser.findOne({ 
+      user: user._id, 
+      course: course._id 
+    });
+    isUserRegistered = !!enrollment;
+  }
+
+  if (!course) {
+    return res.render("course_details.ejs", { 
+      course: null, comments: [], categories: [], user: null, 
+      relatedCourses: [], sessions: [], isUserRegistered: false,
+      error: "دوره مورد نظر یافت نشد" 
+    });
+  }
+
+  return res.render("course_details.ejs", {
+    course,
+    categories,
+    user: user || null,
+    relatedCourses,
+    comments,
+    sessions,
+    isUserRegistered
+  });
 };

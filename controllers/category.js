@@ -4,7 +4,7 @@ exports.findAllCategories = async (req, res, next) => {
 try {
     const categories = await Category.find({})
 
-    return res.render("createcourse", {
+    return res.render("dashboard/admin/createcourse", {
       categories: categories, // لیست دسته‌بندی‌ها به فرانت فرستاده می‌شود
       messages: {}
     });

@@ -6,7 +6,7 @@ const { isValidObjectId } = require("mongoose");
 // ==================== ایجاد مقاله ====================
 exports.create = async (req, res) => {
     try {
-        const { title, description, content, tags, status, slug } = req.body;
+        const { title, description, content, tags, status, slug, category } = req.body;
         const user = req.user;
 
         // دیباگ - ببین چی میاد
@@ -58,6 +58,7 @@ exports.create = async (req, res) => {
             content,
             cover: req.file ? `/${req.file.filename}` : undefined,
             author: user._id,
+            category: category || null,  // ← اضافه کن
             tags: tagsArray,
             status: status || "draft"
         });
@@ -135,6 +136,10 @@ exports.getOne = async (req, res) => {
 
         const article = await Article.findOne({ slug })
             .populate("author", "name avatar bio")
+            .populate("category", "title")  
+            .populate("tags", "title")  
+            .populate("comments.user", "name avatar"); 
+
 
         if (!article) {
             return res.json({ success: false, error: "مقاله یافت نشد" });
@@ -154,7 +159,7 @@ exports.getOne = async (req, res) => {
             .limit(3)
             .lean();
 
-        return res.render("article/single.ejs", { article, user , relatedArticles })
+        return res.render("article/single.ejs", { article: article, user: user || null , relatedArticles: relatedArticles })
         
     } catch (error) {
         console.error("Get one article error:", error);
@@ -207,72 +212,7 @@ exports.addComment = async (req, res) => {
 };
 
 
-// ==================== ویرایش مقاله ====================
-exports.update = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const user = req.user;
-        const { title, description, content, tags, status } = req.body;
 
-        const article = await Article.findById(id);
-        if (!article) {
-            return res.json({ success: false, error: "مقاله یافت نشد" });
-        }
-
-        // فقط نویسنده یا ادمین
-        const isOwner = article.author.toString() === user._id.toString();
-        const isAdmin = user.roles.includes('ADMIN');
-
-        if (!isOwner && !isAdmin) {
-            return res.json({ success: false, error: "شما دسترسی ویرایش این مقاله را ندارید" });
-        }
-
-        let slug = article.slug;
-        if (title && title !== article.title) {
-            slug = title
-                .replace(/[^\w\s]/gi, '')
-                .replace(/\s+/g, '-')
-                .replace(/-+/g, '-')
-                .toLowerCase();
-            
-                const existing = await Article.findOne({ slug: cleanSlug });
-                if (existing) {
-                    return res.json({ success: false, error: "این اسلاگ قبلاً استفاده شده، یه اسلاگ دیگه انتخاب کن" });
-                }
-        }
-
-        const updateData = {
-            title: title || article.title,
-            slug,
-            description: description || article.description,
-            content: content || article.content,
-            status: status || article.status
-        };
-
-        if (tags) {
-            updateData.tags = typeof tags === 'string' 
-                ? tags.split(",").map(t => t.trim()).filter(Boolean)
-                : tags;
-        }
-
-        if (req.file) {
-            updateData.cover = `/${req.file.filename}`;
-        }
-
-        const updated = await Article.findByIdAndUpdate(id, updateData, { new: true })
-            .populate("author", "name avatar")
-
-        return res.json({ 
-            success: true, 
-            message: status === 'published' ? 'مقاله منتشر شد 🎉' : 'پیش‌نویس ذخیره شد 📝',
-            article: updated 
-        });
-
-    } catch (error) {
-        console.error("Update article error:", error);
-        return res.json({ success: false, error: error.message });
-    }
-};
 exports.update = async (req, res) => {
     try {
         const { id } = req.params;
@@ -283,37 +223,38 @@ exports.update = async (req, res) => {
 
         const isOwner = article.author.toString() === user._id.toString();
         const isAdmin = user.roles.includes('ADMIN');
-
         if (!isOwner && !isAdmin) {
-            return res.json({ success: false, error: "شما دسترسی ویرایش این مقاله را ندارید" });
+            return res.json({ success: false, error: "دسترسی غیرمجاز" });
         }
 
-
         const updateData = {};
-        
 
-        // multer اگه JSON باشه body معمولیه، اگه FormData باشه body خالیه
-        // پس چک کن body چیه
         if (req.body.title) updateData.title = req.body.title;
         if (req.body.description) updateData.description = req.body.description;
         if (req.body.content) updateData.content = req.body.content;
         if (req.body.status) updateData.status = req.body.status;
-        if (req.body.slug) updateData.slug = req.body.slug;
+        if (req.body.category) updateData.category = req.body.category;
 
-            
-        const existing = await Article.findOne({ slug: cleanSlug });
-         if (existing) {
-            return res.json({ success: false, error: "این اسلاگ قبلاً استفاده شده، یه اسلاگ دیگه انتخاب کن" });
+        // چک slug تکراری
+        if (req.body.slug) {
+            const existing = await Article.findOne({ 
+                slug: req.body.slug, 
+                _id: { $ne: id }
+            });
+            if (existing) {
+                return res.json({ success: false, error: "این اسلاگ قبلاً استفاده شده" });
+            }
+            updateData.slug = req.body.slug;
         }
-        
-        
+
         if (req.body.tags) {
             updateData.tags = typeof req.body.tags === 'string' 
                 ? req.body.tags.split(/[,،]/).map(t => t.trim()).filter(Boolean)
                 : req.body.tags;
         }
-        
-        if (req.file) updateData.cover = `/${req.file.filename}`;
+
+        if (req.file) updateData.cover = `/img/articles/${req.file.filename}`;
+
 
         if (Object.keys(updateData).length === 0) {
             return res.json({ success: false, error: "هیچ تغییری اعمال نشد" });
@@ -367,6 +308,7 @@ exports.getMyArticles = async (req, res) => {
 exports.edit = async (req, res) => {
     const article = await Article.findById(req.params.id);
     if (!article) return res.redirect("/dashboard/author");
+    const categories = await Category.find({}).lean();  // ← از دیتابیس میگیری
     
-    return res.render("dashboard/author/edit.ejs", { article, user: req.user });
+    return res.render("dashboard/author/edit.ejs", { article, categories, user: req.user });
 }

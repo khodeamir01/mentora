@@ -1,8 +1,9 @@
+
 <aside class="sidebar">
     <!-- هدر سایدبار -->
     <div class="sidebar-header">
-        <img src="<%= user.avatar ? '/img/avatar/' + user.avatar : '/img/defualtPic.png' %>" 
-             alt="<%= user.name %>" class="sidebar-avatar">
+        <img src="<%= user.avatar ?  user.avatar : '/img/defualtPic.png' %>" 
+        alt="<%= user.name %>" class="sidebar-avatar">
         <h5 class="sidebar-name"><%= user.name %></h5>
         <p style="color: rgba(255,255,255,0.6); font-size: 12px; margin: 3px 0;">@<%= user.username %></p>
         <div class="sidebar-roles">

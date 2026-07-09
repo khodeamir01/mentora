@@ -213,7 +213,7 @@ exports.teacherPanel = async (req, res) => {
         .sort({ createdAt: -1 })
         .lean();
 
-    res.render("dashboard/teacher", { user, mySessions, courseComments });
+    return res.render("dashboard/teacher", { user, mySessions, courseComments });
 };
 
 exports.authorPanel = async (req, res) => {
@@ -221,14 +221,14 @@ exports.authorPanel = async (req, res) => {
         .sort({ createdAt: -1 })
         .lean();
 
-   return res.render("dashboard/author/author.ejs", { user: req.user, myArticles });
+   return res.render("dashboard/author/author.ejs", { user: req.user, myArticles:myArticles });
 };
 
 
 // ========== USER ==========
 exports.userPanel = async (req, res) => {
     const user = req.user;
-    
+
     const orders = await Order.find({ user: user._id })
         .populate("items.course", "name href cover")
         .sort({ createdAt: -1 })
@@ -252,5 +252,50 @@ exports.userPanel = async (req, res) => {
         .sort({ createdAt: -1 })
         .lean();
 
-    res.render("dashboard/user", { user, myCourses, myComments });
+    return res.render("dashboard/user/user.ejs", {
+        user,
+        activePage: "dashboard",
+        myCourses,
+        myComments
+    });
+};
+
+exports.getProfile = async (req, res) => {
+    res.render("dashboard/profile", { 
+        user: req.user,
+        activePage: "profile"
+    });
+};
+
+exports.updateProfile = async (req, res) => {
+    try {
+        const { name, username, email, bio } = req.body;
+        const user = req.user;
+
+        // چک تکراری نبودن username
+        if (username && username !== user.username) {
+            const exist = await User.findOne({ username, _id: { $ne: user._id } });
+            if (exist) return res.json({ success: false, error: "نام کاربری تکراری است" });
+        }
+
+        // چک تکراری نبودن email
+        if (email && email !== user.email) {
+            const exist = await User.findOne({ email, _id: { $ne: user._id } });
+            if (exist) return res.json({ success: false, error: "ایمیل تکراری است" });
+        }
+
+        const updateData = {};
+        if (name) updateData.name = name;
+        if (username) updateData.username = username;
+        if (email) updateData.email = email;
+        if (bio !== undefined) updateData.bio = bio;
+        if (req.file) updateData.avatar = `/img/avatar/${req.file.filename}`;
+
+        await User.findByIdAndUpdate(user._id, updateData);
+        
+        return res.json({ success: true, message: "پروفایل بروزرسانی شد ✓" });
+
+    } catch (error) {
+        return res.json({ success: false, error: error.message });
+    }
 };

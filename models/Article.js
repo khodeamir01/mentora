@@ -28,6 +28,11 @@ const articleSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+        required: false
+    },
 
     tags: [{
         type: String,
