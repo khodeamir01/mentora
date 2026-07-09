@@ -1,0 +1,171 @@
+/* ============================================
+   سایدبار - رنگ نیمه‌تیره
+   ============================================ */
+
+   .sidebar {
+    background: #1e293b;  /* رنگ تیره ولی نه مشکی */
+    border-left: 1px solid rgba(255,255,255,0.05);
+    color: #e2e8f0;
+    min-height: 100vh;
+    padding: 0;
+    width: 240px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+/* هدر سایدبار */
+.sidebar-header {
+    text-align: center;
+    padding: 24px 16px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.sidebar-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255,255,255,0.1);
+    margin-bottom: 8px;
+}
+
+.sidebar-name {
+    color: #f1f5f9;
+    font-weight: 700;
+    margin: 6px 0 2px;
+    font-size: 15px;
+}
+
+.sidebar-roles {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 6px;
+}
+
+.sidebar-role-badge {
+    font-size: 9px;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.sidebar-role-badge.admin {
+    background: rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+}
+
+.sidebar-role-badge.teacher {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+}
+
+.sidebar-role-badge.author {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+}
+
+.sidebar-role-badge.user {
+    background: rgba(255,255,255,0.05);
+    color: #94a3b8;
+}
+
+/* منوی سایدبار */
+.sidebar-menu {
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+}
+
+.sidebar-menu li {
+    margin-bottom: 1px;
+}
+
+.sidebar-section-title {
+    padding: 12px 20px 4px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: 0.2s;
+    border-radius: 6px;
+    margin: 0 8px;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.sidebar-menu a i {
+    width: 18px;
+    text-align: center;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.sidebar-menu a:hover {
+    background: rgba(255,255,255,0.06);
+    color: #f1f5f9;
+}
+
+.sidebar-menu a:hover i {
+    color: #f1f5f9;
+}
+
+.sidebar-menu a.active {
+    background: rgba(255,255,255,0.08);
+    color: #f1f5f9;
+    font-weight: 600;
+}
+
+.sidebar-menu a.active i {
+    color: #f1f5f9;
+}
+
+/* لینک خروج */
+.sidebar-menu .logout-link {
+    color: #f87171 !important;
+}
+
+.sidebar-menu .logout-link i {
+    color: #f87171 !important;
+}
+
+.sidebar-menu .logout-link:hover {
+    background: rgba(248, 113, 113, 0.1) !important;
+    color: #fca5a5 !important;
+}
+
+.sidebar-menu .logout-link:hover i {
+    color: #fca5a5 !important;
+}
+
+/* اسکرول */
+.sidebar::-webkit-scrollbar {
+    width: 3px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}
