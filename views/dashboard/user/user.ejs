@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل کاربری - <%= user.name %></title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <script src="/js/sweetAlert2.js"></script>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-light: #eef2ff;
+            --success: #10b981;
+            --success-light: #ecfdf5;
+            --warning: #f59e0b;
+            --warning-light: #fffbeb;
+        }
+
+        .glass-header {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+            border: none;
+            color: white;
+            border-radius: 24px;
+            padding: 35px 40px;
+            box-shadow: 0 10px 40px rgba(79, 70, 229, 0.2);
+        }
+
+        .glass-header h2 { color: white; }
+        .glass-header h2 i { color: #a5b4fc; }
+        .header-subtitle { color: rgba(255,255,255,0.8); }
+
+        .stats-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .stat-card {
+            border-radius: 20px;
+            padding: 28px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #f1f5f9;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            font-size: 22px;
+        }
+
+        .card-purple { border-top: 4px solid #6366f1; }
+        .card-purple .stat-icon { background: #eef2ff; color: #6366f1; }
+        .card-purple .stat-number { color: #6366f1; }
+        .card-purple .progress-line { background: linear-gradient(90deg, #6366f1, #a5b4fc); opacity: 1; }
+
+        .card-green { border-top: 4px solid #10b981; }
+        .card-green .stat-icon { background: #ecfdf5; color: #10b981; }
+        .card-green .stat-number { color: #10b981; }
+        .card-green .progress-line { background: linear-gradient(90deg, #10b981, #6ee7b7); opacity: 1; }
+
+        .card-orange { border-top: 4px solid #f59e0b; }
+        .card-orange .stat-icon { background: #fffbeb; color: #f59e0b; }
+        .card-orange .stat-number { color: #f59e0b; }
+        .card-orange .progress-line { background: linear-gradient(90deg, #f59e0b, #fcd34d); opacity: 1; }
+
+        .content-card {
+            border-radius: 20px;
+            border: 1px solid #f1f5f9;
+            padding: 32px;
+            margin-bottom: 28px;
+        }
+
+        .card-title {
+            font-size: 19px;
+            padding-bottom: 18px;
+            margin-bottom: 24px;
+        }
+
+        .card-title i {
+            background: #eef2ff;
+            color: #6366f1;
+            padding: 8px;
+            border-radius: 10px;
+        }
+
+        .table {
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .table thead {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+        }
+
+        .table th {
+            padding: 16px 18px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            font-weight: 700;
+        }
+
+        .table td {
+            padding: 18px;
+            border-bottom: 1px solid #f8fafc;
+        }
+
+        .table tbody tr:hover {
+            background: #fafbfe;
+            transform: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border-radius: 12px;
+        }
+
+        .table img {
+            border-radius: 12px;
+            border: 3px solid white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .btn-dashboard.btn-primary-dash {
+            background: #6366f1;
+            border-radius: 12px;
+            padding: 9px 20px;
+            font-size: 13px;
+        }
+
+        .btn-dashboard.btn-primary-dash:hover {
+            background: #4f46e5;
+            box-shadow: 0 8px 20px rgba(99,102,241,0.3);
+        }
+
+        .btn-sm {
+            padding: 7px 16px;
+            font-size: 12px;
+            border-radius: 10px;
+        }
+
+        .empty-state {
+            padding: 60px;
+            background: #fafbfe;
+            border-radius: 16px;
+        }
+
+        .empty-state i {
+            font-size: 60px;
+            background: #f1f5f9;
+            width: 90px;
+            height: 90px;
+            line-height: 90px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            color: #94a3b8;
+        }
+
+        .stars { gap: 3px; }
+        .stars .fa-star { font-size: 15px; }
+        .stars .fa-star-o { color: #e2e8f0; }
+
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .glass-header { padding: 25px; }
+            .content-card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard-layout">
+    
+    <%- include('../partials/_sidebar') %>
+
+    <main class="main-content">
+        
+        <div class="page-header glass-header">
+            <div>
+                <h2><i class="fa fa-user-circle"></i> پنل کاربری</h2>
+                <p class="header-subtitle">
+                    <%= user.name %> عزیز، به پنل خود خوش آمدید
+                </p>
+            </div>
+            <div class="header-actions">
+                <span class="date" style="color: rgba(255,255,255,0.7);"><i class="fa fa-calendar"></i> <%= new Date().toLocaleDateString('fa-IR') %></span>
+                <a href="/course" class="btn-dashboard btn-primary-dash"><i class="fa fa-book"></i> مشاهده دوره‌ها</a>
+            </div>
+        </div>
+
+        <!-- آمار -->
+        <div class="stats-grid">
+            <div class="stat-card card-purple">
+                <div class="stat-top">
+                    <div class="stat-icon"><i class="fa fa-book"></i></div>
+                    <div class="stat-number"><%= myCourses.length %></div>
+                </div>
+                <div class="stat-label">دوره‌های خریداری شده</div>
+                <div class="progress-line purple"></div>
+            </div>
+            <div class="stat-card card-green">
+                <div class="stat-top">
+                    <div class="stat-icon"><i class="fa fa-comments"></i></div>
+                    <div class="stat-number"><%= myComments.length %></div>
+                </div>
+                <div class="stat-label">کامنت‌های ثبت شده</div>
+                <div class="progress-line green"></div>
+            </div>
+            <div class="stat-card card-orange">
+                <div class="stat-top">
+                    <div class="stat-icon"><i class="fa fa-shopping-cart"></i></div>
+                    <div class="stat-number"><%= myCourses.length %></div>
+                </div>
+                <div class="stat-label">سفارشات</div>
+                <div class="progress-line orange"></div>
+            </div>
+        </div>
+
+        <!-- دوره‌های من -->
+        <div class="content-card">
+            <h5 class="card-title"><i class="fa fa-book"></i> دوره‌های خریداری شده (<%= myCourses.length %>)</h5>
+            
+            <% if (myCourses.length > 0) { %>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>دوره</th>
+                                <th>کامنت</th>
+                                <th>امتیاز</th>
+                                <th>تاریخ</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% myCourses.forEach((item, index) => { %>
+                                <tr>
+                                    <td><%= index + 1 %></td>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 12px;">
+                                            <img src="/img/cover/<%= item.course.cover || 'default.jpg' %>" 
+                                                 style="width: 50px; height: 50px; border-radius: 10px; object-fit: cover;">
+                                            <div>
+                                                <strong><%= item.course.name %></strong>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><small style="color: #888;"><%= new Date(item.purchaseDate).toLocaleDateString('fa-IR') %></small></td>
+                                    <td><span style="color: #525fe1; font-weight: bold;"><%= item.price.toLocaleString() %> تومان</span></td>
+                                    <td>
+                                        <a href="/course/<%= item.course.href %>" class="btn-dashboard btn-primary-dash btn-sm">
+                                            <i class="fa fa-eye"></i> مشاهده
+                                        </a>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            <% } else { %>
+                <div class="empty-state">
+                    <i class="fa fa-shopping-cart"></i>
+                    <p>هنوز دوره‌ای خریداری نکرده‌اید</p>
+                    <a href="/course" class="btn-dashboard btn-primary-dash">مشاهده دوره‌ها</a>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- کامنت‌های من -->
+        <div class="content-card">
+            <h5 class="card-title"><i class="fa fa-comments"></i> کامنت‌های ثبت شده (<%= myComments.length %>)</h5>
+            
+            <% if (myComments.length > 0) { %>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>دوره</th>
+                                <th>کامنت</th>
+                                <th>امتیاز</th>
+                                <th>تاریخ</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% myComments.forEach(comment => { %>
+                                <tr>
+                                    <td>
+                                        <strong style="color: #1a1a2e;"><%= comment.course?.name || 'دوره حذف شده' %></strong>
+                                    </td>
+                                    <td>
+                                        <span style="color: #555; font-size: 13px;">
+                                            <%= comment.content.substring(0, 100) %>...
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="stars">
+                                            <% for (let i = 1; i <= 5; i++) { %>
+                                                <i class="fa fa-star<%= i <= comment.rating ? '' : '-o' %>" 
+                                                   style="color: <%= i <= comment.rating ? '#f1c40f' : '#ccc' %>"></i>
+                                            <% } %>
+                                        </span>
+                                    </td>
+                                    <td><small style="color: #888;"><%= new Date(comment.createdAt).toLocaleDateString('fa-IR') %></small></td>
+                                    <td>
+                                        <a href="/course/<%= comment.course?.href || '#' %>" class="btn-dashboard btn-primary-dash btn-sm">
+                                            <i class="fa fa-eye"></i> مشاهده
+                                        </a>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            <% } else { %>
+                <div class="empty-state">
+                    <i class="fa fa-comment-o"></i>
+                    <p>هنوز کامنتی ثبت نکرده‌اید</p>
+                </div>
+            <% } %>
+        </div>
+
+    </main>
+</div>
+</body>
+</html>

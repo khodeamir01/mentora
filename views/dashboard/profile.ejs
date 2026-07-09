@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ویرایش پروفایل - <%= user.name %></title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/fonts/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <script src="/js/sweetAlert2.js"></script>
+    <style>
+        .profile-container { max-width: 700px; margin: 0 auto; padding: 30px 15px; }
+        .profile-card { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+        .profile-card h2 { margin-bottom: 30px; color: #1a1a2e; font-size: 22px; display: flex; align-items: center; gap: 10px; }
+        .avatar-section { text-align: center; margin-bottom: 30px; }
+        .avatar-section img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 4px solid #f0f0f0; }
+        .avatar-section label { display: inline-block; margin-top: 10px; cursor: pointer; color: #525fe1; font-size: 13px; }
+        .avatar-section input[type="file"] { display: none; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: bold; color: #444; }
+        .form-control { width: 100%; padding: 12px 16px; border: 2px solid #e8e8e8; border-radius: 12px; font-size: 14px; transition: all 0.3s; background: #fafafa; }
+        .form-control:focus { outline: none; border-color: #525fe1; background: #fff; box-shadow: 0 0 0 4px rgba(82,95,225,0.08); }
+        textarea.form-control { min-height: 100px; resize: vertical; }
+        .btn-save { background: linear-gradient(135deg, #525fe1, #f26b65); color: white; border: none; padding: 14px 35px; border-radius: 12px; font-weight: bold; font-size: 15px; cursor: pointer; width: 100%; }
+    </style>
+</head>
+<body>
+<div class="dashboard-layout">
+    
+    <%- include('partials/_sidebar') %>
+
+    <main class="main-content">
+        <div class="profile-container">
+            
+            <div class="profile-card">
+                <h2><i class="fa fa-user-edit"></i> ویرایش پروفایل</h2>
+                
+                <form id="profileForm">
+                    
+                    <!-- آواتار -->
+                    <div class="avatar-section">
+                        <img id="avatarPreview" src="<%= user.avatar || '/img/defualtPic.png' %>" alt="آواتار">
+                        <br>
+                        <label for="avatarInput"><i class="fa fa-camera"></i> تغییر تصویر</label>
+                        <input type="file" id="avatarInput" name="avatar" accept="image/*" onchange="previewAvatar(event)">
+                    </div>
+                    
+                    <!-- نام -->
+                    <div class="form-group">
+                        <label><i class="fa fa-user"></i> نام کامل</label>
+                        <input type="text" name="name" class="form-control" value="<%= user.name %>">
+                    </div>
+                    
+                    <!-- نام کاربری -->
+                    <div class="form-group">
+                        <label><i class="fa fa-at"></i> نام کاربری</label>
+                        <input type="text" name="username" class="form-control" value="<%= user.username %>" dir="ltr">
+                    </div>
+                    
+                    <!-- ایمیل -->
+                    <div class="form-group">
+                        <label><i class="fa fa-envelope"></i> ایمیل</label>
+                        <input type="email" name="email" class="form-control" value="<%= user.email %>" dir="ltr">
+                    </div>
+                    
+                    <!-- بیو -->
+                    <div class="form-group">
+                        <label><i class="fa fa-info-circle"></i> درباره من</label>
+                        <textarea name="bio" class="form-control" maxlength="300"><%= user.bio || '' %></textarea>
+                    </div>
+                    
+                    <button type="button" class="btn-save" onclick="updateProfile()">
+                        <i class="fa fa-save"></i> ذخیره تغییرات
+                    </button>
+                    
+                </form>
+            </div>
+            
+        </div>
+    </main>
+</div>
+
+<script>
+// ========== پیش‌نمایش آواتار ==========
+function previewAvatar(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => document.getElementById('avatarPreview').src = e.target.result;
+        reader.readAsDataURL(file);
+    }
+}
+
+// ========== آپدیت پروفایل ==========
+async function updateProfile() {
+    const form = document.getElementById('profileForm');
+    const formData = new FormData(form);
+
+    Swal.fire({ title: 'در حال ذخیره...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+    try {
+        const res = await fetch('/dashboard/profile', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await res.json();
+
+        Swal.fire({
+            icon: data.success ? 'success' : 'error',
+            title: data.success ? 'ذخیره شد ✓' : 'خطا',
+            text: data.message || data.error
+        }).then(() => {
+            if (data.success) {
+        window.location.href = '/dashboard';
+    }
+        });
+    } catch (err) {
+        Swal.fire({ icon: 'error', title: 'خطا', text: 'خطا در ارتباط با سرور' });
+    }
+}
+</script>
+
+</body>
+</html>
