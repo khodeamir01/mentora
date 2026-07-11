@@ -30,7 +30,6 @@ router.get("/", auth, async (req, res) => {
             ])
         ]);
         const avg = avgResult[0]?.avg
-        console.log("avg", avg);
 
         const courses = await Course.find({})
         .populate('categoryID', 'title href')

@@ -5,7 +5,6 @@ const Category = require("./../models/Category");
 const Comment = require("./../models/Comment");
 
 const { isValidObjectId } = require("mongoose");
-const mongoose = require("mongoose");
 
 
 exports.getAllCourses = async (req, res, next) => {
@@ -83,7 +82,7 @@ exports.getAllCourses = async (req, res, next) => {
 };
 
 exports.showCreateCoursePanel = async (req, res, next) => {
-  const categories = await Category.find({}); console.log(categories);
+  const categories = await Category.find({});
   return res.render("dashboard/admin/createCourse.ejs", {categories})
 
 }
@@ -97,6 +96,7 @@ exports.create = async (req, res) => {
     price,
     status,
     categoryID,
+    teacherId
   } = req.body;
   const course = await Course.create({
     name,
@@ -108,24 +108,41 @@ exports.create = async (req, res) => {
     status,
     categoryID,
     creator: req.user._id,
+    teacher: teacherId,
     cover: `/img/cover/${req.file.filename}`
   });
-  const mainCourse = await Course
-  .findById(course._id)
-  .populate("creator", "-password");
+  const teachers = await User.find({ roles: "TEACHER" }).select("name").lean();
+  const categories = await Category.find({}).lean();
+
 
   
-  return res.render("index", {
+  return res.render("index", {teachers, categories,
     messages: {
      success: "Create Course Was Successfully",
       redirect: "/",
      }
    });
 };
+exports.createSessionPage = async (req, res) => {
+
+    const course = await Course.findById(req.params.courseId).lean();
+    if (!course) return res.redirect('/dashboard/teacher');
+    
+    const sessionCount = await Session.countDocuments({ course: course._id });
+    
+    return res.render('createSession', {
+        course,
+        nextOrder: sessionCount + 1,
+        user: req.user,
+        activePage: 'sessions'
+    });
+
+}
 
 exports.createSession = async (req, res) => {
 
-  const { time, free, title } = req.body;
+  const { time, free, title, description  } = req.body;
+  const creatorId = req.user._id
 
   const { courseId } = req.params;
 
@@ -134,13 +151,19 @@ exports.createSession = async (req, res) => {
       message: "This Course ID is Not Valid !!",
     });
   }
+  const count = await Session.countDocuments({ course: courseId });
+
   
   const session = await Session.create({
+    order: count + 1,
+    description: description || '',
     title,
     time,
     free,
     video: `/img/session/${req.file.filename}`,
     course: courseId,
+    creator: creatorId
+
   });
   return res.status(201).json(session);
 };
@@ -217,13 +240,14 @@ exports.getOneCourse = async (req, res) => {
   
   const course = await Course.findOne({ href })
     .populate("creator", "-password -phone -email -username -role -__v -createdAt -updatedAt")
+    .populate("teacher", "-password -phone -email -username -role -__v -createdAt -updatedAt")
     .lean();
   
   const relatedCourses = await Course.find({
     _id: { $ne: course._id },
     categoryID: course.categoryID
   })
-    .populate('creator')
+    .populate('teacher')
     .limit(4);
   
   const categories = await Category.find().sort({ title: 1 });
@@ -252,6 +276,7 @@ exports.getOneCourse = async (req, res) => {
     });
     isUserRegistered = !!enrollment;
   }
+  const countStudents = await CourseUser.countDocuments({course: course._id })
 
   if (!course) {
     return res.render("course_details.ejs", { 
@@ -268,6 +293,7 @@ exports.getOneCourse = async (req, res) => {
     relatedCourses,
     comments,
     sessions,
-    isUserRegistered
+    isUserRegistered,
+    countStudents
   });
 };

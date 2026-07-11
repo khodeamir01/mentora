@@ -5,8 +5,8 @@ const Session = require("../models/Session");
 const Course = require("../models/Course");
 const Ban = require("../models/Ban");
 const Article = require("../models/Article");
+const CourseUser = require("../models/Course-User");
 
-// ========== پنل خودکار (تشخیص نقش) ==========
 exports.panel = async (req, res) => {
     const user = req.user;
     
@@ -22,7 +22,7 @@ exports.adminPanel = async (req, res) => {
     const [
         totalUsers, totalCourses, totalComments, 
         totalOrders, totalSessions,
-        // totalArticles,
+        totalArticles,
         allUsers, bans
     ] = await Promise.all([
         User.countDocuments(),
@@ -30,17 +30,15 @@ exports.adminPanel = async (req, res) => {
         Comment.countDocuments(),
         Order.countDocuments(),
         Session.countDocuments(),
-        // Article.countDocuments(),
+        Article.countDocuments(),
         User.find({}).select("-password").sort({ createdAt: -1 }).lean(),
         Ban.find({}).lean()
     ]);
 
-       // ========== اضافه کردن isBanned به هر کاربر ==========
        const bannedEmails = new Set(
         bans.map(b => b.email?.toLowerCase().trim()).filter(Boolean)
     );
 
-    // اینجا isBanned رو اضافه کن
     allUsers.forEach(u => {
         const userEmail = (u.email || '').toLowerCase().trim();
         u.isBanned = userEmail !== '' && bannedEmails.has(userEmail);
@@ -53,7 +51,7 @@ exports.adminPanel = async (req, res) => {
         totalComments,
         totalOrders,
         totalSessions,
-        // totalArticles,
+        totalArticles,
         allUsers
         
     });
@@ -64,7 +62,6 @@ exports.adminChangeRole = async (req, res) => {
     try {
         const { userId, role } = req.body;
         
-        // اعتبارسنجی
         const validRoles = ["USER", "TEACHER", "AUTHOR", "ADMIN"];
         if (!validRoles.includes(role)) {
             return res.json({ 
@@ -80,7 +77,6 @@ exports.adminChangeRole = async (req, res) => {
             });
         }
 
-        // پیدا کردن کاربر
         const targetUser = await User.findById(userId);
         
         if (!targetUser) {
@@ -90,7 +86,6 @@ exports.adminChangeRole = async (req, res) => {
             });
         }
 
-        // ادمین نمی‌تونه نقش خودش رو عوض کنه (اختیاری - برای امنیت)
         if (userId === req.user._id.toString()) {
             return res.json({ 
                 success: false, 
@@ -98,9 +93,8 @@ exports.adminChangeRole = async (req, res) => {
             });
         }
 
-        // آپدیت نقش کاربر
         await User.findByIdAndUpdate(userId, { 
-            roles: [role]  // آرایه roles رو با نقش جدید جایگزین کن
+            roles: [role]  
         });
 
         console.log(`User ${targetUser.name} role changed to ${role} by admin ${req.user.name}`);
@@ -123,7 +117,6 @@ exports.adminChangeRole = async (req, res) => {
     }
 };
 
-// بن کردن کاربر
 exports.adminBanUser = async (req, res) => {
     try {
         const { userId } = req.body;
@@ -134,12 +127,10 @@ exports.adminBanUser = async (req, res) => {
             return res.json({ success: false, error: "کاربر یافت نشد" });
         }
 
-        // ادمین نمی‌تونه خودش رو بن کنه
         if (userId === req.user._id.toString()) {
             return res.json({ success: false, error: "نمی‌توانید خود را بن کنید" });
         }
 
-        // چک کردن تکراری نبودن
         const existingBan = await Ban.findOne({ email: targetUser.email });
         console.log("existingBan", existingBan);
 
@@ -147,7 +138,6 @@ exports.adminBanUser = async (req, res) => {
             return res.json({ success: false, error: "این کاربر قبلاً بن شده است" });
         }
 
-        // ثبت در مدل Ban
         await Ban.create({ 
             email: targetUser.email 
         });
@@ -165,7 +155,6 @@ exports.adminBanUser = async (req, res) => {
     }
 };
 
-// آنبن کردن کاربر
 exports.adminUnbanUser = async (req, res) => {
     try {
         const { userId } = req.body;
@@ -175,7 +164,6 @@ exports.adminUnbanUser = async (req, res) => {
             return res.json({ success: false, error: "کاربر یافت نشد" });
         }
 
-        // حذف از مدل Ban
         const result = await Ban.deleteOne({ email: targetUser.email });
 
         if (result.deletedCount === 0) {
@@ -195,25 +183,38 @@ exports.adminUnbanUser = async (req, res) => {
     }
 };
 
-// ========== TEACHER ==========
 exports.teacherPanel = async (req, res) => {
     const user = req.user;
     
-    const mySessions = await Session.find({ creator: user._id })
-        .populate("course", "name")
-        .sort({ createdAt: -1 })
-        .lean();
+    const myCourses = await Course.find({ teacher: user._id }).lean();
 
-    const myCourses = await Course.find({ creator: user._id }).lean();
-    const myCourseIds = myCourses.map(c => c._id);
-
-    const courseComments = await Comment.find({ course: { $in: myCourseIds } })
-        .populate("user", "name")
-        .populate("course", "name")
-        .sort({ createdAt: -1 })
-        .lean();
-
-    return res.render("dashboard/teacher", { user, mySessions, courseComments });
+    
+const mySessions = await Session.find({ creator: user._id })
+    .populate("course", "name")
+    .sort({ createdAt: -1 });
+    
+    const totalSessions = await Session.countDocuments({ creator: user._id });
+    const totalStudents = await CourseUser.countDocuments({ 
+        course: { $in: myCourses.map(c => c._id) } 
+    });
+    const totalComments = await Comment.countDocuments({ 
+        course: { $in: myCourses.map(c => c._id) } 
+    });
+    
+    // تعداد جلسات هر دوره
+    for (let course of myCourses) {
+        course.sessionCount = await Session.countDocuments({ course: course._id });
+    }
+    
+    return res.render("dashboard/teacher", {
+        user,
+        activePage: "dashboard",
+        myCourses,
+        mySessions,
+        totalSessions,
+        totalStudents,
+        totalComments
+    });
 };
 
 exports.authorPanel = async (req, res) => {
@@ -272,13 +273,11 @@ exports.updateProfile = async (req, res) => {
         const { name, username, email, bio } = req.body;
         const user = req.user;
 
-        // چک تکراری نبودن username
         if (username && username !== user.username) {
             const exist = await User.findOne({ username, _id: { $ne: user._id } });
             if (exist) return res.json({ success: false, error: "نام کاربری تکراری است" });
         }
 
-        // چک تکراری نبودن email
         if (email && email !== user.email) {
             const exist = await User.findOne({ email, _id: { $ne: user._id } });
             if (exist) return res.json({ success: false, error: "ایمیل تکراری است" });

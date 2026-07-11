@@ -3,18 +3,11 @@ const Article = require("../models/Article");
 const Category = require("../models/Category");
 const { isValidObjectId } = require("mongoose");
 
-// ==================== ایجاد مقاله ====================
 exports.create = async (req, res) => {
     try {
         const { title, description, content, tags, status, slug, category } = req.body;
         const user = req.user;
 
-        // دیباگ - ببین چی میاد
-        console.log("Tags received:", tags);
-        console.log("req body:", req.body);
-        console.log("Type of tags:", typeof tags);
-
-        // اعتبارسنجی slug
         if (!slug || slug.trim() === '') {
             return res.json({ success: false, error: "اسلاگ الزامی است" });
         }
@@ -34,22 +27,19 @@ exports.create = async (req, res) => {
             return res.json({ success: false, error: "این اسلاگ قبلاً استفاده شده" });
         }
 
-        // پردازش تگ‌ها - چند حالت رو چک کن
         let tagsArray = [];
         if (tags) {
             if (typeof tags === 'string') {
-                // اگه رشته‌ست، با کاما split کن
                 tagsArray = tags
-                    .split(/[,،]/)  // هم کامای انگلیسی هم فارسی
+                    .split(/[,،]/) 
                     .map(t => t.trim())
                     .filter(t => t.length > 0);
             } else if (Array.isArray(tags)) {
-                // اگه آرایه‌ست
                 tagsArray = tags.filter(t => t && t.trim());
             }
         }
 
-        console.log("Processed tags:", tagsArray); // دیباگ
+        console.log("Processed tags:", tagsArray); 
 
         const article = await Article.create({
             title,
@@ -58,7 +48,7 @@ exports.create = async (req, res) => {
             content,
             cover: req.file ? `/${req.file.filename}` : undefined,
             author: user._id,
-            category: category || null,  // ← اضافه کن
+            category: category || null,  
             tags: tagsArray,
             status: status || "draft"
         });
@@ -75,19 +65,16 @@ exports.create = async (req, res) => {
 
 
 
-// ==================== گرفتن همه مقالات ====================
 exports.getAll = async (req, res) => {
     try {
         const { page = 1, limit = 9, category, search, tag, sort = "newest" } = req.query;
         
         const filter = { status: "published" };
 
-        // فیلتر با category (حالا ObjectId هست)
         if (category && isValidObjectId(category)) {
             filter.category = category;
         }
         
-        // جستجو
         if (search) {
             filter.$or = [
                 { title: { $regex: search, $options: "i" } },
@@ -95,7 +82,6 @@ exports.getAll = async (req, res) => {
             ];
         }
 
-        // فیلتر با tag
         if (tag) {
             filter.tags = { $in: [tag] };
         }
@@ -128,7 +114,6 @@ exports.getAll = async (req, res) => {
     }
 };
 
-// ==================== گرفتن یک مقاله ====================
 exports.getOne = async (req, res) => {
     try {
         const user = req.user
@@ -148,7 +133,6 @@ exports.getOne = async (req, res) => {
         article.views += 1;
         await article.save();
 
-        // مقالات مرتبط از همین دسته
         const relatedArticles = await Article.find({
             _id: { $ne: article._id },
             tags: article.tags,
@@ -195,7 +179,6 @@ exports.addComment = async (req, res) => {
 
         await article.save();
 
-        // populate کاربر کامنت جدید
         const populatedArticle = await Article.findById(id)
             .populate("comments.user", "name avatar");
 
@@ -235,7 +218,6 @@ exports.update = async (req, res) => {
         if (req.body.status) updateData.status = req.body.status;
         if (req.body.category) updateData.category = req.body.category;
 
-        // چک slug تکراری
         if (req.body.slug) {
             const existing = await Article.findOne({ 
                 slug: req.body.slug, 
@@ -268,7 +250,6 @@ exports.update = async (req, res) => {
     }
 };
 
-// ==================== حذف مقاله ====================
 exports.remove = async (req, res) => {
     try {
         const { id } = req.params;
@@ -290,7 +271,6 @@ exports.remove = async (req, res) => {
     }
 };
 
-// ==================== مقالات من ====================
 exports.getMyArticles = async (req, res) => {
     try {
         const articles = await Article.find({ author: req.user._id })
@@ -308,7 +288,7 @@ exports.getMyArticles = async (req, res) => {
 exports.edit = async (req, res) => {
     const article = await Article.findById(req.params.id);
     if (!article) return res.redirect("/dashboard/author");
-    const categories = await Category.find({}).lean();  // ← از دیتابیس میگیری
+    const categories = await Category.find({}).lean();  
     
     return res.render("dashboard/author/edit.ejs", { article, categories, user: req.user });
 }

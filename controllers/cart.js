@@ -16,7 +16,6 @@ exports.getCart = async (req, res, next) => {
                 select: "name avatar"
             });
 
-        // اگر سبد خرید خالی بود یا وجود نداشت
         if (!cart || cart.items.length === 0) {
             return res.render("cart", {
                 cart: null,
@@ -25,7 +24,6 @@ exports.getCart = async (req, res, next) => {
             });
         }
 
-        // محاسبه قیمت کل
         const totalPrice = cart.items.reduce((total, item) => {
             return total + item.priceAtTime 
         }, 0);
@@ -63,7 +61,6 @@ exports.addToCart = async (req, res, next) => {
             });
         }
 
-        // چک کردن اینکه کاربر قبلاً این دوره رو خریده یا نه
         const existingCart = await Cart.findOne({ 
             user: user._id,
             "items.course": courseId 
@@ -119,9 +116,7 @@ exports.removeFromCart = async (req, res, next) => {
         const user = req.user;
         const { courseId } = req.body;
 
-        console.log("Removing course:", courseId, "for user:", user._id); // دیباگ
 
-        // پیدا کردن سبد خرید کاربر
         const cart = await Cart.findOne({ user: user._id });
         
         if (!cart) {
@@ -131,7 +126,6 @@ exports.removeFromCart = async (req, res, next) => {
             });
         }
 
-        // پیدا کردن ایندکس آیتم
         const itemIndex = cart.items.findIndex(
             item => item.course.toString() === courseId.toString()
         );
@@ -143,10 +137,8 @@ exports.removeFromCart = async (req, res, next) => {
             });
         }
 
-        // حذف آیتم از آرایه
         cart.items.splice(itemIndex, 1);
 
-        // اگر سبد خرید خالی شد، کلش رو حذف کن
         if (cart.items.length === 0) {
             await Cart.findByIdAndDelete(cart._id);
             console.log("Cart deleted because it's empty");
@@ -159,10 +151,8 @@ exports.removeFromCart = async (req, res, next) => {
             });
         }
 
-        // اگر هنوز آیتم داره، ذخیره کن
         await cart.save();
 
-        // populate برای نمایش
         const populatedCart = await Cart.findById(cart._id)
             .populate("items.course", "name href cover price")
             .populate("items.teacher", "name avatar");

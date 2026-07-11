@@ -38,6 +38,11 @@ const schema =new mongoose.Schema(
         type : mongoose.Types.ObjectId,
         ref: "User"
     },
+    teacher: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    },
     
     rating: { 
         type: Number, 

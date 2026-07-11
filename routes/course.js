@@ -2,6 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const auth = require("./../middlewares/auth");
 const Controller = require("./../controllers/course");
+const roleGuard = require("./../middlewares/roleGuard")
 const { multerStorage } = require("../utils/multerConfigs");
 const upload = multerStorage("public/assets/img");
 
@@ -19,10 +20,7 @@ router.route("/create")
 router.get("/:href", auth, Controller.getOneCourse);
 
 // 4. ایجاد جلسه
-router.post("/:courseId/sessions", 
-    multer({ storage: multerStorage, limits: { filesize: 1000000000 } }).single("video"),
-    auth, 
-    Controller.createSession
-);
+router.post("/:courseId/sessions", auth, roleGuard("TEACHER"), upload.single("video"), Controller.createSession)
+router.get("/:courseId/sessions/create", auth, roleGuard("TEACHER"), Controller.createSessionPage);
 
 module.exports = router;

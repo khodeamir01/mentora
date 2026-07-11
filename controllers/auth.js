@@ -37,7 +37,7 @@ exports.register = async (req, res, next) => {
       { expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN_SECONDS + "s" }
     );
 
-      const hashedAcceessToken = await bcryptjs.hash(accessToken, 12);
+     await bcryptjs.hash(accessToken, 12);
 
 
     const refreshToken = jwt.sign(
@@ -84,7 +84,6 @@ exports.showLoginView = (req, res) => {
 exports.login = async (req, res, next) => {
   const { username, password } = req.body;
     
-  // پیدا کردن کاربر با email
   const user = await User.findOne({ username });
   
   if (!user) {
@@ -113,8 +112,7 @@ exports.login = async (req, res, next) => {
     process.env.ACCESS_TOKEN_SECRET_KEY,
     { expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN_SECONDS + "s" }
   );
-
-  const hashedAcceessToken = await bcryptjs.hash(accessToken, 12);
+   await bcryptjs.hash(accessToken, 12);
 
   const refreshToken = jwt.sign(
     { id: user.id },

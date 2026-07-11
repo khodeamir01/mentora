@@ -3,7 +3,7 @@ const {successResponse, errorResponse} = require("./../helpers/responses")
 const Cart = require("./../models/Cart");
 const Checkout = require("./../models/Checkout");
 const Order = require("./../models/Order");
-const Course = require("./../models/Course"); // مدل Course خودت
+const Course = require("./../models/Course"); 
 const CourseUser = require("./../models/Course-User"); 
 
 exports.createCheckout = async (req, res, next) => {
@@ -74,7 +74,6 @@ exports.verifyCheckout = async (req, res, next) => {
     try {
         const { Authority: authority } = req.query;
 
-        // چک کردن تکراری نبودن پرداخت
         const alreadyCreatedOrder = await Order.findOne({ authority });
         if (alreadyCreatedOrder) {
             return res.render("payment-result", {
@@ -84,7 +83,6 @@ exports.verifyCheckout = async (req, res, next) => {
             });
         }
 
-        // پیدا کردن checkout
         const checkout = await Checkout.findOne({ authority });
         if (!checkout) {
             return res.render("payment-result", {
@@ -94,12 +92,10 @@ exports.verifyCheckout = async (req, res, next) => {
             });
         }
 
-        // محاسبه قیمت کل
         const totalPrice = checkout.items.reduce((total, item) => {
             return total + item.priceAtTimeOfPurchase * 10;
         }, 0);
 
-        // تأیید پرداخت
         const payment = await verifyPayment({ 
             authority, 
             amountInRial: totalPrice 
@@ -114,7 +110,6 @@ exports.verifyCheckout = async (req, res, next) => {
             });
         }
 
-        // ایجاد سفارش
         const order = new Order({
             user: checkout.user,
             authority: checkout.authority,
@@ -123,7 +118,6 @@ exports.verifyCheckout = async (req, res, next) => {
 
         await order.save();
 
-        // ثبت نام در دوره‌ها
         for (const item of checkout.items) {
             const course = await Course.findById(item.course);
 
@@ -144,16 +138,13 @@ exports.verifyCheckout = async (req, res, next) => {
             }
         }
 
-        // خالی کردن سبد خرید
         await Cart.findOneAndUpdate(
             { user: checkout.user }, 
             { items: [] }
         );
 
-        // حذف checkout
         await Checkout.deleteOne({ _id: checkout._id });
 
-        // رندر صفحه موفقیت
         return res.render("payment-result", {
             success: true,
             message: "پرداخت با موفقیت انجام شد ✅",

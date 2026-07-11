@@ -22,6 +22,12 @@ const sessionSchema = new mongoose.Schema({
     required: true
   },
 
+  creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+
   order: {
     type: Number, // شماره جلسه
     default: 1

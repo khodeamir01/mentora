@@ -7,7 +7,7 @@ const seedUsers = async () => {
     try {
 
 
-        const password = await bcrypt.hash("123456", 12);
+        const password = await bcrypt.hash("12345678", 12);
 
         const users = [
             { name: "سارا محمدی", username: "sara_teacher", email: "sara@eduleb.com", password, roles: ["TEACHER"], bio: "مدرس فرانت‌اند با ۶ سال تجربه در React و Vue", avatar: "/img/avatar/sara.jpg" },
