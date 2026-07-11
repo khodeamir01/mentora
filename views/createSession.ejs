@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ایجاد جلسه جدید</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/fonts/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <script src="/js/sweetAlert2.js"></script>
+    <style>
+        .session-container { max-width: 700px; margin: 0 auto; padding: 30px 15px; }
+        .form-card { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+        .form-card h2 { margin-bottom: 30px; color: #1a1a2e; font-size: 22px; display: flex; align-items: center; gap: 10px; }
+        .form-card h2 i { color: #667eea; font-size: 26px; }
+        .form-group { margin-bottom: 22px; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: bold; color: #444; }
+        .form-control { width: 100%; padding: 12px 16px; border: 2px solid #e8e8e8; border-radius: 12px; font-size: 14px; transition: all 0.3s; background: #fafafa; font-family: inherit; }
+        .form-control:focus { outline: none; border-color: #525fe1; background: #fff; box-shadow: 0 0 0 4px rgba(82,95,225,0.08); }
+        textarea.form-control { min-height: 100px; resize: vertical; }
+        .checkbox-group { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .checkbox-group input[type="checkbox"] { width: 20px; height: 20px; accent-color: #525fe1; cursor: pointer; }
+        .checkbox-group label { margin: 0; cursor: pointer; }
+        .btn-submit { background: linear-gradient(135deg, #525fe1, #f26b65); color: white; border: none; padding: 14px 35px; border-radius: 12px; font-weight: bold; font-size: 15px; cursor: pointer; width: 100%; transition: all 0.3s; }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(82,95,225,0.3); }
+        .btn-back { color: #888; text-decoration: none; font-size: 14px; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 20px; }
+        .btn-back:hover { color: #525fe1; }
+        .file-preview { margin-top: 10px; padding: 10px; background: #f0fdf4; border-radius: 8px; color: #15803d; font-size: 13px; display: none; }
+        .info-box { background: #f8f9ff; padding: 15px; border-radius: 12px; margin-bottom: 25px; color: #525fe1; font-size: 14px; display: flex; align-items: center; gap: 10px; }
+        .info-box i { font-size: 20px; }
+    </style>
+</head>
+<body>
+<div class="dashboard-layout">
+    
+    <%- include('dashboard/partials/_sidebar') %>
+
+    <main class="main-content">
+        <div class="session-container">
+            
+            <a href="/dashboard/teacher" class="btn-back">
+                <i class="fa fa-arrow-right"></i> بازگشت به پنل
+            </a>
+
+            <div class="form-card">
+                <h2><i class="fa fa-video-camera"></i> ایجاد جلسه جدید</h2>
+                
+                <div class="info-box">
+                    <i class="fa fa-info-circle"></i>
+                    <span>دوره: <strong><%= course.name %></strong> | جلسه <strong><%= nextOrder %></strong></span>
+                </div>
+                
+                <form id="sessionForm">
+                    <input type="hidden" name="courseId" value="<%= course._id %>">
+                    
+                    <div class="form-group">
+                        <label><i class="fa fa-header"></i> عنوان جلسه</label>
+                        <input type="text" name="title" class="form-control" 
+                               placeholder="مثلاً: معرفی React و نصب ابزارها" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fa fa-align-left"></i> توضیحات (اختیاری)</label>
+                        <textarea name="description" class="form-control" 
+                                  placeholder="توضیح کوتاه درباره این جلسه..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" name="isFree" id="isFree" checked>
+                            <label for="isFree"><i class="fa fa-unlock"></i> این جلسه رایگان باشد</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fa fa-video-camera"></i> ویدیوی جلسه</label>
+                        <input type="file" name="video" id="videoFile" class="form-control" 
+                               accept="video/*" required onchange="previewFile()">
+                        <div class="file-preview" id="filePreview">
+                            <i class="fa fa-check-circle"></i> <span id="fileName"></span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit">
+                        <i class="fa fa-check"></i> ایجاد جلسه
+                    </button>
+                </form>
+            </div>
+            
+        </div>
+    </main>
+</div>
+
+<script>
+// پیش‌نمایش فایل
+function previewFile() {
+    const file = document.getElementById('videoFile').files[0];
+    const preview = document.getElementById('filePreview');
+    const name = document.getElementById('fileName');
+    
+    if (file) {
+        preview.style.display = 'block';
+        name.textContent = file.name;
+    }
+}
+
+// ارسال فرم
+document.getElementById('sessionForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const courseId = formData.get('courseId');
+    
+    Swal.fire({
+        title: 'در حال آپلود جلسه...',
+        html: 'لطفاً شکیبا باشید، ویدیو در حال بارگذاری است',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+    
+    try {
+        const res = await fetch(`/course/${courseId}/sessions`, {
+            method: 'POST',
+            body: formData
+        });
+        const data = await res.json();
+        
+        if (res.ok) {
+            Swal.fire({
+                icon: 'success',
+                title: 'جلسه ایجاد شد! 🎉',
+                text: `جلسه "${data.title}" با موفقیت اضافه شد`,
+                confirmButtonText: 'بازگشت به پنل',
+                showCancelButton: true,
+                cancelButtonText: 'جلسه جدید'
+            }).then(result => {
+                if (result.isConfirmed) {
+                    window.location.href = '/dashboard/teacher';
+                } else {
+                    location.reload();
+                }
+            });
+        } else {
+            Swal.fire({ icon: 'error', title: 'خطا', text: data.message || 'مشکلی پیش آمد' });
+        }
+    } catch (err) {
+        Swal.fire({ icon: 'error', title: 'خطا', text: 'خطا در ارتباط با سرور' });
+    }
+});
+</script>
+
+</body>
+</html>
