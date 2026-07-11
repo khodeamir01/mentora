@@ -2,7 +2,7 @@
 <aside class="sidebar">
     <!-- هدر سایدبار -->
     <div class="sidebar-header">
-        <img src="<%= user.avatar ?  user.avatar : '/img/defualtPic.png' %>" 
+        <img src="<%= user.avatar ?  user.avatar : '/img/avatar/defualtPic.png' %>" 
         alt="<%= user.name %>" class="sidebar-avatar">
         <h5 class="sidebar-name"><%= user.name %></h5>
         <p style="color: rgba(255,255,255,0.6); font-size: 12px; margin: 3px 0;">@<%= user.username %></p>
@@ -49,22 +49,27 @@
             </li>
             
         <% } else if (user.roles.includes("TEACHER")) { %>
-            <!-- منوی مدرس -->
-            <li>
-                <a href="/dashboard/teacher" class="<%= activePage === 'dashboard' ? 'active' : '' %>">
-                    <i class="fa fa-tachometer"></i> پیشخوان
-                </a>
-            </li>
-            <li>
-                <a href="/dashboard/teacher/sessions">
-                    <i class="fa fa-video-camera"></i> جلسات من
-                </a>
-            </li>
-            <li>
-                <a href="/dashboard/teacher/comments">
-                    <i class="fa fa-comments"></i> کامنت‌های دوره‌ها
-                </a>
-            </li>
+<!-- منوی مدرس -->
+<li>
+    <a href="/dashboard/teacher" class="<%= activePage === 'dashboard' ? 'active' : '' %>">
+        <i class="fa fa-tachometer"></i> پیشخوان
+    </a>
+</li>
+<li>
+    <a href="/dashboard/teacher/sessions">
+        <i class="fa fa-video-camera"></i> جلسات من
+    </a>
+</li>
+<li>
+    <a href="/dashboard/teacher/sessions/create">
+        <i class="fa fa-plus-circle"></i> جلسه جدید
+    </a>
+</li>
+<li>
+    <a href="/dashboard/teacher/comments">
+        <i class="fa fa-comments"></i> کامنت‌های دوره‌ها
+    </a>
+</li>
             
         <% } else if (user.roles.includes("AUTHOR")) { %>
             <!-- منوی نویسنده -->

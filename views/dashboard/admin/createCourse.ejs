@@ -76,6 +76,16 @@
     </select>
                 </div>
 
+                <div class="form-group">
+                    <label>مدرس دوره</label>
+                    <select name="teacherId" class="form-control" required>
+                        <option value="">انتخاب مدرس...</option>
+                        <% teachers.forEach(teacher => { %>
+                            <option value="<%= teacher._id %>"><%= teacher.name %></option>
+                        <% }); %>
+                    </select>
+                </div>
+
 
                 <!-- وضعیت -->
                 <div class="form-group">

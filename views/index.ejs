@@ -71,7 +71,7 @@
   <% if (user) { %>
       <div class="user-dropdown">
           <button class="user-dropdown-btn" onclick="toggleUserMenu()">
-              <img src="<%= user.avatar ?  user.avatar : '/img/defualtPic.png' %>" 
+              <img src="/img/avatar/<%= user.avatar ?  user.avatar : 'defualtPic.png' %>" 
                    alt="<%= user.name %>" class="user-avatar-small">
               <span><%= user.name %></span>
               <i class="fa fa-angle-down"></i>
@@ -602,7 +602,7 @@
         <p>© ۲۰۲۶ ادولب. تمامی حقوق محفوظ است | توسعه توسط AmirSalar Khormaie</p>
     </div>
 </div>
-<script src="/js/jquery-1.12.4.min.js"></script><script src="/bootstrap/js/bootstrap.min.js"></script><script src="/js/modernizr-2.8.3.min.js"></script><script src="/js/jquery-simple-mobilemenu.js"></script><script src="/owlcarousel/js/owl.carousel.min.js"></script><script src="/js/jquery.magnific-popup.min.js"></script><script src="/js/jquery.inview.min.js"></script><script src="/js/scrolltopcontrol.js"></script><script src="/js/wow.min.js"></script><script src="/js/scripts.js"></script> <script>// ========== منوی کاربر ==========
+<script src="/js/jquery-1.12.4.min.js"></script><script src="/bootstrap/js/bootstrap.min.js"></script><script src="/js/modernizr-2.8.3.min.js"></script><script src="/js/jquery-simple-mobilemenu.js"></script><script src="/owlcarousel/js/owl.carousel.min.js"></script><script src="/js/jquery.magnific-popup.min.js"></script><script src="/js/jquery.inview.min.js"></script><script src="/js/scrolltopcontrol.js"></script><script src="/js/wow.min.js"></script><script src="/js/scripts.js"></script> <script src="/js/sweetAlert2.js"></script><script>
   function toggleUserMenu() {
       document.getElementById('userMenu').classList.toggle('show');
   }
@@ -698,6 +698,7 @@ if (slides.length > 0) {
     setInterval(nextSlide, 4000);
 }
     </script>
+    
 
 </body>
 </html>

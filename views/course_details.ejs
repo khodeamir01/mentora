@@ -136,16 +136,16 @@
           <h1 class="hero-title"><%= course.name %></h1>
           <div class="hero-meta">
               <span>
-                  <img src="<%= course.creator?.avatar ? '/img/avatar/' + course.creator.avatar : '/img/defualtPic.png' %>" 
+                  <img src="<%= course.teacher?.avatar ?  course.teacher.avatar : '/img/defualtPic.png' %>" 
                        class="hero-avatar" alt="">
-                  <strong><%= course.creator?.name %></strong>
+                  <strong><%= course.teacher?.name %></strong>
               </span>
               <span>
                   <i class="fa fa-calendar"></i> 
                   <%= new Date(course.updatedAt).toLocaleDateString('fa-IR') %>
               </span>
               <span>
-                  <i class="fa fa-users"></i> ۱۰۰۰ دانشجو
+                  <i class="fa fa-users"></i> <%= countStudents %> دانشجو
               </span>
               <span>
                   <i class="fa fa-trophy"></i> گواهینامه دارد
@@ -319,19 +319,19 @@
                       <div class="instructor-thumb">
                         <a href="#0"
                           ><img
-                            src="<%= course.creator.avatar ? '/img/avatar/' + course.creator.avatar : '/img/course/1.png' %>"
+                            src="<%= course.teacher.avatar ? course.teacher.avatar : '/img/avatar/defualtPic' %>"
                             alt="instructor"
                         /></a>
                       </div>
                       <div class="instructor-content">
                         <h6 class="title">
-                          <a href="#0"></a><%= course.creator.name %>
+                          <a href="#0"></a><%= course.teacher.name %>
                         </h6>
                         <span class="details">معلم</span>
                       </div>
                     </div>
                     <p>
-<%= course.creator.bio %>
+<%= course.teacher.bio %>
                     </p>
                     <div class="details-buttons-area">
                       <ul class="social-icons justify-content-center w-100">
@@ -675,11 +675,11 @@
                 </li>
                 <li>
                   <i class="fa fa-user"></i>
-                  <span>مدرس: <b><%= course.creator.name %></b></span>
+                  <span>مدرس: <b><%= course.teacher.name %></b></span>
                 </li>
                 <li>
                   <i class="fa fa-users"></i>
-                  <span>کل دانش‌آموزان: <b>1000</b></span>
+                  <span> تعداد کل دانشجو ها <b><%= countStudents %> </b></span>
                 </li>
                 <li>
                   <i class="fa fa-trophy"></i>
@@ -708,7 +708,7 @@
     <!-- اگر کاربر لاگین کرده -->
     <button class="btn_one add-to-cart-btn" 
     data-course-id="<%= course._id.toString() %>" 
-    data-teacher-id="<%= course.creator && course.creator._id ? course.creator._id.toString() : '' %>"
+    data-teacher-id="<%= course.teacher && course.teacher._id ? course.teacher._id.toString() : '' %>"
     style="width: 100%; border: none; cursor: pointer;">
 <i class="fa fa-cart-plus"></i> افزودن به سبد خرید
 </button>
