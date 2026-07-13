@@ -1,0 +1,171 @@
+<link rel="stylesheet" href="/css/style.css">
+
+<div id="navigation" class="navbar-light bg-faded site-navigation">
+    <div class="container-fluid">
+        <div class="row">
+            
+            <!-- لوگو -->
+            <div class="col-20 align-self-center">
+                <div class="site-logo">
+                    <a href="/"><img src="/img/logoMentora.png" alt="Mentora"></a>
+                </div>
+            </div>
+            
+            <!-- منوی اصلی -->
+            <div class="col-60 d-flex">
+                <nav id="main-menu">
+                    <ul>
+                        <li><a href="/">صفحه اصلی</a></li>
+                        
+                        <!-- مگا منوی دوره‌ها -->
+                        <li class="menu-item-has-children mega-menu-parent">
+                            <a href="/course">دوره‌ها<i class="fa fa-angle-down arrow-icon"></i></a>
+                            <div class="mega-menu-dropdown">
+                                <div class="mega-menu-container">
+                                  <div class="mega-sidebar">
+                                    <% categories.forEach(cat => { %>
+                                        <div class="mega-cat-item" data-cat="<%= cat._id %>">
+                                            <span class="cat-icon">
+                                                <% 
+                                                    const title = cat.title.toLowerCase();
+                                                    if (title.includes('front') || title.includes('فرانت')) { %>
+                                                    <i class="fa fa-desktop"></i>
+                                                <% } else if (title.includes('back') || title.includes('بک')) { %>
+                                                    <i class="fa fa-server"></i>
+                                                <% } else if (title.includes('security') || title.includes('امنیت')) { %>
+                                                    <i class="fa fa-shield"></i>
+                                                <% } else if (title.includes('network') || title.includes('شبکه')) { %>
+                                                    <i class="fa fa-sitemap"></i>
+                                                <% } else if (title.includes('desktop') || title.includes('دسکتاپ')) { %>
+                                                    <i class="fa fa-laptop"></i>
+                                                <% } else if (title.includes('mobile') || title.includes('موبایل')) { %>
+                                                    <i class="fa fa-mobile"></i>
+                                                <% } else if (title.includes('devops') || title.includes('دیوآپس')) { %>
+                                                    <i class="fa fa-cogs"></i>
+                                                <% } else { %>
+                                                    <i class="fa fa-folder"></i>
+                                                <% } %>
+                                            </span>
+                                            <%= cat.title %>
+                                        </div>
+                                    <% }); %>
+                                </div>
+                                    <div class="mega-content">
+                                        <% categories.forEach(cat => { %>
+                                            <div class="mega-cat-content" id="mega-<%= cat._id %>">
+                                                <div class="mega-courses">
+                                                    <% 
+                                                        const catCourses = courses.filter(c => c.categoryID?._id?.toString() === cat._id.toString());
+                                                    %>
+                                                    <% if (catCourses.length > 0) { %>
+                                                        <% catCourses.forEach(course => { %>
+                                                            <a href="/course/<%= course.href %>">
+                                                                <img src="/img/cover/<%= course.cover || 'default.jpg' %>" alt="">
+                                                                <span><%= course.name %></span>
+                                                            </a>
+                                                        <% }); %>
+                                                    <% } else { %>
+                                                        <p style="color:#999;text-align:center;padding:20px;">به‌زودی</p>
+                                                    <% } %>
+                                                </div>
+                                            </div>
+                                        <% }); %>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li><a href="/articles">مقالات</a></li>
+                        <li><a href="/teachers">مدرسین</a></li>
+                        <li><a href="/about">درباره</a></li>
+                        <li><a href="/contact">تماس</a></li>
+                    </ul>
+                </nav>
+            </div>
+            
+            <!-- منوی کاربر -->
+            <div class="col-20 d-none d-xl-block text-end align-self-center">
+                <% if (user) { %>
+                    <div class="user-dropdown">
+                        <button class="user-dropdown-btn" onclick="toggleUserMenu()">
+                            <img src="<%= user.avatar ? user.avatar : '/img/avatar/defualtPic.png' %>" class="user-avatar-small">
+                            <span><%= user.name %></span>
+                            <i class="fa fa-angle-down"></i>
+                        </button>
+                        <div class="user-dropdown-menu" id="userMenu">
+                            <div class="dropdown-header">
+                                <strong><%= user.name %></strong>
+                                <small><%= user.email %></small>
+                            </div>
+                            <% 
+                                let dashboardLink = '/dashboard/user';
+                                if (user.roles?.includes('ADMIN')) dashboardLink = '/dashboard/admin';
+                                else if (user.roles?.includes('AUTHOR')) dashboardLink = '/dashboard/author';
+                                else if (user.roles?.includes('TEACHER')) dashboardLink = '/dashboard/teacher';
+                            %>
+                            <a href="<%= dashboardLink %>"><i class="fa fa-tachometer"></i> پنل</a>
+                            <a href="/cart"><i class="fa fa-shopping-cart"></i> سبد خرید</a>
+                            <% if (user.roles?.includes('ADMIN')) { %>
+                                <a href="/dashboard/admin/users"><i class="fa fa-users"></i> کاربران</a>
+                            <% } %>
+                            <% if (user.roles?.includes('AUTHOR')) { %>
+                                <a href="/articles/create"><i class="fa fa-pencil"></i> مقاله جدید</a>
+                            <% } %>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="logout-link" style="color:#ff6b6b;"><i class="fa fa-sign-out"></i> خروج</a>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <a href="/auth/login" class="header-btn">ورود</a>
+                    <a href="/auth/register" class="btn_one">ثبت نام</a>
+                <% } %>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<script src="/js/sweetAlert2.js"></script>
+<script>
+// مگا منو
+const catItems = document.querySelectorAll('.mega-cat-item');
+const catContents = document.querySelectorAll('.mega-cat-content');
+
+if (catItems.length > 0) {
+    catItems[0].classList.add('active');
+    document.getElementById('mega-' + catItems[0].dataset.cat)?.classList.add('active');
+}
+
+catItems.forEach(item => {
+    item.addEventListener('mouseenter', () => {
+        catItems.forEach(i => i.classList.remove('active'));
+        catContents.forEach(c => c.classList.remove('active'));
+        item.classList.add('active');
+        document.getElementById('mega-' + item.dataset.cat)?.classList.add('active');
+    });
+});
+
+// منوی کاربر
+function toggleUserMenu() { document.getElementById('userMenu').classList.toggle('show'); }
+document.addEventListener('click', e => {
+    const menu = document.getElementById('userMenu');
+    if (!e.target.closest('.user-dropdown-btn') && menu?.classList.contains('show')) menu.classList.remove('show');
+});
+
+// خروج
+document.querySelector('.logout-link')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    Swal.fire({
+        title: 'خروج از حساب', text: 'آیا مطمئن هستید؟', icon: 'question',
+        showCancelButton: true, confirmButtonText: 'بله', cancelButtonText: 'انصراف', confirmButtonColor: '#dc3545'
+    }).then(r => {
+        if (r.isConfirmed) {
+            Swal.fire({ title: 'در حال خروج...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            fetch('/auth/logout').then(() => {
+                Swal.fire({ icon: 'success', title: 'خارج شدید!', timer: 2000, showConfirmButton: false })
+                    .then(() => location.href = '/');
+            }).catch(() => location.href = '/');
+        }
+    });
+});
+</script>
