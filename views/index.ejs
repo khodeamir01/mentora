@@ -5,9 +5,9 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="Eduleb - Education HTML Template">
+<meta name="description" content="Mentora - Education HTML Template">
 <meta name="keywords" content="agency, business, corporate, creative, html5, modern, multipurpose, One Page, parallax, startup">
-<title>Eduleb - آموزش برای همه</title>
+<title>Mentora - آموزش برای همه</title>
 <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
@@ -23,131 +23,8 @@
 <body data-spy="scroll" data-offset="80">
     
     <div class="preloaders"><span class="loader"></span></div>
-    <div id="navigation" class="navbar-light bg-faded site-navigation">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-20 align-self-center">
-            <div class="site-logo">
-              <a href="/"><img src="/img/logo.png" alt=""></a>
-            </div>
-          </div>
-          
-          <div class="col-60 d-flex">
-            <nav id="main-menu">
-              <ul>
-                <li><a href="/">صفحه اصلی</a></li>
-                <li><a href="/about">درباره</a></li>
-                <li class="menu-item-has-children">
-                  <a href="/course">دوره</a>
-                  <ul>
-                    <li><a href="/course">همه دوره ها</a></li>
-                    <li><a href="/course">جزئیات دوره</a></li>
-                  </ul>
-                </li>
-                <li class="menu-item-has-children">
-                  <a href="#">صفحات</a>
-                  <ul>
-                    <li><a href="/instructor">مربی</a></li>
-                    <li><a href="/ins-details">مشخصات مربی</a></li>
-                    <li><a href="/pricing">طرح قیمت گذاری</a></li>
-                    <li><a href="/faq">سوالات متداول</a></li>
-                    <li><a href="/404">404</a></li>
-                  </ul>
-                </li>
-                <li class="menu-item-has-children">
-                  <a href="/blog">وبلاگ</a>
-                  <ul>
-                    <li><a href="/blog">وبلاگ</a></li>
-                    <li><a href="/blog">جزئیات وبلاگ</a></li>
-                  </ul>
-                </li>
-                <li><a href="/contact">مخاطب</a></li>
-              </ul>
-            </nav>
-          </div>
-    
-<!-- منوی کاربر در هدر -->
-<div class="col-20 d-none d-xl-block text-end align-self-center">
-  <% if (user) { %>
-      <div class="user-dropdown">
-          <button class="user-dropdown-btn" onclick="toggleUserMenu()">
-              <img src="/img/avatar/<%= user.avatar ?  user.avatar : 'defualtPic.png' %>" 
-                   alt="<%= user.name %>" class="user-avatar-small">
-              <span><%= user.name %></span>
-              <i class="fa fa-angle-down"></i>
-          </button>
-          <div class="user-dropdown-menu" id="userMenu">
-              <div class="dropdown-header">
-                  <strong><%= user.name %></strong>
-                  <small><%= user.email %></small>
-              </div>
-              
-              <% 
-                  let dashboardLink = '/dashboard/user';
-                  if (user.roles.includes('ADMIN')) dashboardLink = '/dashboard/admin';
-                  else if (user.roles.includes('AUTHOR')) dashboardLink = '/dashboard/author';
-                  else if (user.roles.includes('TEACHER')) dashboardLink = '/dashboard/teacher';
-              %>
-              
-              <a href="<%= dashboardLink %>"><i class="fa fa-tachometer"></i> پنل کاربری</a>
-              <a href="/cart"><i class="fa fa-shopping-cart"></i> سبد خرید</a>
-              
-              <% if (user.roles.includes('ADMIN')) { %>
-                  <a href="/dashboard/admin/users"><i class="fa fa-users"></i> مدیریت کاربران</a>
-              <% } %>
-              
-              <% if (user.roles.includes('AUTHOR')) { %>
-                  <a href="/articles/create"><i class="fa fa-pencil"></i> مقاله جدید</a>
-              <% } %>
-              
-              <div class="dropdown-divider"></div>
-              <a href="#" class="logout-link" style="color: #ff6b6b;">
-                  <i class="fa fa-sign-out"></i> خروج
-              </a>
-          </div>
-      </div>
-  <% } else { %>
-      <a href="/auth/login" class="header-btn">ورود</a>
-      <a href="/auth/register" class="btn_one">ثبت نام</a>
-  <% } %>
-</div>
-    
-          <!-- منوی موبایل -->
-          <ul class="mobile_menu">
-            <li><a href="/">صفحه اصلی</a></li>
-            <li><a href="/about">درباره</a></li>
-            <li>
-              <a href="#">دوره</a>
-              <ul class="sub-menu">
-                <li><a href="/course">همه دوره ها</a></li>
-                <li><a href="/course">جزئیات دوره</a></li>
-              </ul>
-            </li>
-            <li>
-              <a href="#">صفحات</a>
-              <ul class="sub-menu">
-                <li><a href="/instructor">مربی</a></li>
-                <li><a href="/ins-details">مشخصات مربی</a></li>
-                <li><a href="/pricing">طرح قیمت گذاری</a></li>
-                <li><a href="/faq">سوالات متداول</a></li>
-                <li><a href="/404">404</a></li>
-              </ul>
-            </li>
-            <li>
-              <a href="/blog">وبلاگ</a>
-              <ul class="sub-menu">
-                <li><a href="/blog">وبلاگ</a></li>
-                <li><a href="/blog">جزئیات وبلاگ</a></li>
-              </ul>
-            </li>
-            <li><a href="/contact">مخاطب</a></li>
-            <!-- اضافه کردن به منوی موبایل -->
+    <%- include('partials/_headerPage.ejs') %>
 
-          </ul>
-          
-        </div>
-      </div>
-    </div>
 <section class="home_bg hb_height" style="background-image: url(/img/bg/home-bg.jpg); background-size:cover; background-position: center center;"><div class="container"><div class="row">
 <div class="col-lg-6 col-sm-12 col-xs-12">
     <div class="hero-text ht_top">
@@ -243,7 +120,7 @@
     <div class="col-lg-6 col-sm-12 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s" data-wow-offset="0"><div class="ab_img"><img src="/img/about1.png" class="img-fluid" alt="image"></div></div>
     <div class="col-lg-6 col-sm-12 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.1s" data-wow-offset="0"><div class="ab_content">
     <h2>مسیر حرفه‌ای شدن از اینجا شروع میشه</h2>
-    <p>ما باور داریم آموزش باکیفیت باید در دسترس همه باشه. ادولب پلی هست بین تو و مهارت‌هایی که برای موفقیت توی دنیای واقعی نیاز داری.</p>
+    <p>ما باور داریم آموزش باکیفیت باید در دسترس همه باشه. منتورا پلی هست بین تو و مهارت‌هایی که برای موفقیت توی دنیای واقعی نیاز داری.</p>
     <p>با بیش از ۱۳۰ دوره تخصصی در زمینه برنامه‌نویسی، طراحی، بازاریابی دیجیتال و کسب‌وکار، مسیر یادگیری‌ات رو با خیال راحت شروع کن.</p>
     <ul>
     <li><span class="ti-check"></span>دسترسی به <b>۱۳۰+</b> دوره تخصصی و پروژه‌محور</li>
@@ -257,20 +134,45 @@
         <h2>دسته‌بندی‌های محبوب</h2>
         <p>از برنامه‌نویسی و طراحی گرفته تا بازاریابی و کسب‌وکار، هر مهارتی که به دنبالشی توی دسته‌بندی‌های ما پیدا می‌کنی.</p>
         </div>
-<div class="row"><div class="col-lg-12 col-sm-12 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.1s" data-wow-offset="0"><div class="cat_list"><ul>
-<li><a href="#"><img src="/img/e1.png" alt="category-image">بازاریابی دیجیتال</a></li>
-<li><a href="#"><img src="/img/e2.png" alt="category-image">طراحی UI/UX</a></li>
-<li><a href="#"><img src="/img/e3.png" alt="category-image">طراحی بصری سه بعدی</a></li>
-<li><a href="#"><img src="/img/e4.png" alt="category-image">بازاریابی محتوا</a></li>
-<li><a href="#"><img src="/img/e5.png" alt="category-image">عکاسی</a></li>
-<li><a href="#"><img src="/img/e6.png" alt="category-image">عکس سبک زندگی</a></li>
-<li><a href="#"><img src="/img/e7.png" alt="category-image">طراحی هنری</a></li>
-<li><a href="#"><img src="/img/e8.png" alt="category-image">امور مالی و بانکی</a></li>
-<li><a href="#"><img src="/img/e9.png" alt="category-image">طراحی گرافیک</a></li>
-<li><a href="#"><img src="/img/e2.png" alt="category-image">طراحی داخلی</a></li>
-<li><a href="#"><img src="/img/e3.png" alt="category-image">طراحی بصری سه بعدی</a></li>
-<li><a href="#"><img src="/img/e7.png" alt="category-image">طراحی هنری</a></li>
-</ul></div></div></div><section class="home_course section-padding">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.1s" data-wow-offset="0">
+                <div class="cat_list">
+                    <ul>
+                        <% if (categories && categories.length > 0) { %>
+                            <% categories.forEach(cat => { %>
+                                <li>
+                                    <a href="/course?category=<%= cat._id %>">
+                                        <span class="cat-icon">
+                                            <% 
+                                                const title = (cat.title || '').toLowerCase();
+                                                if (title.includes('front') || title.includes('فرانت')) { %>
+                                                    <i class="fa fa-desktop"></i>
+                                                <% } else if (title.includes('back') || title.includes('بک')) { %>
+                                                    <i class="fa fa-server"></i>
+                                                <% } else if (title.includes('security') || title.includes('امنیت')) { %>
+                                                    <i class="fa fa-shield"></i>
+                                                <% } else if (title.includes('network') || title.includes('شبکه')) { %>
+                                                    <i class="fa fa-sitemap"></i>
+                                                <% } else if (title.includes('desktop') || title.includes('دسکتاپ')) { %>
+                                                    <i class="fa fa-laptop"></i>
+                                                <% } else if (title.includes('mobile') || title.includes('موبایل')) { %>
+                                                    <i class="fa fa-mobile"></i>
+                                                <% } else if (title.includes('devops') || title.includes('دیوآپس')) { %>
+                                                    <i class="fa fa-cogs"></i>
+                                                <% } else { %>
+                                                    <i class="fa fa-folder"></i>
+                                                <% } %>
+                                        </span>
+                                        <%= cat.title %>
+                                    </a>
+                                </li>
+                            <% }); %>
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+        </div>
+<section class="home_course section-padding">
     <div class="container">
         <!-- بخش عنوان و دکمه مشاهده همه -->
         <div class="row">
@@ -355,76 +257,41 @@
         <p>یادگیری از کسانی که خودشون مسیر رو طی کردن، همیشه نتیجه بهتری داره. مدرسین ما ترکیبی از دانش فنی و تجربه واقعی بازار کار رو بهت منتقل می‌کنن.</p>
         </div>
 <div class="row">
-<div class="col-lg-3 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.1s" data-wow-offset="0"><div class="our-team">
-<div class="team-content">
-<a href="#"><img src="/img/team/team1.jpg" alt=""></a><ul class="social-links">
-<li><a href="#" class="ti-twitter"></a></li>
-<li><a href="#" class="ti-linkedin"></a></li>
-<li><a href="#" class="ti-facebook"></a></li>
-</ul>
-</div>
-<div class="team-prof">
-<h3>بیلکیس وابی</h3>
-<span>طراح وب</span>
-</div>
-<div class="sth_det2">
-<span class="ti-file"><u>04 دوره</u></span><span class="ti-user"><u>27 دانشجو</u></span>
-</div>
-</div></div>
-<div class="col-lg-3 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.1s" data-wow-offset="0"><div class="our-team">
-<div class="team-content">
-<a href="#"><img src="/img/team/team2.jpg" alt=""></a><ul class="social-links">
-<li><a href="#" class="ti-twitter"></a></li>
-<li><a href="#" class="ti-linkedin"></a></li>
-<li><a href="#" class="ti-facebook"></a></li>
-</ul>
-</div>
-<div class="team-prof">
-<h3>خلق وسیم</h3>
-<span>شرکت انواتو</span>
-</div>
-<div class="sth_det2">
-<span class="ti-file"><u>06 دوره</u></span><span class="ti-user"><u>41 دانش آموز</u></span>
-</div>
-</div></div>
-<div class="col-lg-3 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.1s" data-wow-offset="0"><div class="our-team">
-<div class="team-content">
-<a href="#"><img src="/img/team/team3.jpg" alt=""></a><ul class="social-links">
-<li><a href="#" class="ti-twitter"></a></li>
-<li><a href="#" class="ti-linkedin"></a></li>
-<li><a href="#" class="ti-facebook"></a></li>
-</ul>
-</div>
-<div class="team-prof">
-<h3>شیین تیم</h3>
-<span>Codecanyou</span>
-</div>
-<div class="sth_det2">
-<span class="ti-file"><u>13 دوره</u></span><span class="ti-user"><u>31 دانش آموز</u></span>
-</div>
-</div></div>
-<div class="col-lg-3 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.1s" data-wow-offset="0"><div class="our-team">
-<div class="team-content">
-<a href="#"><img src="/img/team/team4.jpg" alt=""></a><ul class="social-links">
-<li><a href="#" class="ti-twitter"></a></li>
-<li><a href="#" class="ti-linkedin"></a></li>
-<li><a href="#" class="ti-facebook"></a></li>
-</ul>
-</div>
-<div class="team-prof">
-<h3>شريف شريفه</h3>
-<span>چوتور Tsc</span>
-</div>
-<div class="sth_det2">
-<span class="ti-file"><u>07 دوره</u></span><span class="ti-user"><u>24 دانشجو</u></span>
-</div>
-</div></div>
+    <div class="row">
+        <% if (teachers && teachers.length > 0) { %>
+            <% teachers.forEach(teacher => { %>
+                <div class="col-lg-3 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.1s" data-wow-offset="0">
+                    <div class="our-team">
+                        <div class="team-content">
+                            <a href="/teachers/<%= teacher._id %>">
+                                <img src="<%= teacher.avatar || '/img/team/default.jpg' %>" alt="<%= teacher.name %>">
+                            </a>
+                            <ul class="social-links">
+                                <li><a href="#" class="ti-twitter"></a></li>
+                                <li><a href="#" class="ti-linkedin"></a></li>
+                                <li><a href="#" class="ti-facebook"></a></li>
+                            </ul>
+                        </div>
+                        <div class="team-prof">
+                            <h3><%= teacher.name %></h3>
+                            <span><%= teacher.bio?.substring(0, 40) || 'مدرس' %></span>
+                        </div>
+                        <div class="sth_det2">
+                            <span class="ti-file"><u><%= teacher.courseCount || 0 %> دوره</u></span>
+                            <span class="ti-user"><u><%= teacher.studentCount || 0 %> دانشجو</u></span>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        <% } %>
+    </div>
+
 </div>
 </div></section><section class="ab_area section-padding"><div class="container"><div class="row">
     <div class="col-lg-6 col-sm-12 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.1s" data-wow-offset="0"><div class="ab_content">
-        <h2>چرا ادولب بهترین انتخاب برای یادگیری آنلاینه؟</h2>
+        <h2>چرا منتورا بهترین انتخاب برای یادگیری آنلاینه؟</h2>
         <p>ما فقط دوره نمی‌فروشیم، بلکه مسیر شغلی‌ات رو می‌سازیم. هر دوره بر اساس نیاز واقعی بازار کار طراحی شده و شامل پروژه‌های عملی، تمرین و پشتیبانی کامله.</p>
-        <p>با ادولب، یادگیری به تجربه‌ای لذت‌بخش تبدیل میشه. ویدیوهای باکیفیت، منتورینگ تخصصی و جامعه‌ای از برنامه‌نویس‌ها کنارتن تا سریع‌تر به هدفت برسی.</p>
+        <p>با منتورا، یادگیری به تجربه‌ای لذت‌بخش تبدیل میشه. ویدیوهای باکیفیت، منتورینگ تخصصی و جامعه‌ای از برنامه‌نویس‌ها کنارتن تا سریع‌تر به هدفت برسی.</p>
         <ul>
         <li><span class="ti-check"></span>دسترسی به <b><%= totalCourses || 130 %>+</b> دوره تخصصی و پروژه‌محور</li>
         <li><span class="ti-check"></span>یادگیری با جدیدترین تکنولوژی‌های روز دنیا</li>
@@ -536,8 +403,11 @@
         <div class="row">
             <div class="col-lg-3 col-sm-6 col-xs-12">
                 <div class="single_footer">
-                    <a href="/"><img src="/img/logo.png" alt=""></a>
-                    <p>ادولب، پلتفرم آموزش آنلاین برنامه‌نویسی و تکنولوژی. از یادگیری تا درآمد، مسیر حرفه‌ای شدن رو با ما طی کن.</p>
+                    <a href="/">
+                        <img src="/img/logoMentora.png" alt="Mentora" class="footer-logo">
+                        <span class="footer-title">Mentora</span>
+
+                    </a>                    <p>منتورا، پلتفرم آموزش آنلاین برنامه‌نویسی و تکنولوژی. از یادگیری تا درآمد، مسیر حرفه‌ای شدن رو با ما طی کن.</p>
                     <div class="social_profile">
                         <ul>
                             <li><a href="#" class="f_facebook"><i class="ti-facebook" title="Facebook"></i></a></li>
@@ -599,7 +469,7 @@
 </div>
 <div class="foot_copy">
     <div class="footer_copyright">
-        <p>© ۲۰۲۶ ادولب. تمامی حقوق محفوظ است | توسعه توسط AmirSalar Khormaie</p>
+        <p>© ۲۰۲۶ منتورا. تمامی حقوق محفوظ است | توسعه توسط AmirSalar Khormaie</p>
     </div>
 </div>
 <script src="/js/jquery-1.12.4.min.js"></script><script src="/bootstrap/js/bootstrap.min.js"></script><script src="/js/modernizr-2.8.3.min.js"></script><script src="/js/jquery-simple-mobilemenu.js"></script><script src="/owlcarousel/js/owl.carousel.min.js"></script><script src="/js/jquery.magnific-popup.min.js"></script><script src="/js/jquery.inview.min.js"></script><script src="/js/scrolltopcontrol.js"></script><script src="/js/wow.min.js"></script><script src="/js/scripts.js"></script> <script src="/js/sweetAlert2.js"></script><script>

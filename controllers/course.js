@@ -16,13 +16,10 @@ exports.getAllCourses = async (req, res, next) => {
       
       const allCourses = await Course.find({}).lean();
       
-      // حالا ببین filter چی داره
       const { search, category, priceType, sort = 'newest', page = 1 } = req.query;
       
-      const filter = {};
+      let filter = {};
       
-      // موقتاً status رو کامنت کن ببین چندتا میاد
-      // filter.status = 'published';
       
       if (search && search.trim() !== '') {
           filter.name = { $regex: search, $options: 'i' };
@@ -40,12 +37,13 @@ exports.getAllCourses = async (req, res, next) => {
       }
       
       
-      const totalCourses = await Course.countDocuments(filter);
+      let totalCourses = await Course.countDocuments(filter);
       
       // اگه صفر بود، بدون filter بگیر
       if (totalCourses === 0 && Object.keys(filter).length > 0) {
-          filter = {};
-      }
+        filter = {};
+        totalCourses = await Course.countDocuments(filter);
+    }
       
       const limit = 9;
       const pageNum = parseInt(page) || 1;
@@ -53,7 +51,7 @@ exports.getAllCourses = async (req, res, next) => {
       
       const courses = await Course.find(filter)
           .populate('categoryID', 'title href')
-          .populate('creator', 'name avatar')
+          .populate('teacher', 'name avatar')
           .sort(sort === 'priceAsc' ? { price: 1 } : 
                 sort === 'priceDesc' ? { price: -1 } : 
                 sort === 'oldest' ? { createdAt: 1 } : 
@@ -65,7 +63,7 @@ exports.getAllCourses = async (req, res, next) => {
       
       const categories = await Category.find({}).lean();
       
-      return res.render("course.ejs", {
+      return res.render("course/course.ejs", {
           courses,
           categories,
           user: user || null,
@@ -76,14 +74,20 @@ exports.getAllCourses = async (req, res, next) => {
       });
       
   } catch (error) {
-      console.error("❌ Error:", error);
-      res.status(500).send("خطای سرور");
+    console.error("❌ Error:", error);
+    const courses = await Course.find({}).populate('categoryID').lean();
+    const categories = await Category.find({}).lean();
+    return res.render("course/course.ejs", {
+        courses, categories, user: req.user || null,
+        totalCourses: courses.length, totalPages: 1, currentPage: 1,
+        filters: {}
+    });
   }
 };
 
 exports.showCreateCoursePanel = async (req, res, next) => {
   const categories = await Category.find({});
-  return res.render("dashboard/admin/createCourse.ejs", {categories})
+  return res.render("course/createCourse.ejs", {categories})
 
 }
 exports.create = async (req, res) => {
@@ -98,7 +102,7 @@ exports.create = async (req, res) => {
     categoryID,
     teacherId
   } = req.body;
-  const course = await Course.create({
+ await Course.create({
     name,
     description,
     discount,
@@ -130,7 +134,7 @@ exports.createSessionPage = async (req, res) => {
     
     const sessionCount = await Session.countDocuments({ course: course._id });
     
-    return res.render('createSession', {
+    return res.render('course/createSession', {
         course,
         nextOrder: sessionCount + 1,
         user: req.user,
@@ -239,9 +243,18 @@ exports.getOneCourse = async (req, res) => {
   const { href } = req.params;
   
   const course = await Course.findOne({ href })
+    .populate("categoryID", "-createdAt -updatedAt")
     .populate("creator", "-password -phone -email -username -role -__v -createdAt -updatedAt")
     .populate("teacher", "-password -phone -email -username -role -__v -createdAt -updatedAt")
     .lean();
+    
+    if (!course) {
+      return res.render("course/course_details.ejs", { 
+        course: null, comments: [], categories: [], user: null, 
+        relatedCourses: [], sessions: [], isUserRegistered: false,
+        error: "دوره مورد نظر یافت نشد" 
+      });
+    }
   
   const relatedCourses = await Course.find({
     _id: { $ne: course._id },
@@ -278,15 +291,9 @@ exports.getOneCourse = async (req, res) => {
   }
   const countStudents = await CourseUser.countDocuments({course: course._id })
 
-  if (!course) {
-    return res.render("course_details.ejs", { 
-      course: null, comments: [], categories: [], user: null, 
-      relatedCourses: [], sessions: [], isUserRegistered: false,
-      error: "دوره مورد نظر یافت نشد" 
-    });
-  }
 
-  return res.render("course_details.ejs", {
+
+  return res.render("course/course_details.ejs", {
     course,
     categories,
     user: user || null,

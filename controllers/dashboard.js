@@ -43,7 +43,7 @@ exports.adminPanel = async (req, res) => {
         const userEmail = (u.email || '').toLowerCase().trim();
         u.isBanned = userEmail !== '' && bannedEmails.has(userEmail);
     });
-    return res.render("dashboard/admin/admin.ejs", {
+    return res.render("dashboard/admin.ejs", {
         user: req.user,
         activePage: "dashboard",
         totalUsers,
@@ -189,11 +189,11 @@ exports.teacherPanel = async (req, res) => {
     const myCourses = await Course.find({ teacher: user._id }).lean();
 
     
-const mySessions = await Session.find({ creator: user._id })
+const mySessions = await Session.find({ creator: user._id }) // at Session model creator = teacher, because only teacher can create session
     .populate("course", "name")
     .sort({ createdAt: -1 });
     
-    const totalSessions = await Session.countDocuments({ creator: user._id });
+    const totalSessions = await Session.countDocuments({ creator: user._id });// at Session model creator = teacher, because only teacher can create session
     const totalStudents = await CourseUser.countDocuments({ 
         course: { $in: myCourses.map(c => c._id) } 
     });
@@ -222,7 +222,7 @@ exports.authorPanel = async (req, res) => {
         .sort({ createdAt: -1 })
         .lean();
 
-   return res.render("dashboard/author/author.ejs", { user: req.user, myArticles:myArticles });
+   return res.render("dashboard/author.ejs", { user: req.user, myArticles:myArticles });
 };
 
 
@@ -253,7 +253,7 @@ exports.userPanel = async (req, res) => {
         .sort({ createdAt: -1 })
         .lean();
 
-    return res.render("dashboard/user/user.ejs", {
+    return res.render("dashboard/user.ejs", {
         user,
         activePage: "dashboard",
         myCourses,

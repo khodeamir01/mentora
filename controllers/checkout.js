@@ -25,8 +25,7 @@ exports.createCheckout = async (req, res, next) => {
         for (const item of cart.items) {
             const { course, teacher, quantity, priceAtTime } = item;
 
-            // چک کردن اینکه مدرس این دوره رو تدریس میکنه
-            if (course.creator.toString() !== teacher._id.toString()) {
+            if (course.teacher.toString() !== teacher._id.toString()) {
                 return errorResponse(res, 400, "مدرس این دوره را تدریس نمی‌کند!");
             }
 
@@ -76,7 +75,7 @@ exports.verifyCheckout = async (req, res, next) => {
 
         const alreadyCreatedOrder = await Order.findOne({ authority });
         if (alreadyCreatedOrder) {
-            return res.render("payment-result", {
+            return res.render("shopping/payment-result", {
                 success: false,
                 message: "این پرداخت قبلاً تأیید شده است!",
                 orderId: alreadyCreatedOrder._id
@@ -85,7 +84,7 @@ exports.verifyCheckout = async (req, res, next) => {
 
         const checkout = await Checkout.findOne({ authority });
         if (!checkout) {
-            return res.render("payment-result", {
+            return res.render("shopping/payment-result", {
                 success: false,
                 message: "Checkout یافت نشد",
                 orderId: null
@@ -103,7 +102,7 @@ exports.verifyCheckout = async (req, res, next) => {
         console.log("payment --->",payment);
 
         if (![100, 101].includes(payment.code)) {
-            return res.render("payment-result", {
+            return res.render("shopping/payment-result", {
                 success: false,
                 message: "پرداخت تأیید نشد!",
                 orderId: null
@@ -145,7 +144,7 @@ exports.verifyCheckout = async (req, res, next) => {
 
         await Checkout.deleteOne({ _id: checkout._id });
 
-        return res.render("payment-result", {
+        return res.render("shopping/payment-result", {
             success: true,
             message: "پرداخت با موفقیت انجام شد ✅",
             orderId: order._id,
@@ -155,7 +154,7 @@ exports.verifyCheckout = async (req, res, next) => {
 
     } catch (err) {
         console.error("Verify error:", err);
-        return res.render("payment-result", {
+        return res.render("shopping/payment-result", {
             success: false,
             message: "خطا در تأیید پرداخت",
             orderId: null

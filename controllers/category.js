@@ -4,7 +4,7 @@ exports.findAllCategories = async (req, res, next) => {
 try {
     const categories = await Category.find({})
 
-    return res.render("dashboard/admin/createcourse", {
+    return res.render("course/createcourse", {
       categories: categories, 
       messages: {}
     });
@@ -26,7 +26,7 @@ exports.getCategoryCourses = async (req, res) => {
       const courses = await Course.find({ 
           categoryID: category._id
       })
-      .populate('creator', 'name avatar')
+      .populate('teacher', 'name avatar')
       .sort({ createdAt: -1 });
       
       const otherCategories = await Category.find({ 

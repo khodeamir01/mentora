@@ -5,7 +5,7 @@ module.exports = async (req, res, next) => {
     const { captcha, uuid } = req.body;
 
     if (!captcha || !uuid) {
-      return res.render("login", {
+      return res.render("auth/login", {
         messages: {
           error: "لطفا کد اعتبار سنجی را وارد کنید",
           redirect: "/auth/login",
@@ -16,7 +16,7 @@ module.exports = async (req, res, next) => {
     const savedCaptcha = await redis.get(`captcha:${uuid}`);
 
     if (!savedCaptcha) {
-      return res.render("login", {
+      return res.render("auth/login", {
         messages: {
           error: "کد اعتبار سنحی منقضی شده است لطفا دوباره امتحان کنید",
           redirect: "/auth/login",
@@ -25,7 +25,7 @@ module.exports = async (req, res, next) => {
     }
 
     if (captcha.toLowerCase() !== savedCaptcha) {
-      return res.render("login", {
+      return res.render("auth/login", {
         messages: {
           error: "!کد اعتبار سنحی صحیح نمیباشد",
           redirect: "/auth/login",

@@ -1,14 +1,14 @@
 
 exports.errorHandler = (err, req, res, next) => {
 
-  // if (err?.errors?.authority) {
-  //   console.log({
-  //     success: false,
-  //     error: "ZarinPal Error, Sandbox server busy and doesnt send authority , Please try later",
-  //     data: err,
-  //   });
-  //   return errorResponse(res, 500, "ZarinPal Error: Server busy, Please try later !");
-  // }
+  if (err?.errors?.authority) {
+    console.log({
+      success: false,
+      error: "ZarinPal Error, Sandbox server busy and doesnt send authority , Please try later",
+      data: err,
+    });
+    return errorResponse(res, 500, "ZarinPal Error: Server busy, Please try later !");
+  }
 
   // if (err?.errors?.trackId) {
   //   console.log({

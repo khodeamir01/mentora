@@ -65,7 +65,7 @@ exports.search = async (req, res) => {
             }
             
             const courses = await Course.find(courseQuery)
-                .populate('creator', 'name avatar')
+                .populate('teacher', 'name avatar')
                 .populate('categoryID', 'title href')
                 .sort(sortOptions)
                 .skip(skip)
@@ -112,7 +112,7 @@ exports.search = async (req, res) => {
             totalFound: (results.totalCourses || 0) + (results.totalCategories || 0)
         };
         
-        res.render('search', {
+       return res.render('search', {
             results,
             filters: { type, sortBy, minPrice, maxPrice, level, page, limit },
             title: `نتایج جستجو برای "${query}"`

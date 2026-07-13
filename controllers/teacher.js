@@ -8,32 +8,31 @@ exports.getAll = async (req, res) => {
     const teachers = await User.find({ roles: "TEACHER" })
         .select("name avatar bio")
         .lean();
-    res.render("instructor.ejs", { teachers, user: req.user || null });
+    return res.render("teacher/instructor.ejs", { teachers, user: req.user || null });
 };
 
 
-
 exports.getOne = async (req, res) => {
+    const user = req.user;
     const teacher = await User.findById(req.params.id)
         .select("name avatar bio email")
         .lean();
     
     if (!teacher) return res.redirect("/teachers");
 
-    const courses = await Course.find({ creator: teacher._id, status: "published" }).lean();
+    const courses = await Course.find({ teacher: teacher._id }).lean();
     const totalSessions = await Session.countDocuments({ creator: teacher._id });
-    console.log(totalSessions);
     
     const avgResult = await Comment.aggregate([
         { $match: { course: { $in: courses.map(c => c._id) } } },
         { $group: { _id: null, avg: { $avg: "$rating" } } }
     ]);
 
-    return res.render("ins_details", {
+    return res.render("teacher/ins_details", {
         teacher,
         courses,
         totalSessions,
         averageRating: avgResult[0]?.avg?.toFixed(1) || null,
-        user: req.user || null
+        user: user || null
     });
 };

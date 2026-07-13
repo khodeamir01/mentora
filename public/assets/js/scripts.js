@@ -1,6 +1,6 @@
 /*
 Author       : theme_ocean
-Template Name: Eduleb - Education HTML Template
+Template Name: Mentora - Education HTML Template
 Version      : 1.0
 */
 (function($) {

@@ -6,7 +6,7 @@ const redis = require("./../redis");
 
 
 exports.showRegisterView = async (req, res) => {
-    res.render("register.ejs", {messages: req.flash() })
+    res.render("auth/register.ejs", {messages: req.flash() })
 }
 
 exports.register = async (req, res, next) => {
@@ -16,7 +16,7 @@ exports.register = async (req, res, next) => {
       $or: [{username, email}]
     });
     if (isUserExist) {
-     return res.render("login", {
+     return res.render("auth/login", {
        messages: {
          error: "ایمیل یا نام کاربری تکراری است , لطقا لاگین کنید",
           redirect: "/auth/register",
@@ -78,7 +78,7 @@ exports.register = async (req, res, next) => {
 };
 
 exports.showLoginView = (req, res) => {
-  res.render("login.ejs", {messages: req.flash() })
+  res.render("auth/login.ejs", {messages: req.flash() })
 }
 
 exports.login = async (req, res, next) => {
@@ -87,7 +87,7 @@ exports.login = async (req, res, next) => {
   const user = await User.findOne({ username });
   
   if (!user) {
-    return res.render("login", {
+    return res.render("auth/login", {
       messages: {
         error: "کاربری یافت نشد"
       }
@@ -98,7 +98,7 @@ exports.login = async (req, res, next) => {
   const isMatch = await bcryptjs.compare(password, user.password);
   
   if (!isMatch) {
-    return res.render("login", {
+    return res.render("auth/login", {
       messages: {
         error: " رمز عبور اشتباه است"
       }
@@ -139,7 +139,7 @@ exports.login = async (req, res, next) => {
     maxAge: process.env.REFRESH_TOKEN_EXPIRES_IN_SECONDS * 1000,
   }); 
 
-     return res.render("login", {
+     return res.render("auth/login", {
          messages: {
           success: "ورود شما موفقیت آمیز بود , خوش آمدید",
            redirect: "/",

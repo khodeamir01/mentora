@@ -20,7 +20,7 @@ module.exports = new localStrategy(
 
       
       if (!user) {
-        return res.render("login", {
+        return res.render("auth/login", {
           messages: {
             error: "!نام کاربری یا رمز عبور صحیح نمیباشد",
               redirect: "/auth/login"

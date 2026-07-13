@@ -1,6 +1,6 @@
 /*
 Author       : theme_ocean
-Template Name: Eduleb - Education HTML Template
+Template Name: Mentora - Education HTML Template
 Version      : 1.0
 */
 /*=============================================================
@@ -3658,6 +3658,24 @@ list-style: none;
 margin-bottom: 40px;
 margin-top: 30px;
 }
+.cat_list ul li a .cat-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 100px;
+    background: #ECEDFF;
+    color: #525fe1;
+    font-size: 18px;
+    margin-left: 10px;
+    transition: all 0.3s;
+}
+
+.cat_list ul li a:hover .cat-icon {
+    background: #fff;
+    color: #525fe1;
+}
 
 .single-pricing ul li{line-height: 35px;}
 .single-pricing-white{background: #232434}
@@ -4965,6 +4983,203 @@ gap:8px;
 }
 #blog.blog_area.section-padding {
     padding-bottom: 10px !important;
+}
+.footer-title{
+    color: #525FE1;
+    font-size: 27px;
+    font-weight: 700;
+    font-family: "Poppins", sans-serif;
+    position: relative;
+    }
+ /* ========== مگا منو ========== */
+#navigation {
+    padding: 0 65px !important;
+    overflow: visible !important;
+}
+
+#main-menu { overflow: visible !important; }
+#main-menu ul { overflow: visible !important; }
+#main-menu ul li { line-height: 60px; }
+
+.mega-menu-parent { position: static !important; }
+
+.mega-menu-dropdown {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 750px;
+    max-width: 90vw;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.25s;
+    z-index: 9999;
+    padding: 0;
+    border: 1px solid #e8e8e8;
+}
+
+.mega-menu-parent:hover .mega-menu-dropdown {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mega-menu-container {
+    display: flex;
+    gap: 0;
+    background: #f8f9fb;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.mega-sidebar {
+    width: 170px;
+    background: #fff;
+    padding: 15px 0;
+    border-left: 1px solid #eee;
+    flex-shrink: 0;
+}
+
+.mega-all {
+    display: block;
+    margin: 0 15px 10px;
+    padding: 10px;
+    background: linear-gradient(135deg, #525fe1, #f26b65);
+    color: #fff;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.mega-all:hover { color: #fff; opacity: 0.9; }
+
+.mega-cat-item {
+    padding: 8px 16px;
+    font-size: 12px;
+    cursor: pointer;
+    color: #555;
+    transition: all 0.2s;
+}
+
+.mega-cat-item:hover,
+.mega-cat-item.active {
+    background: #f0f0ff;
+    color: #525fe1;
+    font-weight: 600;
+    border-right: 3px solid #525fe1;
+}
+
+.mega-content {
+    flex: 1;
+    padding: 15px;
+    min-height: 200px;
+}
+
+.mega-cat-content { display: none; }
+.mega-cat-content.active { display: block; }
+
+.mega-cat-content h4 {
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: #1a1a2e;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+}
+
+.mega-courses { display: flex; flex-direction: column; gap: 0; }
+
+.mega-courses a {
+    font-size: 11px;
+    padding: 5px 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 8px;
+    color: #555;
+    transition: all 0.2s;
+}
+
+.mega-courses a:hover { background: #f0f0ff; color: #525fe1; }
+
+.mega-courses a img {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .mega-menu-container { flex-direction: column; }
+    .mega-sidebar { width: 100%; border: none; display: flex; overflow-x: auto; padding: 10px; gap: 5px; }
+    .mega-cat-item { white-space: nowrap; padding: 6px 12px; font-size: 12px; border-radius: 20px; border: 1px solid #eee; }
+    .mega-cat-item.active { border: 1px solid #525fe1; }
+}
+.mega-menu-parent > a {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.arrow-icon {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+.mega-menu-parent:hover .arrow-icon {
+    transform: rotate(180deg);
+}
+
+/* فلش برای آیتم‌های سایدبار */
+.mega-cat-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mega-cat-item::after {
+    content: '\f104';
+    font-family: 'FontAwesome';
+    font-size: 18px;
+    opacity: 0;
+    transition: all 0.3s;
+}
+
+.mega-cat-item:hover::after,
+.mega-cat-item.active::after {
+    opacity: 1;
+}
+
+#navigation {
+    padding: 5px 65px !important;
+}
+
+#main-menu ul li {
+    line-height: 70px;
+}
+
+#main-menu ul li a {
+    font-size: 16px;
+}
+
+.site-logo img {
+    max-width: 130px;
+}
+
+.mega-menu-dropdown {
+    top: 70px;
+}
+
+.user-dropdown-btn {
+    padding: 10px 18px;
+    font-size: 15px;
+}
+
+.user-avatar-small {
+    width: 36px;
+    height: 36px;
 }
 
 /* استایل‌های اصلی ستاره */

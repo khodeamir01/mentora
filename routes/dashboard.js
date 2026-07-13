@@ -18,9 +18,7 @@ const upload = multer({
 // پنل ادمین
 router.get("/admin", auth, roleGuard("ADMIN"), dashboardController.adminPanel);
 router.get("/profile", auth, dashboardController.getProfile);
-// router.get("/admin/users", auth, roleGuard("ADMIN"), dashboardController.adminUsers);
-// router.get("/admin/users/:id", auth, roleGuard("ADMIN"), dashboardController.adminUserDetail);
-// router.get("/admin/banned", auth, roleGuard("ADMIN"), dashboardController.adminBannedUsers);
+
 router.put("/admin/change-role", auth, roleGuard("ADMIN"), dashboardController.adminChangeRole);
 router.post("/admin/ban", auth, roleGuard("ADMIN"), dashboardController.adminBanUser);
 router.post("/profile", auth, upload.single("avatar"), dashboardController.updateProfile);

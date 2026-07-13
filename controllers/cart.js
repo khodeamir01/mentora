@@ -17,7 +17,7 @@ exports.getCart = async (req, res, next) => {
             });
 
         if (!cart || cart.items.length === 0) {
-            return res.render("cart", {
+            return res.render("shopping/cart", {
                 cart: null,
                 user: user,
                 isEmpty: true
@@ -28,7 +28,7 @@ exports.getCart = async (req, res, next) => {
             return total + item.priceAtTime 
         }, 0);
 
-        return res.render("cart", {
+        return res.render("shopping/cart", {
             cart: cart,
             user: user,
             totalPrice: totalPrice,

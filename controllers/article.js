@@ -290,5 +290,5 @@ exports.edit = async (req, res) => {
     if (!article) return res.redirect("/dashboard/author");
     const categories = await Category.find({}).lean();  
     
-    return res.render("dashboard/author/edit.ejs", { article, categories, user: req.user });
+    return res.render("article/edit.ejs", { article, categories, user: req.user });
 }

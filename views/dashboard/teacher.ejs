@@ -133,7 +133,7 @@
 <body>
 <div class="dashboard-layout">
     
-    <%- include('../dashboard/partials/_sidebar') %>
+    <%- include('../partials/_sidebar') %>
 
     <main class="main-content">
         
@@ -263,7 +263,7 @@
                                     </td>
                                     <td>
                                         <span class="badge-<%= session.isFree ? 'free' : 'paid' %>">
-                                            <%= session.isFree ? 'رایگان' : 'پولی' %>
+                                            <%= session.isFree ? 'رایگان' : 'نقدی' %>
                                         </span>
                                     </td>
                                     <td><small style="color: #888;"><%= new Date(session.createdAt).toLocaleDateString('fa-IR') %></small></td>

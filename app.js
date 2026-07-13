@@ -16,6 +16,8 @@ const checkoutRouter = require("./routes/checkout.js")
 const checkBan = require("./middlewares/checkBan.js");
 const articlesRouter = require("./routes/article.js");
 const teachersrouter = require("./routes/teacher.js");
+const globalPartialData = require("./middlewares/globalPartialData.js");
+
 
 const passport = require("passport");
 const { Strategy: JwtStrategy } = require("passport-jwt");
@@ -56,6 +58,7 @@ app.use(setHeaders);
 //* Routers
 
 app.use(checkBan);
+app.use(globalPartialData);
 app.use("/", homeRouter);
 app.use("/auth", authRouter);
 app.use("/course", courseRouter);

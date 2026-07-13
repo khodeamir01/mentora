@@ -5,6 +5,7 @@ const Category= require("./../models/Category");
 const Article= require("./../models/Article");
 const User= require("./../models/User");
 const Comment= require("./../models/Comment");
+const CourseUser= require("./../models/Course-User");
 
 
 
@@ -52,6 +53,18 @@ router.get("/", auth, async (req, res) => {
         .sort({ createdAt: -1 })
         .limit(5)
         .lean();
+        
+    const teachers = await User.find({ roles: "TEACHER" })
+    .select("name avatar bio")
+    .lean();
+
+    for (let teacher of teachers) {
+     const courses = await Course.find({ teacher: teacher._id }).lean();
+     teacher.courseCount = courses.length;
+        teacher.studentCount = await CourseUser.countDocuments({ 
+            course: { $in: courses.map(c => c._id) } 
+        });
+    }
     
     const filteredComments = comments.filter(c => c.user !== null);
 
@@ -66,7 +79,8 @@ router.get("/", auth, async (req, res) => {
             totalUsers: totalUsers ,
             totalArticles: totalArticles ,
             averageRating: avg,
-            user: user
+            user: user,
+            teachers: teachers
         });
 
     } catch (error) {
@@ -74,6 +88,8 @@ router.get("/", auth, async (req, res) => {
         res.status(500).send("خطای سرور در دریافت اطلاعات");
     }
 });
+
+
 
 
 module.exports = router
