@@ -237,31 +237,36 @@ npm run dev
 
 Create a `.env` file and configure the following:
 
-```env
-PORT=
+# ========== Server ==========
+PORT = 4000
 
-MONGO_URI=
+# ========== MongoDB ==========
+MONGO_URI = mongodb://127.0.0.1:27017/mentora
 
-ACCESS_TOKEN_SECRET_KEY=
+# ========== JWT ==========
+JWT_SECRET = your_jwt_secret_key_here
+ACCESS_TOKEN_SECRET_KEY = your_access_token_secret_key
+REFRESH_TOKEN_SECRET_KEY = your_refresh_token_secret_key
+ACCESS_TOKEN_EXPIRES_IN_SECONDS = 3600
+REFRESH_TOKEN_EXPIRES_IN_SECONDS = 600000
 
-REFRESH_TOKEN_SECRET_KEY=
+# ========== Google OAuth ==========
+GOOGLE_CLIENT_ID = your_google_client_id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET = your_google_client_secret
 
-ACCESS_TOKEN_EXPIRES_IN_SECONDS=
+# ========== Redis ==========
+REDIS_URI = redis://localhost:6379/
 
-REFRESH_TOKEN_EXPIRES_IN_SECONDS=
+# ========== Zarinpal (Sandbox) ==========
+ZARINPAL_PAYMENT_CALLBACK_URL = http://localhost:4000/checkout/verify
+ZARINPAL_PAYMENT_API_BASE_URL = https://sandbox.zarinpal.com/pg/v4/payment/request.json
+ZARINPAL_PAYMENT_VERIFY_URL = https://sandbox.zarinpal.com/pg/v4/payment/verify.json
+ZARINPAL_PAYMENT_URL = https://sandbox.zarinpal.com/pg/StartPay/
+ZARINPAL_MERCHANT_ID = your_zarinpal_merchant_id
 
-GOOGLE_CLIENT_ID=
-
-GOOGLE_CLIENT_SECRET=
-
-REDIS_URL=
-
-ZARINPAL_MERCHANT_ID=
-
-EMAIL_USER=
-
-EMAIL_PASS=
-```
+# ========== Email (Nodemailer) ==========
+EMAIL_USER = yourmail@gmail.com
+EMAIL_PASS = your_app_password
 
 ---
 
