@@ -263,7 +263,7 @@ REDIS_URI=redis://localhost:6379/
 
 # ZarinPal
 # ------------------------
-```
+
 ZARINPAL_PAYMENT_CALLBACK_URL=http://localhost:4000/checkout/verify
 ZARINPAL_PAYMENT_API_BASE_URL=https://sandbox.zarinpal.com/pg/v4/payment/request.json
 ZARINPAL_PAYMENT_VERIFY_URL=https://sandbox.zarinpal.com/pg/v4/payment/verify.json
@@ -272,7 +272,7 @@ ZARINPAL_PAYMENT_URL=https://sandbox.zarinpal.com/pg/StartPay/
 ZARINPAL_MERCHANT_ID=your_zarinpal_merchant_id
 
 # ------------------------
-
+```
 ---
 
 ## License
