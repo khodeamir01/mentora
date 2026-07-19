@@ -1,22 +1,11 @@
-module.exports = (validator) => {
-    return async (req, res, next) => {
-        console.log("reqBody ->>>>>",req.body)
-        try {
-            await validator.validate(req.body, {abortEarly: false});
-           
-        } catch (err) {
-            console.log(err);
-           const viewName = req.originalUrl.split("/").pop();
-            return res.render(viewName, {
-                messages: {
-                    error: err.errors[0], 
-                    redirect: null
-                }, 
-                values: req.body
-            })
-            //return res.status(400).json({errors: err.errors[0]})
-            
-        }
-        next()
+const validate = (schema) => async (req, res, next) => {
+    try {
+        await schema.validate(req.body, { abortEarly: false });
+        next();
+    } catch (error) {
+        const errors = error.inner.map(e => e.message);
+        return res.json({ success: false, error: errors[0] });
     }
-}
+};
+
+module.exports = validate;

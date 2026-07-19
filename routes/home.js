@@ -5,6 +5,7 @@ const Category= require("./../models/Category");
 const Article= require("./../models/Article");
 const User= require("./../models/User");
 const Comment= require("./../models/Comment");
+const Session= require("./../models/Session");
 const CourseUser= require("./../models/Course-User");
 
 
@@ -34,6 +35,7 @@ router.get("/", auth, async (req, res) => {
 
         const courses = await Course.find({})
         .populate('categoryID', 'title href')
+        .populate('teacher', 'name avatar')
         .sort({ createdAt: -1 })
         .limit(6)
         .lean();
@@ -64,6 +66,17 @@ router.get("/", auth, async (req, res) => {
         teacher.studentCount = await CourseUser.countDocuments({ 
             course: { $in: courses.map(c => c._id) } 
         });
+    }
+
+    for (let course of courses) {
+        course.sessionCount = await Session.countDocuments({ course: course._id });
+        
+        const avgResult = await Comment.aggregate([
+            { $match: { course: course._id } },
+            { $group: { _id: null, avg: { $avg: "$rating" } } }
+        ]);
+        course.avgRating = avgResult[0]?.avg ? Math.round(avgResult[0].avg) : 0;
+        course.commentCount = await Comment.countDocuments({ course: course._id });
     }
     
     const filteredComments = comments.filter(c => c.user !== null);

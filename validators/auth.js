@@ -1,20 +1,13 @@
 const yup = require("yup");
 
-const sentOtpValidator = yup.object({
-  phone: yup
-    .string()
-    .required("Phone number is required")
-    .matches(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/ , "Phone number is not valid !"),
+exports.registerValidator = yup.object({
+    name: yup.string().required("نام الزامی است").min(3, "حداقل ۳ کاراکتر"),
+    username: yup.string().required("نام کاربری الزامی است").min(4, "حداقل ۴ کاراکتر").matches(/^[a-zA-Z0-9_]+$/, "فقط حروف انگلیسی و عدد"),
+    email: yup.string().required("ایمیل الزامی است").email("ایمیل معتبر نیست"),
+    password: yup.string().required("رمز عبور الزامی است").min(8, "حداقل ۸ کاراکتر"),
 });
 
-const otpVerifyValidator = yup.object({
-    phone: yup
-    .string()
-    .required("Phone number is required")
-    .matches(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/ , "Phone number is not valid !"),
-
-    otp: yup.string().required("OTP code is required !").matches(/^[0-9]+$/ , "OTP code is not valid"),
-   
+exports.loginValidator = yup.object({
+    username: yup.string().required("نام کاربری الزامی است"),
+    password: yup.string().required("رمز عبور الزامی است"),
 });
-
-module.exports = {sentOtpValidator, otpVerifyValidator};

@@ -62,6 +62,7 @@
                                                             <a href="/course/<%= course.href %>">
                                                                 <img src="/img/cover/<%= course.cover || 'default.jpg' %>" alt="">
                                                                 <span><%= course.name %></span>
+
                                                             </a>
                                                         <% }); %>
                                                     <% } else { %>
@@ -128,22 +129,28 @@
 <script src="/js/sweetAlert2.js"></script>
 <script>
 // مگا منو
-const catItems = document.querySelectorAll('.mega-cat-item');
-const catContents = document.querySelectorAll('.mega-cat-content');
-
-if (catItems.length > 0) {
-    catItems[0].classList.add('active');
-    document.getElementById('mega-' + catItems[0].dataset.cat)?.classList.add('active');
-}
-
-catItems.forEach(item => {
-    item.addEventListener('mouseenter', () => {
-        catItems.forEach(i => i.classList.remove('active'));
-        catContents.forEach(c => c.classList.remove('active'));
-        item.classList.add('active');
-        document.getElementById('mega-' + item.dataset.cat)?.classList.add('active');
+document.addEventListener('DOMContentLoaded', function() {
+    const catItems = document.querySelectorAll('.mega-cat-item');
+    const catContents = document.querySelectorAll('.mega-cat-content');
+    
+    console.log('Items:', catItems.length, 'Contents:', catContents.length);
+    
+    if (catItems.length > 0) {
+        catItems[0].classList.add('active');
+        const firstId = catItems[0].dataset.cat;
+        document.getElementById('mega-' + firstId)?.classList.add('active');
+    }
+    
+    catItems.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            catItems.forEach(i => i.classList.remove('active'));
+            catContents.forEach(c => c.classList.remove('active'));
+            item.classList.add('active');
+            document.getElementById('mega-' + item.dataset.cat)?.classList.add('active');
+        });
     });
 });
+
 
 // منوی کاربر
 function toggleUserMenu() { document.getElementById('userMenu').classList.toggle('show'); }

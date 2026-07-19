@@ -6,7 +6,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js",
     "seed:users": "node seeders/userSeeder.js",
-    "seed:comments": "node seeders/commentSeeder.js"
+    "seed:comments": "node seeders/commentSeeder.js",
+    "seed:categories": "node seeders/categorySeeder.js",
+    "seed:courses": "node seeders/courseSeeder.js",
+    "seed:sessions": "node seeders/sessionSeeder.js",
+    "seed:all": "node seeders/categorySeeder.js && node seeders/userSeeder.js && node seeders/courseSeeder.js"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +24,7 @@
     "express": "^5.2.1",
     "express-flash": "^0.0.2",
     "express-session": "^1.19.0",
+    "helmet": "^8.3.0",
     "ioredis": "^5.11.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.6.3",

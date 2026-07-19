@@ -2,13 +2,24 @@ const User = require("../models/User");
 const Course = require("../models/Course");
 const Session = require("../models/Session");
 const Comment = require("../models/Comment");
+const CourseUser = require("../models/Course-User");
 
 
 exports.getAll = async (req, res) => {
     const teachers = await User.find({ roles: "TEACHER" })
         .select("name avatar bio")
         .lean();
-    return res.render("teacher/instructor.ejs", { teachers, user: req.user || null });
+
+    for (let teacher of teachers) {
+        const courses = await Course.find({ teacher: teacher._id }).lean();
+        teacher.courseCount = courses.length;
+        teacher.studentCount = await CourseUser.countDocuments({ 
+            course: { $in: courses.map(c => c._id) } 
+        });
+    }
+
+    res.render("index", { teachers, user: req.user || null });
+    res.render("teacher/instructor.ejs", { teachers, user: req.user || null });
 };
 
 

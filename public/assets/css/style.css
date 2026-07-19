@@ -5033,6 +5033,9 @@ gap:8px;
     border-radius: 16px;
     overflow: hidden;
 }
+#navigation #main-menu .mega-menu-parent::after {
+    display: none;
+}
 
 .mega-sidebar {
     width: 170px;

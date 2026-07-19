@@ -20,6 +20,7 @@ const globalPartialData = require("./middlewares/globalPartialData.js");
 
 
 const passport = require("passport");
+const helmet = require("helmet")
 const { Strategy: JwtStrategy } = require("passport-jwt");
 
 
@@ -30,6 +31,7 @@ const { errorHandler } = require("./middlewares/errorHandler.js");
 
 const app = express();
 // Nodemailer  TODO ------------------------------------------------------------------------->
+// app.use(helmet());
 
 app.use(session({
     secret: "Secret Key",

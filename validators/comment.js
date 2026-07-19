@@ -1,39 +1,11 @@
-const { isValidObjectId } = require("mongoose");
 const yup = require("yup");
 
-const createCommentValidator = yup.object().shape({
-
-  rating: yup.number().required("Rating is required").min(1).max(5),
-
-  content: yup
-    .string()
-    .max(1000, "Comment content cannot exceed 1000 characters"),
+exports.createCommentValidator = yup.object({
+    rating: yup.number().required("امتیاز الزامی است").min(1, "حداقل ۱").max(5, "حداکثر ۵"),
+    content: yup.string().required("متن نظر الزامی است").min(2, "حداقل ۲ کاراکتر"),
 });
 
-const updateCommentValidator = yup.object().shape({
-  content: yup
-    .string()
-    .max(1000, "Comment content cannot exceed 1000 characters"),
-
-  rating: yup.number().min(1).max(5),
+exports.addReplyValidator = yup.object({
+    rating: yup.number().required("امتیاز الزامی است").min(1, "حداقل ۱").max(5, "حداکثر ۵"),
+    content: yup.string().required("متن پاسخ الزامی است").min(2, "حداقل ۲ کاراکتر"),
 });
-
-const addReplyValidator = yup.object().shape({
-  content: yup
-    .string()
-    .max(1000, "Reply content cannot exceed 1000 characters")
-    .required("Reply content is required"),
-});
-
-const updateReplyValidator = yup.object().shape({
-  content: yup
-    .string()
-    .max(1000, "Reply content cannot exceed 1000 characters"),
-});
-
-module.exports = {
-  createCommentValidator,
-  updateCommentValidator,
-  addReplyValidator,
-  updateReplyValidator,
-};

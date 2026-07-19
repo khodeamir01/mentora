@@ -52,8 +52,8 @@
 </div>
 <div class="col-lg-6 col-sm-12 col-xs-12"><div class="hero-text-img">
 <img src="/img/home-img2.png" class="img-fluid" alt=""><div class="home_ps">
-<span class="ti-user"></span><h2>4500+</h2>
-<p>دانش آموز فعال</p>
+<span class="ti-user"></span><h2><%= totalUsers || 130 %> +</h2>
+<p>دانشجوی فعال</p>
 </div>
 </div></div>
 </div></div></section>
@@ -196,7 +196,6 @@
             <div class="col-lg-4 col-sm-6 col-xs-12">
                 <div class="single_course">
                     <div class="single_c_img">
-                        <!-- تصویر کاور با نسبت ثابت -->
                         <div class="course-cover-wrapper">
                             <img src="/img/cover/<%= course.cover || '1.png' %>" 
                                  class="course-cover-img" 
@@ -204,7 +203,6 @@
                                  loading="lazy"
                                  onerror="this.src='/img/course/1.png'">
                         </div>
-                        <!-- دسته‌بندی -->
                         <span class="category-tag">
                             <% if (course.categoryID) { %>
                                 <a href="/categories/<%= course.categoryID.href %>" class="category-link">
@@ -216,15 +214,21 @@
                         </span>
                     </div>
   
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
+                    <!-- ستاره‌ها بر اساس میانگین rating -->
+                    <div class="ratings" style="display: flex; justify-content: center; align-items: center; gap: 2px; margin: 8px 0;">
+                        <% 
+                            const avgRating = course.avgRating || 0;
+                            for (let i = 1; i <= 5; i++) { 
+                        %>
+                            <i class="fa fa-star<%= i <= avgRating ? '' : '-o' %>" 
+                               style="color: <%= i <= avgRating ? '#FFD700' : '#ccc' %>"></i>
+                        <% } %>
+                        <small style="color: #888;">امتیاز</small>
+                    </div>
   
                     <h4><a href="/course/<%= course.href %>"><%= course.name %></a></h4>
   
-                    <p><span class="ti-book"></span><%= course.lessonsCount || '12' %> جلسه</p>
+                    <p><span class="ti-book"></span> <%= course.sessionCount || 0 %> </p> جلسه
                     <p><span class="ti-alarm-clock"></span><%= course.duration || '2 ساعت و 32 دقیقه' %></p>
   
                     <div class="price">
@@ -242,7 +246,7 @@
             <p>در حال حاضر دوره‌ای برای نمایش وجود ندارد.</p>
         </div>
     <% } %>
-  </div>
+</div>
     </div>
 </section>
 <div class="partner-logo section-padding"><div class="container"><div class="row part_bg">
@@ -370,7 +374,7 @@
       <% articles.forEach(function(article) { %>
           <div class="col-lg-4 col-sm-4 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.1s" data-wow-offset="0">
               <div class="single_blog">
-                  <img src="/img/blog<%= article.cover || '/img/blog/1.jpg' %>" class="img-fluid" alt="<%= article.title %>">
+                  <img src="<%= article.cover ? article.cover  : `/img/blog/blog-1.png` %>" class="img-fluid" alt="<%= article.title %>">
                   <div class="content_box">
                       <span>
                           <%= new Date(article.createdAt).toLocaleDateString('fa-IR', { day: 'numeric', month: 'long', year: 'numeric' }) %> |

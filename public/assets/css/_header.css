@@ -1,0 +1,417 @@
+/* ============================================
+   استایل‌های هدر و نویگیشن
+   ============================================ */
+
+/* ----- تنظیمات کلی هدر ----- */
+.site-navigation {
+    padding: 15px 0;
+    background-color: #ffffff;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  /* ----- لوگو ----- */
+  .site-logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .site-logo a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    position: relative;
+  }
+  
+  .site-logo img {
+    height: 45px;
+    width: auto;
+    margin-left: 10px;
+  }
+  
+  .site-logo .footer-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2c3e50;
+    position: relative;
+    top: 0;
+    transition: color 0.3s ease;
+  }
+  
+  .site-logo a:hover .footer-title {
+    color: #4a90e2;
+  }
+  
+  /* ----- منوی اصلی ----- */
+  #main-menu {
+    width: 100%;
+  }
+  
+  #main-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  #main-menu > ul > li {
+    position: relative;
+  }
+  
+  #main-menu > ul > li > a {
+    display: block;
+    padding: 10px 18px;
+    color: #2c3e50;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  
+  #main-menu > ul > li > a:hover {
+    background-color: #f0f7ff;
+    color: #4a90e2;
+  }
+  
+  #main-menu > ul > li > a::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background-color: #4a90e2;
+    transition: width 0.3s ease;
+  }
+  
+  #main-menu > ul > li > a:hover::after {
+    width: 60%;
+  }
+  
+  /* ----- منوی dropdown ----- */
+  .menu-item-has-children {
+    position: relative;
+  }
+  
+  .menu-item-has-children > a::before {
+    content: '\f0d7';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    margin-right: 5px;
+    font-size: 12px;
+    color: #999;
+  }
+  
+  .menu-item-has-children > ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 220px;
+    background: #ffffff;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+    border-radius: 12px;
+    padding: 8px 0;
+    z-index: 1001;
+    border: 1px solid #f0f0f0;
+    animation: dropdownFade 0.25s ease;
+  }
+  
+  .menu-item-has-children:hover > ul {
+    display: block;
+  }
+  
+  @keyframes dropdownFade {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .menu-item-has-children > ul > li {
+    display: block;
+  }
+  
+  .menu-item-has-children > ul > li > a {
+    display: block;
+    padding: 8px 20px;
+    color: #2c3e50;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  
+  .menu-item-has-children > ul > li > a:hover {
+    background-color: #f0f7ff;
+    color: #4a90e2;
+    padding-right: 25px;
+  }
+  
+  /* ----- دکمه‌های ورود/ثبت‌نام ----- */
+  .header-btn {
+    display: inline-block;
+    padding: 8px 22px;
+    color: #4a90e2;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 2px solid #4a90e2;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    margin-left: 8px;
+  }
+  
+  .header-btn:hover {
+    background-color: #4a90e2;
+    color: #ffffff;
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+  }
+  
+  .btn_one {
+    display: inline-block;
+    padding: 8px 22px;
+    background: linear-gradient(135deg, #4a90e2, #357abd);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.25);
+  }
+  
+  .btn_one:hover {
+    background: linear-gradient(135deg, #357abd, #2a6aa0);
+    color: #ffffff;
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(74, 144, 226, 0.4);
+  }
+  
+  /* ============================================
+     منوی Dropdown کاربر
+     ============================================ */
+  .user-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .user-dropdown-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px 6px 16px;
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    color: #2c3e50;
+  }
+  
+  .user-dropdown-btn:hover {
+    background: #f0f7ff;
+    border-color: #4a90e2;
+    box-shadow: 0 2px 10px rgba(74, 144, 226, 0.15);
+  }
+  
+  .user-dropdown-btn .user-avatar-small {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .user-dropdown-btn span {
+    font-weight: 500;
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .user-dropdown-btn .fa-angle-down {
+    font-size: 12px;
+    color: #999;
+    transition: transform 0.3s ease;
+  }
+  
+  .user-dropdown-btn.active .fa-angle-down {
+    transform: rotate(180deg);
+  }
+  
+  /* ----- منوی dropdown کاربر ----- */
+  .user-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    min-width: 260px;
+    background: #ffffff;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+    border-radius: 12px;
+    padding: 8px 0;
+    z-index: 1001;
+    border: 1px solid #f0f0f0;
+    animation: dropdownFade 0.25s ease;
+  }
+  
+  .user-dropdown-menu.show {
+    display: block;
+  }
+  
+  .user-dropdown-menu .dropdown-header {
+    padding: 12px 20px 8px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 8px;
+  }
+  
+  .user-dropdown-menu .dropdown-header strong {
+    display: block;
+    color: #2c3e50;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  
+  .user-dropdown-menu .dropdown-header small {
+    display: block;
+    color: #999;
+    font-size: 12px;
+    margin-top: 2px;
+    word-break: break-all;
+  }
+  
+  .user-dropdown-menu a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 20px;
+    color: #2c3e50;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  
+  .user-dropdown-menu a:hover {
+    background-color: #f0f7ff;
+    color: #4a90e2;
+    padding-right: 25px;
+  }
+  
+  .user-dropdown-menu a i {
+    width: 18px;
+    font-size: 15px;
+    color: #6c757d;
+  }
+  
+  .user-dropdown-menu a:hover i {
+    color: #4a90e2;
+  }
+  
+  .user-dropdown-menu .dropdown-divider {
+    height: 1px;
+    background: #f0f0f0;
+    margin: 8px 0;
+  }
+  
+  .user-dropdown-menu .logout-link {
+    color: #dc3545 !important;
+  }
+  
+  .user-dropdown-menu .logout-link i {
+    color: #dc3545 !important;
+  }
+  
+  .user-dropdown-menu .logout-link:hover {
+    background-color: #fff0f0 !important;
+    color: #dc3545 !important;
+  }
+  
+  /* ============================================
+     واکنش‌گرایی
+     ============================================ */
+  @media (max-width: 1200px) {
+    .col-20 {
+      flex: 0 0 100%;
+      max-width: 100%;
+      text-align: center !important;
+      margin-bottom: 10px;
+    }
+    
+    .col-60 {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+    
+    #main-menu ul {
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .user-dropdown {
+      margin-top: 10px;
+    }
+    
+    .user-dropdown-btn {
+      justify-content: center;
+    }
+    
+    .user-dropdown-menu {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    #main-menu > ul > li > a {
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+    
+    .menu-item-has-children > ul {
+      min-width: 180px;
+      right: auto;
+      left: -20px;
+    }
+    
+    .header-btn,
+    .btn_one {
+      padding: 6px 16px;
+      font-size: 12px;
+    }
+    
+    .user-dropdown-btn {
+      padding: 4px 10px 4px 14px;
+      font-size: 12px;
+    }
+    
+    .user-dropdown-btn .user-avatar-small {
+      width: 28px;
+      height: 28px;
+    }
+    
+    .user-dropdown-menu {
+      min-width: 220px;
+      right: 0;
+      left: auto;
+      transform: none;
+    }
+  }

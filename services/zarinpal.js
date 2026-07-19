@@ -18,6 +18,8 @@ exports.createPayment = async function ({ amountInRial, description, mobile }) {
     });
   
     const data = await response.json();
+    console.log(data);
+    
   
     return {
       authority: data.data.authority,
