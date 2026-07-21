@@ -12,8 +12,8 @@ Mentora provides a complete online learning platform where students can purchase
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Node.js-18+-339933?logo=nodedotjs" />
-  <img src="https://img.shields.io/badge/Express-4.x-000000?logo=express" />
+  <img src="https://img.shields.io/badge/Node.js-22.15.0-339933?logo=nodedotjs" />
+  <img src="https://img.shields.io/badge/Express-5.2.1-000000?logo=express" />
   <img src="https://img.shields.io/badge/MongoDB-7.x-47A248?logo=mongodb" />
   <img src="https://img.shields.io/badge/Redis-7.x-DC382D?logo=redis" />
   <img src="https://img.shields.io/badge/License-MIT-blue" />
