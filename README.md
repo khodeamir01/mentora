@@ -25,16 +25,34 @@ Mentora provides a complete online learning platform where students can purchase
 
 <div align="center">
 
-| Google OAuth | Course Details |
-|:---:|:---:|
-| ![Google Auth](./docs/gif/google-oAuth.gif) | ![Course Details](./docs/gif/course-details.gif) |
+| Home Page |
+|:---:|
 
-| Payment + local login | Admin Dashboard |
-|:---:|:---:|
-| ![Payment](./docs/gif/localLoginPayment.gif) | ![Admin Dashboard](./docs/gif/admin-panel.gif) |
+| ![Home Page](./docs/gif/homePage.gif) |
+
+| Google OAuth |
+|:---:|
+
+| ![Google Auth](./docs/gif/google-oAuth.gif) |
+
+| Course Details |
+|:---:|
+
+![Course Details](./docs/gif/course-details.gif) |
+
+| Payment + local login |
+|:---:|
+
+| ![Payment](./docs/gif/localLoginPayment.gif) |
+
+| Admin Dashboard |
+|:---:|
+
+| ![Admin Dashboard](./docs/gif/admin-panel.gif) |
 
 | Author Dashboard |
 |:---:|
+
 | ![Author Dashboard](./docs/gif/author-panel.gif) |
 
 </div>
