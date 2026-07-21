@@ -8,6 +8,26 @@ Mentora provides a complete online learning platform where students can purchase
 
 ## Features
 
+Google OAuth
+
+GIF
+
+Course Details
+
+GIF
+
+Payment
+
+GIF
+
+Admin Dashboard
+
+GIF
+
+Author Dashboard
+
+GIF
+
 ### Authentication & Authorization
 
 * Local Authentication
@@ -162,16 +182,21 @@ Each role has its own dashboard and permissions.
 
 ## Project Structure
 
-```text
-controllers/
-middlewares/
-models/
-routes/
-validators/
-utils/
-public/
-views/
-config/
+```
+Mentora
+│
+├── config
+├── controllers
+├── middlewares
+├── models
+├── routes
+├── validators
+├── utils
+├── views
+├── public
+├── uploads
+├── server.js
+└── package.json
 ```
 
 Following the MVC architecture for better maintainability and scalability.
@@ -182,7 +207,7 @@ Following the MVC architecture for better maintainability and scalability.
 
 * MVC Architecture
 * RESTful Routing
-* Authentication & Authorization
+* Cookie-based Authentication
 * Role-Based Access Control (RBAC)
 * JWT Authentication
 * Refresh Token Workflow
@@ -262,7 +287,6 @@ REDIS_URI=redis://localhost:6379/
 # ------------------------
 
 # ZarinPal
-# ------------------------
 
 ZARINPAL_PAYMENT_CALLBACK_URL=http://localhost:4000/checkout/verify
 ZARINPAL_PAYMENT_API_BASE_URL=https://sandbox.zarinpal.com/pg/v4/payment/request.json
