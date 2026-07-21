@@ -148,6 +148,36 @@ exports.login = async (req, res, next) => {
         
 };
 
+exports.googleLogin = async (req, res) => {
+  try {
+      const user = req.user; // passport user رو توی req.user می‌ذاره
+
+      const accessToken = jwt.sign(
+          { id: user.id, role: user.roles },
+          process.env.ACCESS_TOKEN_SECRET_KEY,
+          { expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN_SECONDS + "s" }
+      );
+
+      const refreshToken = jwt.sign(
+          { id: user.id },
+          process.env.REFRESH_TOKEN_SECRET_KEY,
+          { expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN_SECONDS + "s" }
+      );
+
+      const hashedRefreshToken = await bcryptjs.hash(refreshToken, 12);
+      await redis.set(`refreshToken:${user.id}`, hashedRefreshToken, "EX", process.env.REFRESH_TOKEN_EXPIRES_IN_SECONDS);
+
+      res.cookie("accessToken", accessToken, { httpOnly: true, maxAge: process.env.ACCESS_TOKEN_EXPIRES_IN_SECONDS * 1000 });
+      res.cookie("refreshToken", refreshToken, { httpOnly: true, maxAge: process.env.REFRESH_TOKEN_EXPIRES_IN_SECONDS * 1000 });
+
+      return res.redirect("/");
+
+  } catch (error) {
+      console.error("Google login error:", error);
+      return res.redirect("/auth/login");
+  }
+};
+
 
 exports.logOut = async (req, res) => {
   const redisKey = `refreshToken:${req.user.id}`;

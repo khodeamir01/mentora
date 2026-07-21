@@ -15,5 +15,5 @@ router.route("/register").get(Controller.showRegisterView).post(validate(registe
 router.route("/login").get(Controller.showLoginView).post(validate(loginSchema), captcha , Controller.login);  
 router.route("/logout").get(auth, Controller.logOut);
 router.route("/google").get(passport.authenticate("google", {scope: ["profile", "email"]}));
-router.route("/google/callback").get(passport.authenticate("google", {session: false}), Controller.login);
+router.route("/google/callback").get(passport.authenticate("google", {session: false}),  Controller.googleLogin);
 module.exports = router

@@ -3,6 +3,7 @@ const Session = require("./../models/Session");
 const CourseUser = require("./../models/Course-User");
 const Category = require("./../models/Category");
 const Comment = require("./../models/Comment");
+const User = require("./../models/User");
 
 const { isValidObjectId } = require("mongoose");
 
@@ -87,7 +88,9 @@ exports.getAllCourses = async (req, res, next) => {
 
 exports.showCreateCoursePanel = async (req, res, next) => {
   const categories = await Category.find({});
-  return res.render("course/createCourse.ejs", {categories})
+  const teachers = await User.find({roles: "TEACHER"});
+  console.log(teachers);
+  return res.render("course/createCourse.ejs", {categories, teachers})
 
 }
 exports.create = async (req, res) => {

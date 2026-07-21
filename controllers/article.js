@@ -54,8 +54,10 @@ exports.create = async (req, res) => {
         });
 
         await article.populate("author", "name avatar");
+        const categories = await Category.find({}).lean();
 
-        return res.json({ success: true, message: "مقاله ایجاد شد", article });
+
+        return res.json({ success: true, message: "مقاله ایجاد شد", article, categories });
 
     } catch (error) {
         console.error("Create article error:", error);

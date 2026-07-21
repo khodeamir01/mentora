@@ -93,9 +93,15 @@
             <div class="order-id">
                 <strong>شماره سفارش:</strong> <%= orderId %>
             </div>
-            
-            <a href="/dashboard/user" class="btn-home">
-                <i class="fa fa-book"></i> مشاهده دوره‌های من
+            <% 
+            let dashboardLink = '/dashboard/user';
+            if (user.roles?.includes('ADMIN')) dashboardLink = '/dashboard/admin';
+            else if (user.roles?.includes('AUTHOR')) dashboardLink = '/dashboard/author';
+            else if (user.roles?.includes('TEACHER')) dashboardLink = '/dashboard/teacher';
+        %>
+
+            <a href="<%= dashboardLink %>" class="btn-home">
+                <i class="fa fa-book"></i> مشاهده داشبورد
             </a>
             
         <% } else { %>

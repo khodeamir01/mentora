@@ -303,7 +303,12 @@
               <div class="form-group">
                 <label><i class="fa fa-folder-open"></i> دسته‌بندی</label>
                 <select name="category" class="form-control">
-                    <option value="">انتخاب کنید...</option>
+                    <option value="">انتخاب دسته‌بندی...</option>
+                    <% if (categories && categories.length > 0) { %>
+                        <% categories.forEach(function(cat) { %>
+                            <option value="<%= cat._id %>"><%= cat.title %></option>
+                        <% }); %>
+                    <% } %>
                 </select>
             </div>
 

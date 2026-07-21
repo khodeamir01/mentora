@@ -5,6 +5,7 @@ const Checkout = require("./../models/Checkout");
 const Order = require("./../models/Order");
 const Course = require("./../models/Course"); 
 const CourseUser = require("./../models/Course-User"); 
+const User = require("./../models/User"); 
 
 exports.createCheckout = async (req, res, next) => {
     try {
@@ -144,12 +145,15 @@ exports.verifyCheckout = async (req, res, next) => {
 
         await Checkout.deleteOne({ _id: checkout._id });
 
+        const user = await User.findOne(order.user)
+
         return res.render("shopping/payment-result", {
             success: true,
             message: "پرداخت با موفقیت انجام شد ✅",
             orderId: order._id,
             order: order,
-            ref_id: payment.ref_id || null
+            ref_id: payment.ref_id || null,
+            user
         });
 
     } catch (err) {

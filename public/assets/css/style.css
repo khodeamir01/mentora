@@ -5037,6 +5037,21 @@ gap:8px;
     display: none;
 }
 
+.login-methods div {
+    position: relative;
+}
+
+.login-methods div a {
+    position: relative;
+    z-index: 10;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+}
+
+.login-methods div::before {
+    pointer-events: none;
+}
+
 .mega-sidebar {
     width: 170px;
     background: #fff;
