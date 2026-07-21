@@ -6,7 +6,7 @@
 
 <p align="center">
   <b>پلتفرم جامع آموزش آنلاین</b><br>
-  <i>A full-featured Learning Management System (LMS) built with **Node.js**, **Express.js**, **MongoDB**, **Mongoose**, and **EJS** following the MVC architecture.
+  <i>A full-featured Learning Management System (LMS) built with Node.js, Express.js, MongoDB,and EJS following the MVC architecture.
 
 Mentora provides a complete online learning platform where students can purchase courses, access lessons, read articles, communicate through tickets, and interact with educational content. The project focuses on implementing real-world backend concepts such as authentication, authorization, role-based access control, payment integration, and business logic.</i>
 </p>
@@ -35,7 +35,7 @@ Mentora provides a complete online learning platform where students can purchase
 
 | Author Dashboard |
 |:---:|
-| ![Author Dashboard](./screenshots/author-panel.gif) |
+| ![Author Dashboard](./docs/gif/author-panel.gif) |
 
 </div>
 
