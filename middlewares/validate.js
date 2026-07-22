@@ -3,6 +3,7 @@ const validate = (schema) => async (req, res, next) => {
         await schema.validate(req.body, { abortEarly: false });
         next();
     } catch (error) {
+        console.log(error);
         const errors = error.inner.map(e => e.message);
         return res.json({ success: false, error: errors[0] });
     }

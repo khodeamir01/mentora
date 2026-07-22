@@ -5048,6 +5048,8 @@ gap:8px;
     pointer-events: auto !important;
 }
 
+
+
 .login-methods div::before {
     pointer-events: none;
 }

@@ -22,7 +22,6 @@ const googleStrategy = require("./strategies/googleStrategy.js");
 
 
 
-const helmet = require("helmet")
 const { Strategy: JwtStrategy } = require("passport-jwt");
 
 
@@ -58,7 +57,6 @@ app.set("views", path.join(__dirname, "views"));
 
 app.use(express.urlencoded({limit:"30mb", extended: true}));
 app.use(express.json({limit: "30mb"}))
-app.use(setHeaders);
 
 //* Routers
 

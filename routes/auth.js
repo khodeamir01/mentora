@@ -1,8 +1,8 @@
 const express = require("express");
 const Controller = require("./../controllers/auth");
-const registerSchema = require("./../validators/register");
-const loginSchema = require("./../validators/login")
 const validate = require("./../middlewares/validate");
+const {registerValidator,loginValidator } = require("../validators/auth");
+
 const captcha = require("./../middlewares/captcha");
 const passport = require("passport");
 const auth = require("../middlewares/auth");
@@ -11,8 +11,8 @@ const auth = require("../middlewares/auth");
 
 const router  = express.Router();
 
-router.route("/register").get(Controller.showRegisterView).post(validate(registerSchema),Controller.register);
-router.route("/login").get(Controller.showLoginView).post(validate(loginSchema), captcha , Controller.login);  
+router.route("/register").get(Controller.showRegisterView).post(validate(registerValidator),Controller.register);
+router.route("/login").get(Controller.showLoginView).post(validate(loginValidator), captcha , Controller.login);  
 router.route("/logout").get(auth, Controller.logOut);
 router.route("/google").get(passport.authenticate("google", {scope: ["profile", "email"]}));
 router.route("/google/callback").get(passport.authenticate("google", {session: false}),  Controller.googleLogin);

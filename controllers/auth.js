@@ -74,6 +74,8 @@ exports.register = async (req, res, next) => {
         });
   } catch (error) {
     next(error);
+    return res.json({ success: false, error: error.message });
+
   }
 };
 
@@ -82,6 +84,7 @@ exports.showLoginView = (req, res) => {
 }
 
 exports.login = async (req, res, next) => {
+try {
   const { username, password } = req.body;
     
   const user = await User.findOne({ username });
@@ -145,6 +148,12 @@ exports.login = async (req, res, next) => {
            redirect: "/",
           }
         });
+  
+} catch (error) {
+  console.log("error in login --->",{ error: error.message } );
+  return res.json({ success: false, error: error.message });
+
+}
         
 };
 

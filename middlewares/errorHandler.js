@@ -37,6 +37,6 @@ exports.errorHandler = (err, req, res, next) => {
   let status = err.status || 500;
 
 
-  console.log({ success: false, error: err  });
+  // console.log({ success: false, error: err  });
   // return errorResponse(res, status, message);
 };

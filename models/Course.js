@@ -16,7 +16,6 @@ const schema =new mongoose.Schema(
     },
     discount : {
         type: Number,
-        required: true
     },
     href: {
         type: String,

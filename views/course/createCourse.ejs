@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ایجاد دوره جدید</title>
     <link rel="stylesheet" href="/css/create-course.css">
+    <!-- اضافه کردن SweetAlert2 -->
 </head>
 <body>
 
@@ -15,6 +16,7 @@
             <p>اطلاعات دوره خود را با دقت وارد کنید</p>
         </div>
 
+        <!-- حذف بخش نمایش پیام‌های معمولی -->
         <% if (locals.messages && messages.error) { %>
             <div class="alert error">
                 <%= messages.error %>
@@ -25,9 +27,10 @@
             <div class="alert success">
                 <%= messages.success %>
             </div>
-        <% } %>
+        <% } %> 
 
-        <form action="/create" method="POST" enctype="multipart/form-data" class="course-form">
+
+        <form action="/course/create" method="POST" enctype="multipart/form-data" class="course-form" id="courseForm">
             
             <!-- نام دوره -->
             <div class="form-group">
@@ -57,23 +60,22 @@
 
             <div class="row">
                 <!-- دسته‌بندی -->
-                <!-- دسته‌بندی (حالا به صورت لیست کشویی) -->
                 <div class="form-group">
-    <label for="categoryID">انتخاب دسته‌بندی</label>
-    <select id="categoryID" name="categoryID" required>
-        <option value="" disabled selected>یک دسته را انتخاب کنید...</option>
-        
-        <% if (locals.categories && categories.length > 0) { %>
-            <% categories.forEach(function(category) { %>
-                <option value="<%= category._id %>">
-                    <%= category.title %>
-                </option>
-            <% }); %>
-        <% } else { %>
-            <option value="" disabled>هیچ دسته‌بندی یافت نشد</option>
-        <% } %>
-        
-    </select>
+                    <label for="categoryID">انتخاب دسته‌بندی</label>
+                    <select id="categoryID" name="categoryID" required>
+                        <option value="" disabled selected>یک دسته را انتخاب کنید...</option>
+                        
+                        <% if (locals.categories && categories.length > 0) { %>
+                            <% categories.forEach(function(category) { %>
+                                <option value="<%= category._id %>">
+                                    <%= category.title %>
+                                </option>
+                            <% }); %>
+                        <% } else { %>
+                            <option value="" disabled>هیچ دسته‌بندی یافت نشد</option>
+                        <% } %>
+                        
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -85,7 +87,6 @@
                         <% }); %>
                     </select>
                 </div>
-
 
                 <!-- وضعیت -->
                 <div class="form-group">
@@ -118,10 +119,100 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn-submit">ثبت و ایجاد دوره</button>
+            <button type="submit" class="btn-submit" id="submitBtn">ثبت و ایجاد دوره</button>
         </form>
     </div>
 </div>
+<script src="/js/sweetAlert2.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('courseForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // بررسی پیام‌های موجود در URL (برای نمایش بعد از ریدایرکت)
+    const urlParams = new URLSearchParams(window.location.search);
+    const success = urlParams.get('success');
+    const error = urlParams.get('error');
+
+    if (success) {
+        Swal.fire({
+            icon: 'success',
+            title: 'دوره با موفقیت ایجاد شد!',
+            text: success,
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        }).then(() => {
+            window.location.href = '/';
+        });
+    }
+
+    if (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'خطا در ایجاد دوره!',
+            text: error,
+            confirmButtonText: 'متوجه شدم',
+            confirmButtonColor: '#d33'
+        });
+    }
+
+    // ارسال فرم با AJAX
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // غیرفعال کردن دکمه برای جلوگیری از ارسال مجدد
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'در حال ارسال...';
+
+        const formData = new FormData(this);
+
+        try {
+            const response = await fetch('/course/create', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                // نمایش پیام موفقیت
+                Swal.fire({
+                    icon: 'success',
+                    title: 'دوره با موفقیت ایجاد شد!',
+                    text: result.message || 'دوره جدید به سیستم اضافه شد.',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                }).then(() => {
+                    window.location.href = '/';
+                });
+            } else {
+                // نمایش پیام خطا
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطا در ایجاد دوره!',
+                    text: result.message || 'مشکلی در ایجاد دوره رخ داده است.',
+                    confirmButtonText: 'تلاش مجدد',
+                    confirmButtonColor: '#d33'
+                });
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'ثبت و ایجاد دوره';
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'خطا در ارتباط با سرور!',
+                text: 'لطفاً اتصال اینترنت خود را بررسی کنید.',
+                confirmButtonText: 'متوجه شدم'
+            });
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'ثبت و ایجاد دوره';
+        }
+    });
+});
+</script>
 
 </body>
 </html>

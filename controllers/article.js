@@ -46,7 +46,7 @@ exports.create = async (req, res) => {
             slug: cleanSlug,
             description,
             content,
-            cover: req.file ? `/${req.file.filename}` : undefined,
+            cover: req.file ? `/img/blog/${req.file.filename}` : undefined,
             author: user._id,
             category: category || null,  
             tags: tagsArray,

@@ -1,14 +1,16 @@
 const express = require("express");
-const controller = require("./../controllers/comments"); // آدرس فایل کنترلر شما
-const auth = require("./../middlewares/auth"); // میدل‌ورهای احراز هویت
+const controller = require("./../controllers/comments"); 
+const validate = require("../middlewares/validate");
+const {createCommentValidator, addReplyValidator } = require("../validators/comment");
+const auth = require("./../middlewares/auth"); 
 
 const router = express.Router();
 
-router.get("/all", controller.getAllComments); // دریافت همه کامنت‌ها (مخصوص پنل مدیریت)
+router.get("/all", controller.getAllComments); 
 
-router.post("/:href/create", auth, controller.createComment);
+router.post("/:href/create", auth , validate(createCommentValidator), controller.createComment);
 
-router.post("/:commentId/reply", auth, controller.addReply);
+router.post("/:commentId/reply", auth, validate(addReplyValidator) ,controller.addReply);
 
 router.delete("/:commentId", auth, controller.removeComment);
 

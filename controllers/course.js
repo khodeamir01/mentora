@@ -89,46 +89,64 @@ exports.getAllCourses = async (req, res, next) => {
 exports.showCreateCoursePanel = async (req, res, next) => {
   const categories = await Category.find({});
   const teachers = await User.find({roles: "TEACHER"});
-  console.log(teachers);
   return res.render("course/createCourse.ejs", {categories, teachers})
 
 }
+// کنترلر ایجاد دوره - نسخه JSON
 exports.create = async (req, res) => {
-  const {
-    name,
-    description,
-    discount,
-    support,
-    href,
-    price,
-    status,
-    categoryID,
-    teacherId
-  } = req.body;
- await Course.create({
-    name,
-    description,
-    discount,
-    support,
-    href,
-    price,
-    status,
-    categoryID,
-    creator: req.user._id,
-    teacher: teacherId,
-    cover: `/img/cover/${req.file.filename}`
-  });
-  const teachers = await User.find({ roles: "TEACHER" }).select("name").lean();
-  const categories = await Category.find({}).lean();
+  try {
+    const {
+      name,
+      description,
+      discount,
+      support,
+      href,
+      price,
+      status,
+      categoryID,
+      teacherId
+    } = req.body;
 
+    // بررسی وجود فایل
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: 'تصویر کاور الزامی است'
+      });
+    }
 
-  
-  return res.render("index", {teachers, categories,
-    messages: {
-     success: "Create Course Was Successfully",
-      redirect: "/",
-     }
-   });
+    // ایجاد دوره جدید
+    const newCourse = await Course.create({
+      name,
+      description,
+      discount: discount || 0,
+      support: support || '',
+      href: href || '',
+      price: price || 0,
+      status: status || 'recording',
+      categoryID,
+      creator: req.user._id,
+      teacher: teacherId,
+      cover: `${req.file.filename}`
+    });
+
+    // ارسال پاسخ JSON موفقیت
+    return res.status(201).json({
+      success: true,
+      message: 'دوره با موفقیت ایجاد شد!',
+      data: newCourse,
+      redirect: '/'
+    });
+
+  } catch (error) {
+    console.error('Error creating course:', error);
+    
+    // ارسال پاسخ JSON خطا
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'خطا در ایجاد دوره'
+    });
+  }
 };
 exports.createSessionPage = async (req, res) => {
 
@@ -283,7 +301,6 @@ exports.getOneCourse = async (req, res) => {
     .sort({ createdAt: 1 })
     .lean();
 
-  // چک کن کاربر این دوره رو خریده یا نه
   let isUserRegistered = false;
   if (user) {
     const enrollment = await CourseUser.findOne({ 
