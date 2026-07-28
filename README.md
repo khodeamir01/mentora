@@ -192,47 +192,6 @@ Following the MVC architecture for better maintainability and scalability.
 
 ---
 
-## Backend Concepts Implemented
-
-* MVC Architecture
-* RESTful Routing
-* Cookie-based Authentication
-* Role-Based Access Control (RBAC)
-* JWT Authentication
-* Refresh Token Workflow
-* Payment Integration
-* File Upload
-* Request Validation
-* Error Handling
-* Pagination
-* Search & Filtering
-* Business Logic Implementation
-
----
-
-## Security
-
-* Password hashing with bcrypt
-* HTTP-only Cookies
-* Google OAuth Authentication
-* CAPTCHA Verification
-* Request Validation using Yup
-* Role-Based Authorization
-
----
-
-## Future Improvements
-
-* Docker Support
-* Unit & Integration Testing
-* API Documentation (Swagger)
-* Rate Limiting
-* Helmet
-* Input Sanitization
-* CI/CD Pipeline
-
----
-
 ## Installation
 
 ```bash
