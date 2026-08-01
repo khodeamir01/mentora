@@ -1,12 +1,10 @@
 # 🎓 Mentora
 
-<p align="center">
-  <img src="./public/assets/img/logoMentora.png" alt="Mentora Logo" width="120" />
-</p>
+
+<img alt="Mentora" src="https://shieldcn.dev/header/glow.svg?title=Mentora&subtitle=A+full-featured+Learning+Management+System+%28LMS%29+built+with+Node.js&logo=nodedotjs&logoColor=3bf681&mode=dark" width="1200">
 
 <p align="center">
-  <b>پلتفرم جامع آموزش آنلاین</b><br>
-  <i>A full-featured Learning Management System (LMS) built with Node.js, Express.js, MongoDB,and EJS following the MVC architecture.
+
 
 Mentora provides a complete online learning platform where students can purchase courses, access lessons, read articles, communicate through tickets, and interact with educational content. The project focuses on implementing real-world backend concepts such as authentication, authorization, role-based access control, payment integration, and business logic.</i>
 </p>
