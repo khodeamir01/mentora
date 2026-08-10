@@ -44,3 +44,4 @@ const seedSessions = async () => {
     }
 };
 
+module.exports = seedSessions;
