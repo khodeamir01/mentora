@@ -59,3 +59,4 @@ const seedArticles = async () => {
     }
 };
 
+module.exports = seedArticles
