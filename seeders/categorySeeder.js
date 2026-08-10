@@ -1,4 +1,3 @@
-// seeders/categorySeeder.js
 const mongoose = require("mongoose");
 const Category = require("../models/Category");
 
@@ -17,13 +16,12 @@ const seedCategories = async () => {
             { title: "Desktop", href: "desktop" },
         ];
 
-        const created = await Category.insertMany(categories);
-        console.log(`✅ ${created.length} categories created`);
-        process.exit(0);
+        await Category.insertMany(categories);
+        console.log("✅ Categories created");
+
     } catch (error) {
         console.error("❌ Error:", error.message);
-        process.exit(1);
     }
 };
 
-mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/mentora").then(seedCategories);
+module.exports = seedCategories;
