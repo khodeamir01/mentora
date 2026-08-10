@@ -88,17 +88,3 @@ const seedComments = async () => {
     }
 };
 
-// Connect & Run
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/Mentora")
-    .then(() => {
-        console.log("🔗 Connected to database");
-        return seedComments();
-    })
-    .then(() => {
-        console.log("✨ Done");
-        process.exit(0);
-    })
-    .catch(err => {
-        console.error("💥 Error:", err);
-        process.exit(1);
-    });
