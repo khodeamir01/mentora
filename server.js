@@ -9,15 +9,22 @@ const app = require("./app");
 
 async function connectToDB() {
     try {
-        // دیباگ
         console.log("Connecting to MongoDB...");
-        console.log("MONGO_URI exists:", !!process.env.MONGO_URI);
+
+        console.log(
+            "Mongo URI:",
+            process.env.MONGO_URI?.replace(
+                /\/\/([^:]+):([^@]+)@/,
+                "//$1:****@"
+            )
+        );
 
         await mongoose.connect(process.env.MONGO_URI);
+
         console.log(`MongoDB Connected : ${mongoose.connection.host}`);
 
     } catch (error) {
-        console.log(`Error in mongoose connection : ${error.message}`);
+        console.log("Mongo error:", error);
         process.exit(1);
     }
 }
