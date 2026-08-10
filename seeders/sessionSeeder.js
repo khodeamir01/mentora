@@ -39,11 +39,8 @@ const seedSessions = async () => {
         const created = await Session.insertMany(sessions);
         console.log(`✅ ${created.length} sessions created`);
         created.forEach(s => console.log(`  ${s.title} (${s.isFree ? 'رایگان' : 'پولی'})`));
-        process.exit(0);
     } catch (error) {
         console.error("❌ Error:", error.message);
-        process.exit(1);
     }
 };
 
-mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/mentora").then(seedSessions);
