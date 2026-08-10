@@ -1,5 +1,3 @@
-// seeders/courseSeeder.js
-const mongoose = require("mongoose");
 const Course = require("../models/Course");
 const Category = require("../models/Category");
 const User = require("../models/User");
@@ -17,19 +15,18 @@ const seedCourses = async () => {
         const admin = await User.findOne({ roles: "ADMIN" });
 
         const courses = [
-            { name: "آموزش جامع Node.js", href: "nodejs", description: "دوره جامع Node.js از صفر تا ساخت API حرفه‌ای", price: 499000, status: "published", categoryID: catMap["Backend"], creator: admin._id, teacher: teacher._id, cover: "/img/seeders/nodejs.jpg" },
-            { name: "دوره توسعه اندروید با کاتلین", href: "kotlin", description: "آموزش کامل برنامه‌نویسی اندروید با کاتلین", price: 599000, status: "published", categoryID: catMap["Mobile App"], creator: admin._id, teacher: teacher._id, cover: "/img/seeders/kotlin.jpg" },
-            { name: "دوره آموزش فرانت‌اند با HTML, CSS, JS", href: "frontend-bootcamp", description: "یادگیری کامل فرانت‌اند از پایه", price: 399000, status: "published", categoryID: catMap["Frontend"], creator: admin._id, teacher: teacher._id, cover: "/img/seeders/frontendbootcamp.png" },
-            { name: "آموزش Tailwind CSS - منتورشیپ", href: "tailwind", description: "یادگیری Tailwind CSS از صفر تا حرفه‌ای", price: 299000, status: "published", categoryID: catMap["Frontend"], creator: admin._id, teacher: teacher._id, cover: "/img/seeders/tailwind.jpg" },
+            { name: "آموزش جامع Node.js", href: "nodejs-complete-course", description: "دوره جامع Node.js", price: 499000, status: "published", categoryID: catMap["Backend"], creator: admin._id, teacher: teacher._id, cover: "nodejs.jpg" },
+            { name: "دوره توسعه اندروید با کاتلین", href: "android-kotlin-course", description: "آموزش اندروید با کاتلین", price: 599000, status: "published", categoryID: catMap["Mobile App"], creator: admin._id, teacher: teacher._id, cover: "kotlin.jpg" },
+            { name: "دوره آموزش فرانت‌اند", href: "frontend-html-css-js", description: "یادگیری فرانت‌اند", price: 399000, status: "published", categoryID: catMap["Frontend"], creator: admin._id, teacher: teacher._id, cover: "frontend.jpg" },
+            { name: "آموزش Tailwind CSS", href: "tailwind-mentorship", description: "یادگیری Tailwind", price: 299000, status: "published", categoryID: catMap["Frontend"], creator: admin._id, teacher: teacher._id, cover: "tailwind.jpg" },
         ];
 
-        const created = await Course.insertMany(courses);
-        console.log(`✅ ${created.length} courses created`);
-        process.exit(0);
+        await Course.insertMany(courses);
+        console.log("✅ Courses created");
+
     } catch (error) {
         console.error("❌ Error:", error.message);
-        process.exit(1);
     }
 };
 
-mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/mentora").then(seedCourses);
+module.exports = seedCourses;
