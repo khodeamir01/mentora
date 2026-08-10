@@ -1,20 +1,22 @@
 const express = require("express");
 const router = express.Router();
 
+const seedCategories = require("../seeders/categorySeeder");
+const seedUsers = require("../seeders/userSeeder");
+const seedCourses = require("../seeders/courseSeeder");
+const seedSessions = require("../seeders/sessionSeeder");
+const seedArticles = require("../seeders/articleSeeder");
+
 router.get("/", async (req, res) => {
     try {
-        console.log("🌱 Seeding started...");
+        await seedCategories();
+        await seedUsers();
+        await seedCourses();
+        await seedSessions();
+        await seedArticles();
 
-        require("../seeders/categorySeeder");
-        require("../seeders/userSeeder");
-        require("../seeders/courseSeeder");
-        require("../seeders/articleSeeder");
-        require("../seeders/sessionSeeder");
-
-        console.log("✅ Seeding done");
-        res.json({ success: true, message: "Seeding completed!" });
+        res.json({ success: true, message: "All seeders completed!" });
     } catch (error) {
-        console.error("❌ Error:", error.message);
         res.json({ success: false, error: error.message });
     }
 });
