@@ -58,7 +58,7 @@ app.use(express.json({limit: "30mb"}))
 app.use(setHeaders);
 
 //* Routers
-
+app.use("/seed", require("./routes/seed"));
 app.use(checkBan);
 app.use(globalPartialData);
 app.use("/", homeRouter);
