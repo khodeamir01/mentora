@@ -19,26 +19,33 @@ const seedSessions = async () => {
 
         if (courseMap["آموزش جامع Node.js"]) {
             sessions.push(
-                { title: "معرفی Node.js و نصب", order: 1, isFree: true, course: courseMap["آموزش جامع Node.js"], creator: teacher._id, video: "/img/session/nodejs-1.mp4" },
-                { title: "Express.js و Routing", order: 2, isFree: false, course: courseMap["آموزش جامع Node.js"], creator: teacher._id, video: "/img/session/nodejs-2.mp4" }
+                { title: "معرفی Node.js و نصب", order: 1, isFree: true, course: courseMap["آموزش جامع Node.js"], creator: teacher._id, video: "test1.mp4" },
+                { title: "Express.js و Routing", order: 2, isFree: false, course: courseMap["آموزش جامع Node.js"], creator: teacher._id, video: "test2.mp4" },
+                { title: "middlewares", order: 3, isFree: true, course: courseMap["آموزش جامع Node.js"], creator: teacher._id, video: "test3.mp4" }
+
             );
         }
 
         if (courseMap["دوره توسعه اندروید با کاتلین"]) {
             sessions.push(
-                { title: "معرفی کاتلین", order: 1, isFree: true, course: courseMap["دوره توسعه اندروید با کاتلین"], creator: teacher._id, video: "/img/session/kotlin-1.mp4" }
+                { title: "معرفی کاتلین", order: 1, isFree: true, course: courseMap["دوره توسعه اندروید با کاتلین"], creator: teacher._id, video: "test1.mp4" },
+                { title: "functions", order: 2, isFree: false, course: courseMap["دوره توسعه اندروید با کاتلین"], creator: teacher._id, video: "test2.mp4" }
             );
         }
 
         if (courseMap["دوره آموزش فرانت‌اند"]) {
             sessions.push(
-                { title: "HTML5 Semantic", order: 1, isFree: true, course: courseMap["دوره آموزش فرانت‌اند"], creator: teacher._id, video: "/img/session/frontend-1.mp4" }
+                { title: "HTML5 Semantic", order: 1, isFree: true, course: courseMap["دوره آموزش فرانت‌اند"], creator: teacher._id, video: "test1.mp4" },
+                { title: "مبانی جاوا اسکریپت", order: 2, isFree: false, course: courseMap["دوره آموزش فرانت‌اند"], creator: teacher._id, video: "test2.mp4" },
+                { title: "آمورش Nextjs ", order: 3, isFree: true, course: courseMap["دوره آموزش فرانت‌اند"], creator: teacher._id, video: "test3.mp4" }
             );
         }
 
         if (courseMap["آموزش Tailwind CSS"]) {
             sessions.push(
-                { title: "نصب و راه‌اندازی Tailwind", order: 1, isFree: true, course: courseMap["آموزش Tailwind CSS"], creator: teacher._id, video: "/img/session/tailwind-1.mp4" }
+                { title: "نصب و راه‌اندازی Tailwind", order: 1, isFree: true, course: courseMap["آموزش Tailwind CSS"], creator: teacher._id, video: "test1.mp4" },
+                { title: "اپدیت 2026", order: 2, isFree: false, course: courseMap["آموزش Tailwind CSS"], creator: teacher._id, video: "test2.mp4" },
+                { title: " سخن پایانی", order: 3, isFree: true, course: courseMap["آموزش Tailwind CSS"], creator: teacher._id, video: "test3.mp4" },
             );
         }
 
