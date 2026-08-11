@@ -329,8 +329,11 @@
                             />
                           </div>
                           <div class="cont">
-                            <%console.log(comment.user)%>
-                            <h6 class="subtitle"><%= comment.user.name %></h6>
+                            <h6 class="subtitle"><%= comment.user? comment.user.name : 'کاربر ناشناس' %></h6>
+                              <small style="color: #999; font-size: 12px;">
+                                <%= comment.createdAt ? new Date(comment.createdAt).toLocaleDateString('fa-IR') : '' %>
+                              </small>
+                            
                             <div class="ratings cl-theme">
                               <% const rating = Number(comment.rating) || 0; %>
                               <% for (let i = 5; i >= 1; i--) { %>
@@ -453,8 +456,8 @@
                   <li class="reply-item" id="reply-<%= reply._id %>" style="margin-right: 50px; list-style: none;">
                     <div class="thumb">
                       <img 
-                        src="<%= reply.user && reply.user.avatar ? '/img/avatar/' + reply.user.avatar : '/img/defualtPic.png' %>" 
-                        alt="user" 
+                      src="<%= reply.user?.avatar ? reply.user?.avatar : '/img/avatar/defualtPic.png' %>"
+                      alt="user" 
                         style="width: 35px; height: 35px; border-radius: 50%;"
                       />
                     </div>

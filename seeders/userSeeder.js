@@ -24,6 +24,8 @@ const seedUsers = async () => {
             { name: "کیانوش ملکی", username: "kianoosh_user", email: "kianoosh@mentora.com", password, roles: ["USER"], bio: "برنامه‌نویس خودآموخته، دنبال یادگیری حرفه‌ای", avatar: "/img/blog/2.jpg" },
             { name: "درسا محمدیان", username: "dorsa_user", email: "dorsa@mentora.com", password, roles: ["USER"], bio: "دانش‌آموز دبیرستانی، شروع یادگیری کدنویسی", avatar: "/img/blog/c1.jpg" },
             { name: "آرش نیکنام", username: "arash_user", email: "arash@mentora.com", password, roles: ["USER"], bio: "مهندس برق، علاقه‌مند به برنامه‌نویسی بک‌اند", avatar: "/img/client04.png" },
+            { name: "مهران فرهادی", username: "mehran_teacher", email: "mehran@mentora.com", password, roles: ["TEACHER"], bio: "متخصص امنیت شبکه و وب با ۱۰ سال تجربه", avatar: "/img/team/security.jpg" },
+            { name: "شیما کرمانی", username: "shima_teacher", email: "shima@mentora.com", password, roles: ["TEACHER"], bio: "کارشناس شبکه‌های کامپیوتری و زیرساخت", avatar: "/img/team/network.jpg"}
         ];
 
         await User.insertMany(users);
