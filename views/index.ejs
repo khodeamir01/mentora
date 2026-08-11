@@ -197,7 +197,7 @@
                 <div class="single_course">
                     <div class="single_c_img">
                         <div class="course-cover-wrapper">
-                            <img src="course.cover ? course.cover : `/img/course/1.png`" 
+                            <img src="<%= course.cover || `/img/course/1.png`%>"
                                  class="course-cover-img" 
                                  alt="<%= course.name %>"
                                  loading="lazy"
@@ -261,11 +261,11 @@
         <p>یادگیری از کسانی که خودشون مسیر رو طی کردن، همیشه نتیجه بهتری داره. مدرسین ما ترکیبی از دانش فنی و تجربه واقعی بازار کار رو بهت منتقل می‌کنن.</p>
         </div>
 <div class="row">
-    <div class="row">
+    <div class="row" style="display: flex; flex-wrap: wrap;">
         <% if (teachers && teachers.length > 0) { %>
             <% teachers.forEach(teacher => { %>
-                <div class="col-lg-3 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.1s" data-wow-offset="0">
-                    <div class="our-team">
+                <div class="col-lg-3 col-sm-6 col-xs-12 wow fadeInUp" style="display: flex; margin-bottom: 30px;">
+                    <div class="our-team" style="width: 100%;">
                         <div class="team-content">
                             <a href="/teachers/<%= teacher._id %>">
                                 <img src="<%= teacher.avatar || '/img/team/default.jpg' %>" alt="<%= teacher.name %>">
@@ -348,18 +348,7 @@
             
                 </div>
             
-                <!-- دکمه‌های اسلایدر -->
-                <div style="display: flex; justify-content: center; gap: 15px; margin-top: 25px;">
-                    <button onclick="prevSlide()" class="slider-nav-btn slider-nav-prev">
-                        <i class="fa fa-angle-right"></i>
-                    </button>
-            
-                    <div id="slideDots" style="display: flex; gap: 8px;"></div>
-            
-                    <button onclick="nextSlide()" class="slider-nav-btn slider-nav-next">
-                        <i class="fa fa-angle-left"></i>
-                    </button>
-                </div>
+
             
             </div>
         </div>
@@ -477,6 +466,26 @@
     </div>
 </div>
 <script src="/js/jquery-1.12.4.min.js"></script><script src="/bootstrap/js/bootstrap.min.js"></script><script src="/js/modernizr-2.8.3.min.js"></script><script src="/js/jquery-simple-mobilemenu.js"></script><script src="/owlcarousel/js/owl.carousel.min.js"></script><script src="/js/jquery.magnific-popup.min.js"></script><script src="/js/jquery.inview.min.js"></script><script src="/js/scrolltopcontrol.js"></script><script src="/js/wow.min.js"></script><script src="/js/scripts.js"></script> <script src="/js/sweetAlert2.js"></script><script>
+document.addEventListener('DOMContentLoaded', function() {
+    const slides = document.querySelectorAll('#testimonial-slider .testimonial');
+    
+    if (slides.length > 1) {
+        let currentSlide = 0;
+        
+        // مخفی کردن همه به جز اولی
+        slides.forEach(function(slide, i) {
+            slide.style.display = i === 0 ? 'block' : 'none';
+        });
+        
+        // ورق زدن خودکار هر ۴ ثانیه
+        setInterval(function() {
+            slides[currentSlide].style.display = 'none';
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].style.display = 'block';
+            slides[currentSlide].style.animation = 'slideFadeIn 0.5s ease';
+        }, 3000);
+    }
+});
   function toggleUserMenu() {
       document.getElementById('userMenu').classList.toggle('show');
   }
@@ -531,6 +540,7 @@
             }
         });
     });
+    
 
 let currentSlide = 0;
 const slides = document.querySelectorAll('#testimonial-slider .testimonial');
