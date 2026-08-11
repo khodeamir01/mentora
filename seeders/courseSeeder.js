@@ -26,7 +26,7 @@ const seedCourses = async () => {
             { name: "دوره امنیت سایبری و هک اخلاقی", href: "cyber-security-course", description: "هک اخلاقی، Kali Linux، Metasploit و تست نفوذ پیشرفته.", price: 699000, status: "published", categoryID: catMap["Security"], creator: admin._id, teacher: teacher[5]._id, cover: "cyber.jpg" },
             { name: "دوره DevOps و Cloud", href: "devops-cloud-course", description: "Docker، Kubernetes، CI/CD، AWS، Terraform.", price: 749000, status: "published", categoryID: catMap["DevOps"], creator: admin._id, teacher: teacher[7]._id, cover: "devops.jpg" },
             { name: "دوره React و Next.js", href: "react-nextjs-course", description: "React و Next.js رو از پایه تا پیشرفته یاد بگیر. Hooks، Context API، Redux، SSR، SSG و ساخت اپلیکیشن‌های واقعی با TypeScript. پروژه‌محور و مناسب بازار کار.", price: 599000, status: "published", categoryID: catMap["Frontend"], creator: admin._id, teacher: teacher[8]._id, cover: "react.jpg" },
-            { name: "دوره Golang و میکروسرویس‌ها", href: "golang-microservices-course", description: "Go رو از صفر یاد بگیر و با ساختن میکروسرویس‌های واقعی به یه متخصص تبدیل شو. gRPC، Docker، Kubernetes و معماری تمیز.", price: 699000, status: "published", categoryID: catMap["Backend"], creator: admin._id, teacher: teacher[9]._id, cover: "golang.jpg" },
+            { name: "دوره Golang و میکروسرویس‌ها", href: "golang-microservices-course", description: "Go رو از صفر یاد بگیر و با ساختن میکروسرویس‌های واقعی به یه متخصص تبدیل شو. gRPC، Docker، Kubernetes و معماری تمیز.", price: 699000, status: "published", categoryID: catMap["Backend"], creator: admin._id, teacher: teacher[9]._id, cover: "golang.png" },
         ];
 
         await Course.insertMany(courses);
