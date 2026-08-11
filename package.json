@@ -10,6 +10,7 @@
     "seed:categories": "node seeders/categorySeeder.js",
     "seed:courses": "node seeders/courseSeeder.js",
     "seed:sessions": "node seeders/sessionSeeder.js",
+    "seed:enrollments": "node seeders/courseUserSeeder.js",
     "seed:all": "node seeders/categorySeeder.js && node seeders/userSeeder.js && node seeders/courseSeeder.js"
   },
   "keywords": [],

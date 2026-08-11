@@ -7,6 +7,8 @@ const seedCourses = require("../seeders/courseSeeder");
 const seedSessions = require("../seeders/sessionSeeder");
 const seedArticles = require("../seeders/articleSeeder");
 const seedcomments = require("../seeders/commentSeeder");
+const seedCourseUsers = require("../seeders/courseUserSeeder");
+
 
 router.get("/", async (req, res) => {
     try {
@@ -29,6 +31,9 @@ router.get("/", async (req, res) => {
 
         await seedcomments();
         console.log("✅ Comments done");
+
+        await seedCourseUsers();
+        console.log("✅ Course Users done");
 
         res.json({ success: true, message: "All done!" });
     } catch (error) {
