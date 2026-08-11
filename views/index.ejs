@@ -197,7 +197,7 @@
                 <div class="single_course">
                     <div class="single_c_img">
                         <div class="course-cover-wrapper">
-                            <img src="/img/cover/<%= course.cover || '1.png' %>" 
+                            <img src="course.cover ? course.cover : `/img/course/1.png`" 
                                  class="course-cover-img" 
                                  alt="<%= course.name %>"
                                  loading="lazy"
