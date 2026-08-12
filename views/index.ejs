@@ -477,18 +477,22 @@ document.addEventListener('DOMContentLoaded', function() {
     if (slides.length > 1) {
         let currentSlide = 0;
         
-        // مخفی کردن همه به جز اولی
         slides.forEach(function(slide, i) {
             slide.style.display = i === 0 ? 'block' : 'none';
+            slide.style.transform = 'none';
+            slide.style.animation = 'none';
         });
         
-        // ورق زدن خودکار هر ۴ ثانیه
         setInterval(function() {
             slides[currentSlide].style.display = 'none';
             currentSlide = (currentSlide + 1) % slides.length;
             slides[currentSlide].style.display = 'block';
-            slides[currentSlide].style.animation = 'slideFadeIn 0.5s ease';
-        }, 3000);
+            slides[currentSlide].style.opacity = '0';
+            slides[currentSlide].style.transition = 'opacity 0.5s';
+            setTimeout(function() {
+                slides[currentSlide].style.opacity = '1';
+            }, 50);
+        }, 4000);
     }
 });
   function toggleUserMenu() {

@@ -28,14 +28,15 @@ Version      : 1.0
 * 01.GENERAL STYLE
 * ----------------------------------------------------------------------------------------
 */
+* {
+    -webkit-overflow-scrolling: touch;
+}
+
 body {
-color: #6d7193;
-font-family: "Inria Sans", sans-serif;
-font-size: 18px;
-font-weight: 400;
-line-height: 28px;
-background:#fff;
-overflow-x:hidden;
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: clip !important;
 }
 
 html,
@@ -395,6 +396,31 @@ margin-top: 0px;
 	color: #fff;
 	background-color: #525fe1;
 	text-decoration: none;
+}
+
+@media (max-width: 700px) {
+    html, body {
+        overflow-x: hidden !important;
+    }
+    
+    .home_bg.hb_height {
+        height: auto !important;
+        padding: 60px 0 30px !important;
+    }
+    
+    .hero-text-img img {
+        max-width: 60% !important;
+    }
+    
+    .container {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+    
+    .single_counter,
+    .single_tp {
+        margin-bottom: 15px !important;
+    }
 }
 @media only screen and (max-width: 991px){
 	
@@ -4981,8 +5007,17 @@ gap:8px;
     transform: translateY(-2px);
 }
 
-#testimonial-slider .testimonial { display: none; }
-#testimonial-slider .testimonial:first-child { display: block; }
+#testimonial-slider {
+    overflow: hidden !important;
+    width: 100% !important;
+}
+
+#testimonial-slider .testimonial {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+}#testimonial-slider .testimonial:first-child { display: block; }
 /* ========== دکمه‌های اسلایدر نظرات ========== */
 .slider-nav-btn {
     width: 50px;
@@ -5086,13 +5121,14 @@ gap:8px;
 @keyframes slideFadeIn {
     from {
         opacity: 0;
-        transform: translateX(-30px);
+        transform: translateY(10px);
     }
     to {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateY(0);
     }
 }
+
 
 .counter-style{
     font-size: 40px;
@@ -5214,6 +5250,7 @@ gap:8px;
 }
 
 @media (max-width: 991px) {
+    
     #navigation .row {
         position: relative !important;
         display: flex !important;
@@ -5246,6 +5283,20 @@ gap:8px;
     
     .mobile_menu {
         order: 3 !important;
+    }
+    #testimonial-slider {
+        overflow: hidden !important;
+        touch-action: pan-y !important;
+    }
+    
+    .testi_area .row {
+        margin: 0 !important;
+    }
+    
+    .testimonial {
+        margin: 0 0 20px !important;
+        padding: 20px !important;
+        width: 100% !important;
     }
 }
 
