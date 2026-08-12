@@ -586,6 +586,17 @@ if (slides.length > 0) {
     
     setInterval(nextSlide, 4000);
 }
+
+document.querySelectorAll('.mobile_menu > li > a').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+        var subMenu = this.parentElement.querySelector('.sub-menu');
+        if (subMenu) {
+            e.preventDefault();
+            this.parentElement.classList.toggle('open');
+        }
+    });
+});
+
     </script>
     
 
