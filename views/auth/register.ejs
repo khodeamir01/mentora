@@ -9,7 +9,7 @@
   </head>
   <body>
     <section class="container">
-      <form action="/auth/register" method="post" class="form register-form">
+      <form action="/auth/register" method="post" class="form register-form" id="registerForm">
         <div class="left-side image-bg"></div>
         <div class="form-content">
           <header>
@@ -96,7 +96,51 @@
   });
 </script>
 <% } %>
-
+<script>
+  // register.ejs
+document.getElementById("registerForm").addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    try {
+        const res = await fetch('/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: formData.get('name'),
+                username: formData.get('username'),
+                email: formData.get('email'),
+                password: formData.get('password')
+            })
+        });
+        
+        const data = await res.json();
+        console.log("data", data);
+        
+        
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'ثبت‌نام موفق! 🎉',
+                text: 'در حال انتقال به صفحه اصلی...',
+                timer: 2000,
+                showConfirmButton: false
+            }).then(() => {
+                window.location.href = '/';
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'خطا',
+                text: data.error
+            });
+        }
+    } catch (error) {
+        Swal.fire({ icon: 'error', title: 'خطا', text: 'خطا در ارتباط با سرور' });
+    }
+});
+</script>
 
   </body>
 </html>

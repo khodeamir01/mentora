@@ -12,23 +12,18 @@ exports.showRegisterView = async (req, res) => {
 exports.register = async (req, res, next) => {
   try {
     const { name, username, email, password } = req.body;
-    const isUserExist = await User.findOne({
-      $or: [{username, email}]
-    });
+    const isUserExist = await User.findOne({ $or: [{username, email}] });
+    
     if (isUserExist) {
-     return res.render("auth/login", {
-       messages: {
-         error: "ایمیل یا نام کاربری تکراری است , لطقا لاگین کنید",
-          redirect: "/auth/register",
-        }
-        });
+      return res.json({ 
+        success: false, 
+        error: "ایمیل یا نام کاربری تکراری است" 
+      });
     }
+    
     const hashedPassword = await bcryptjs.hash(password, 12);
     const user = await User.create({
-      name,
-      username,
-      email,
-      password: hashedPassword,
+      name, username, email, password: hashedPassword
     });
 
     const accessToken = jwt.sign(
@@ -37,45 +32,27 @@ exports.register = async (req, res, next) => {
       { expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN_SECONDS + "s" }
     );
 
-     await bcryptjs.hash(accessToken, 12);
-
-
     const refreshToken = jwt.sign(
       { id: user.id },
-      process.env.REFRESH_TOKEN_SECRET_KEY ,
+      process.env.REFRESH_TOKEN_SECRET_KEY,
       { expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN_SECONDS + "s" }
     );
-    const hashedRefreshToken = await bcryptjs.hash(refreshToken, 12);
 
-    await redis.set(
-      `refreshToken:${user.id}`,
-      hashedRefreshToken,
-      "EX",
-      process.env.REFRESH_TOKEN_EXPIRES_IN_SECONDS
-    );
+    await redis.set(`refreshToken:${user.id}`, refreshToken, "EX", Number(process.env.REFRESH_TOKEN_EXPIRES_IN_SECONDS));
 
-      res.cookie("accessToken", accessToken, {
-         httpOnly: true,
-         maxAge: process.env.ACCESS_TOKEN_EXPIRES_IN_SECONDS * 1000,
-      });
+    res.cookie("accessToken", accessToken, { 
+      httpOnly: true, 
+      maxAge: Number(process.env.ACCESS_TOKEN_EXPIRES_IN_SECONDS) * 1000 
+    });
+    res.cookie("refreshToken", refreshToken, { 
+      httpOnly: true, 
+      maxAge: Number(process.env.REFRESH_TOKEN_EXPIRES_IN_SECONDS) * 1000 
+    });
 
-      res.cookie("refreshToken", refreshToken, {
-         httpOnly: true,
-         maxAge: process.env.REFRESH_TOKEN_EXPIRES_IN_SECONDS * 1000
-      });
+    return res.json({ success: true, message: "ثبت‌نام موفقیت‌آمیز بود" });
 
-      res.locals.user = user
-
-     return res.render("index", {
-         messages: {
-          success: "ثبت نام شما موفقیت آمیز بود , خوش آمدید",
-           redirect: "/",
-          }
-        });
   } catch (error) {
-    next(error);
     return res.json({ success: false, error: error.message });
-
   }
 };
 
@@ -84,77 +61,60 @@ exports.showLoginView = (req, res) => {
 }
 
 exports.login = async (req, res, next) => {
-try {
-  const { username, password } = req.body;
-    
-  const user = await User.findOne({ username });
-  
-  if (!user) {
-    return res.render("auth/login", {
-      messages: {
-        error: "کاربری یافت نشد"
+  try {
+      const { username, password } = req.body;
+      console.log("Login body:", { username, password }); // ← دیباگ ببین چی میاد
+      
+      const user = await User.findOne({ username });
+      
+      if (!user) {
+          return res.json({ success: false, error: "کاربری یافت نشد" });
       }
-    });
-  }
-  
-  // چک کردن رمز عبور
-  const isMatch = await bcryptjs.compare(password, user.password);
-  
-  if (!isMatch) {
-    return res.render("auth/login", {
-      messages: {
-        error: " رمز عبور اشتباه است"
+      
+      const isMatch = await bcryptjs.compare(password, user.password);
+      
+      if (!isMatch) {
+          return res.json({ success: false, error: "رمز عبور اشتباه است" });
       }
-    });
+      
+      const accessToken = jwt.sign(
+          { id: user.id, role: user.roles },
+          process.env.ACCESS_TOKEN_SECRET_KEY,
+          { expiresIn: Number(process.env.ACCESS_TOKEN_EXPIRES_IN_SECONDS) }
+      );
+      
+      const refreshToken = jwt.sign(
+          { id: user.id },
+          process.env.REFRESH_TOKEN_SECRET_KEY,
+          { expiresIn: Number(process.env.REFRESH_TOKEN_EXPIRES_IN_SECONDS) }
+      );
+      
+      await redis.set(
+          `refreshToken:${user.id}`,
+          refreshToken,
+          "EX",
+          Number(process.env.REFRESH_TOKEN_EXPIRES_IN_SECONDS)
+      );
+      
+      res.cookie("accessToken", accessToken, {
+          httpOnly: true,
+          maxAge: Number(process.env.ACCESS_TOKEN_EXPIRES_IN_SECONDS) * 1000,
+      });
+      
+      res.cookie("refreshToken", refreshToken, {
+          httpOnly: true,
+          maxAge: Number(process.env.REFRESH_TOKEN_EXPIRES_IN_SECONDS) * 1000,
+      });
+      
+      return res.json({ 
+          success: true, 
+          message: "ورود موفقیت‌آمیز بود" 
+      });
+      
+  } catch (error) {
+      console.log("Login error:", error.message);
+      return res.json({ success: false, error: error.message });
   }
-
-  
-
-  const accessToken = jwt.sign(
-    { id: user.id, role: user.roles },
-    process.env.ACCESS_TOKEN_SECRET_KEY,
-    { expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN_SECONDS + "s" }
-  );
-   await bcryptjs.hash(accessToken, 12);
-
-  const refreshToken = jwt.sign(
-    { id: user.id },
-    process.env.REFRESH_TOKEN_SECRET_KEY,
-    { expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN_SECONDS + "s" }
-  );
-  const hashedRefreshToken = await bcryptjs.hash(refreshToken, 12);
-
-  await redis.set(
-    `refreshToken:${user.id}`,
-    hashedRefreshToken,
-    "EX",
-    process.env.REFRESH_TOKEN_EXPIRES_IN_SECONDS * 1000
-    
-  );
-
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    maxAge: process.env.ACCESS_TOKEN_EXPIRES_IN_SECONDS * 1000,
-  });
-
-  res.cookie("refreshToken",refreshToken, {
-    httpOnly: true,
-    maxAge: process.env.REFRESH_TOKEN_EXPIRES_IN_SECONDS * 1000,
-  }); 
-
-     return res.render("auth/login", {
-         messages: {
-          success: "ورود شما موفقیت آمیز بود , خوش آمدید",
-           redirect: "/",
-          }
-        });
-  
-} catch (error) {
-  console.log("error in login --->",{ error: error.message } );
-  return res.json({ success: false, error: error.message });
-
-}
-        
 };
 
 exports.googleLogin = async (req, res) => {

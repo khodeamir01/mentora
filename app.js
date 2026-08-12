@@ -17,6 +17,8 @@ const checkBan = require("./middlewares/checkBan.js");
 const articlesRouter = require("./routes/article.js");
 const teachersrouter = require("./routes/teacher.js");
 const globalPartialData = require("./middlewares/globalPartialData.js");
+const googleStrategy = require("./strategies/googleStrategy.js");
+
 
 
 const passport = require("passport");
@@ -41,6 +43,7 @@ app.use(session({
 
 app.use(flash());
 app.use(cookieParser());
+passport.use(googleStrategy);
 app.use(passport.initialize());
 
 app.use(express.static(path.resolve(__dirname, "public/assets")));
