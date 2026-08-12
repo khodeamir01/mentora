@@ -105,10 +105,9 @@ exports.getAll = async (req, res) => {
 
         const total = await Article.countDocuments(filter);
 
-        return res.json({
-            success: true,
-            data: { articles, total, totalPages: Math.ceil(total / limit), currentPage: parseInt(page) }
-        });
+
+        return res.render("article/getAllArticles.ejs", { articles, total, totalPages: Math.ceil(total / limit), currentPage: parseInt(page) })
+
 
     } catch (error) {
         console.error("Get all articles error:", error);

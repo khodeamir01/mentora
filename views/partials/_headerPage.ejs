@@ -122,6 +122,49 @@
             
         </div>
     </div>
+
+    <!-- منوی موبایل - بذار داخل _headerPage.ejs -->
+<ul class="mobile_menu">
+    <li><a href="/">صفحه اصلی</a></li>
+    
+    <li>
+        <a href="#">دوره‌ها</a>
+        <ul class="sub-menu">
+            <li><a href="/course">همه دوره‌ها</a></li>
+            <% if (categories && categories.length > 0) { %>
+                <% categories.forEach(cat => { %>
+                    <li><a href="/course?category=<%= cat._id %>"><%= cat.title %></a></li>
+                <% }); %>
+            <% } %>
+        </ul>
+    </li>
+    
+    <li><a href="/articles">مقالات</a></li>
+    <li><a href="/teachers">مدرسین</a></li>
+    <li><a href="/about">درباره</a></li>
+    <li><a href="/contact">تماس</a></li>
+    
+    <% if (user) { %>
+        <li>
+            <a href="#"><%= user.name %></a>
+            <ul class="sub-menu">
+                <% 
+                    let dashboardLink = '/dashboard/user';
+                    if (user.roles?.includes('ADMIN')) dashboardLink = '/dashboard/admin';
+                    else if (user.roles?.includes('AUTHOR')) dashboardLink = '/dashboard/author';
+                    else if (user.roles?.includes('TEACHER')) dashboardLink = '/dashboard/teacher';
+                %>
+                <li><a href="<%= dashboardLink %>">پنل کاربری</a></li>
+                <li><a href="/cart">سبد خرید</a></li>
+                <li><a href="/dashboard/profile">پروفایل</a></li>
+                <li><a href="/auth/logout">خروج</a></li>
+            </ul>
+        </li>
+    <% } else { %>
+        <li><a href="/auth/login">ورود</a></li>
+        <li><a href="/auth/register">ثبت نام</a></li>
+    <% } %>
+</ul>
 </div>
 
 <script src="/js/sweetAlert2.js"></script>
