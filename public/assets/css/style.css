@@ -4504,6 +4504,163 @@ margin-top: 30px;
         transform: translateY(-5px) rotate(-1deg);
     }
 }
+/* ========== ریسپانسیو صفحه اصلی ========== */
+@media (max-width: 768px) {
+    .home_bg {
+        height: auto;
+        padding: 100px 0 50px;
+    }
+    
+    .hero-text h1 {
+        font-size: 28px;
+        line-height: 42px;
+        padding-top: 50px;
+    }
+    
+    .hero-text p {
+        width: 100%;
+        font-size: 15px;
+    }
+    
+    .hero-text-img {
+        position: relative;
+        left: 0;
+        bottom: auto;
+        margin-top: 30px;
+    }
+    
+    .hero-text-img img {
+        width: 80%;
+        margin: 0 auto;
+        display: block;
+    }
+    
+    .home_ps {
+        right: 50%;
+        transform: translateX(50%);
+    }
+    
+    .section-padding {
+        padding: 50px 0;
+    }
+    
+    .section-title h2 {
+        font-size: 26px;
+        line-height: 36px;
+    }
+    
+    .section-title p {
+        width: 100%;
+    }
+    
+    .single_tp {
+        margin-bottom: 20px;
+    }
+    
+    .ab_img {
+        margin-bottom: 30px;
+    }
+    
+    .ab_img img {
+        width: 100%;
+    }
+    
+    .cat_list ul li {
+        margin: 5px;
+    }
+    
+    .cat_list ul li a {
+        font-size: 13px;
+        padding: 6px 14px;
+    }
+    
+    .cat_list ul li a img {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .single_course h4 {
+        font-size: 16px;
+    }
+    
+    .cour_btn {
+        float: none;
+        text-align: center;
+        margin: 20px 0;
+    }
+    
+    .testimonial {
+        margin: 0 5px 30px;
+        padding: 25px 20px;
+    }
+    
+    .testimonial_content p {
+        font-size: 14px;
+        line-height: 28px;
+    }
+    
+    .single_blog {
+        margin-bottom: 25px;
+    }
+    
+    .our-team {
+        margin-bottom: 20px;
+    }
+    
+    .footer {
+        text-align: center;
+    }
+    
+    .single_footer {
+        margin-bottom: 30px;
+    }
+    
+    .social_profile ul li {
+        float: none;
+        display: inline-block;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-text h1 {
+        font-size: 24px;
+        line-height: 36px;
+    }
+    
+    .home_sb input {
+        height: 45px;
+        font-size: 13px;
+    }
+    
+    .home_sb button {
+        width: 38px;
+        height: 38px;
+    }
+    
+    .section-title h2 {
+        font-size: 22px;
+    }
+    
+    .single_counter {
+        margin-bottom: 20px;
+    }
+    
+    .single_tp {
+        padding: 20px;
+    }
+    
+    .partner_title h3 {
+        font-size: 18px;
+    }
+    
+    .partner a img {
+        width: 80px;
+    }
+    
+    .count_area {
+        margin-top: 30px;
+    }
+}
 
 /* Responsive */
 @media (max-width: 768px) {
