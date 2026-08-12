@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="Mentora - Education HTML Template" />
+    <meta
+      name="keywords"
+      content="agency, business, corporate, creative, html5, modern, multipurpose, One Page, parallax, startup"
+    />
+    <title>Mentora - یادگیری بی حد و مرز</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/fonts/font-awesome.min.css" />
+    <link rel="stylesheet" href="/fonts/themify-icons.css" />
+    <link rel="stylesheet" href="/owlcarousel/css/owl.carousel.css" />
+    <link rel="stylesheet" href="/owlcarousel/css/owl.theme.css" />
+    <link rel="stylesheet" href="/css/jquery-simple-mobilemenu.css" />
+    <link rel="stylesheet" href="/css/magnific-popup.css" />
+    <link rel="stylesheet" href="/css/animate.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body data-spy="scroll" data-offset="80">
+    
+    <div class="preloaders"><span class="loader"></span></div>
+    <%- include('../partials/_headerPage.ejs') %>
+
+    <section class="section-top" style="background: linear-gradient(135deg, #1a1a2e 0%, #302b63 100%); padding: 80px 0 50px;">
+        <div class="container text-center">
+            <h1 style="color: white; font-size: 36px; font-weight: 700;">مقالات</h1>
+            <p style="color: rgba(255,255,255,0.8);">آخرین مقالات آموزشی منتورا</p>
+        </div>
+    </section>
+
+    <section class="blog_area section-padding">
+        <div class="container">
+            <div class="row">
+                <% if (articles && articles.length > 0) { %>
+                    <% articles.forEach(article => { %>
+                        <div class="col-lg-4 col-sm-6 col-xs-12">
+                            <div class="single_blog" style="border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.06); margin-bottom: 30px; display: flex; flex-direction: column; height: 100%;">
+                                <div style="height: 200px; overflow: hidden;">
+                                    <img src="<%= article.cover || '1.jpg' %>" 
+                                         alt="<%= article.title %>" 
+                                         style="width: 100%; height: 100%; object-fit: cover;"
+                                         onerror="this.src='/img/blog/1.jpg'">
+                                </div>
+                                <div class="content_box" style="flex: 1; display: flex; flex-direction: column;">
+                                    <span style="font-size: 12px; color: #888;">
+                                        <i class="fa fa-calendar"></i> <%= new Date(article.createdAt).toLocaleDateString('fa-IR') %> |
+                                        <span style="color: #525fe1;"><%= article.category?.title || 'مقالات' %></span>
+                                    </span>
+                                    <h2 style="font-size: 18px; margin: 10px 0;">
+                                        <a href="/articles/<%= article.slug %>"><%= article.title %></a>
+                                    </h2>
+                                    <p style="color: #666; font-size: 14px; flex: 1;">
+                                        <%= article.description?.substring(0, 120) %>...
+                                    </p>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                        <span style="font-size: 12px; color: #888;">
+                                            <i class="fa fa-eye"></i> <%= article.views || 0 %> بازدید
+                                        </span>
+                                        <a href="/articles/<%= article.slug %>" class="btn_one" style="padding: 8px 20px; font-size: 13px;">
+                                            ادامه <i class="ti-arrow-left"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="col-12 text-center" style="padding: 60px 0;">
+                        <i class="fa fa-file-text-o" style="font-size: 60px; color: #ddd;"></i>
+                        <h3 style="color: #999; margin-top: 20px;">هنوز مقاله‌ای منتشر نشده</h3>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </section>
+
+    <%- include('../partials/_footer') %>
+
+    <script src="/js/jquery-1.12.4.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/js/scripts.js"></script>
+</body>
+</html>
