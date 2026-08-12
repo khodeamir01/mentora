@@ -5149,57 +5149,7 @@ gap:8px;
     position: relative;
     }
 
-    .mobile_menu {
-        display: none;
-    }
     
-    @media (max-width: 991px) {
-        .col-60.d-flex {
-            display: none !important;
-        }
-        
-        .col-20.d-none.d-xl-block {
-            display: none !important;
-        }
-        
-        .mobile_menu {
-            display: block;
-            width: 100%;
-            list-style: none;
-            padding: 15px;
-            margin: 0;
-            background: #fff;
-        }
-        
-        .mobile_menu li {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .mobile_menu li a {
-            color: #333;
-            font-size: 16px;
-            font-weight: 600;
-            display: block;
-        }
-        
-        .mobile_menu .sub-menu {
-            display: none;
-            padding: 10px 15px 0;
-            list-style: none;
-        }
-        
-        .mobile_menu .sub-menu li {
-            border: none;
-            padding: 5px 0;
-        }
-        
-        .mobile_menu .sub-menu li a {
-            font-size: 14px;
-            font-weight: 400;
-            color: #666;
-        }
-    }
  /* ========== مگا منو ========== */
 #navigation {
     padding: 0 65px !important;
