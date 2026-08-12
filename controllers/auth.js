@@ -119,7 +119,9 @@ exports.login = async (req, res, next) => {
 
 exports.googleLogin = async (req, res) => {
   try {
-      const user = req.user; // passport user رو توی req.user می‌ذاره
+      const user = req.user; 
+      if (!req.user) return res.redirect("/auth/login");
+
 
       const accessToken = jwt.sign(
           { id: user.id, role: user.roles },
