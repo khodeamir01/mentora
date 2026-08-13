@@ -507,6 +507,17 @@ margin-top: 0px;
     font-size: 13px;
     text-decoration: none;
 }
+.category-courses {
+    background: #1a1a2e;
+    margin-right: 15px;
+    padding: 8px;
+}
+
+.category-courses li a {
+    font-size: 12px;
+    padding: 8px 15px;
+    color: rgba(255,255,255,0.7);
+}
 @media (max-width: 520px) {
     #navigation .row {
         position: relative;

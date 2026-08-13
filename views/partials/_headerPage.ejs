@@ -134,21 +134,39 @@
 </button>
 
 <!-- منوی موبایل جدید -->
+<!-- منوی موبایل -->
+<!-- منوی موبایل -->
 <ul class="custom-mobile-menu" id="customMobileMenu">
     <li><a href="/">صفحه اصلی</a></li>
+    
     <li>
         <a href="#" class="has-children">دوره‌ها</a>
         <ul class="custom-submenu">
             <li><a href="/course">همه دوره‌ها</a></li>
+            
             <% categories.forEach(cat => { %>
-                <li><a href="/course?category=<%= cat._id %>"><%= cat.title %></a></li>
+                <li>
+                    <a href="#" class="has-children has-category"><%= cat.title %></a>
+                    <ul class="custom-submenu category-courses">
+                        <% 
+                            const catCourses = courses.filter(c => c.categoryID?._id?.toString() === cat._id.toString());
+                        %>
+                        <% if (catCourses.length > 0) { %>
+                            <% catCourses.forEach(course => { %>
+                                <li><a href="/course/<%= course.href %>"><%= course.name %></a></li>
+                            <% }); %>
+                        <% } else { %>
+                            <li><span style="color:#888;">به‌زودی</span></li>
+                        <% } %>
+                    </ul>
+                </li>
             <% }); %>
         </ul>
     </li>
+    
     <li><a href="/articles">مقالات</a></li>
     <li><a href="/teachers">مدرسین</a></li>
-    <li><a href="/about">درباره</a></li>
-    <li><a href="/contact">تماس</a></li>
+    
     <% if (user) { %>
         <li><a href="/dashboard">پنل کاربری</a></li>
         <li><a href="/auth/logout">خروج</a></li>
@@ -173,18 +191,13 @@ document.getElementById('customHamburger').addEventListener('click', function(e)
         this.classList.add('active');
     }
 });
-document.querySelectorAll('.mobile_menu > li > a').forEach(function(link) {
+document.querySelectorAll('.has-children').forEach(function(link) {
     link.addEventListener('click', function(e) {
-        var subMenu = this.parentElement.querySelector('.sub-menu');
-        if (subMenu) {
-            e.preventDefault();
-            
-
-            document.querySelectorAll('.mobile_menu > li.open').forEach(function(item) {
-                if (item !== this.parentElement) item.classList.remove('open');
-            });
-            
-            this.parentElement.classList.toggle('open');
+        e.preventDefault();
+        var subMenu = this.nextElementSibling;
+        
+        if (subMenu && subMenu.classList.contains('custom-submenu')) {
+            subMenu.style.display = subMenu.style.display === 'block' ? 'none' : 'block';
         }
     });
 });
