@@ -59,6 +59,16 @@ const seedSessions = async () => {
                 { title: "DOM و Events", order: 4, isFree: false, course: courseMap["دوره آموزش فرانت‌اند"]._id, creator: teacher._id, video: "test1.mp4" }
             );
         }
+        if (courseMap["آموزش Tailwind CSS"]) {
+            const teacher = courseMap["آموزش Tailwind CSS"].teacher;
+            sessions.push(
+                { title: "نصب و راه‌اندازی Tailwind", order: 1, isFree: true, course: courseMap["آموزش Tailwind CSS"]._id, creator: teacher._id, video: "test1.mp4" },
+                { title: "Utility Classes پایه", order: 2, isFree: true, course: courseMap["آموزش Tailwind CSS"]._id, creator: teacher._id, video: "test2.mp4" },
+                { title: "Layout و Responsive Design", order: 3, isFree: false, course: courseMap["آموزش Tailwind CSS"]._id, creator: teacher._id, video: "test3.mp4" },
+                { title: "Custom Theme و Dark Mode", order: 4, isFree: false, course: courseMap["آموزش Tailwind CSS"]._id, creator: teacher._id, video: "test1.mp4" },
+                { title: "پروژه نهایی - لندینگ پیج", order: 5, isFree: false, course: courseMap["آموزش Tailwind CSS"]._id, creator: teacher._id, video: "test2.mp4" }
+            );
+        }
 
 
         if (courseMap["دوره جامع امنیت شبکه و وب"]) {
