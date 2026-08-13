@@ -22,17 +22,17 @@ router.get("/:slug", auth, Controller.getOne);
 
 
 
-// نیاز به احراز هویت
+
 router.post("/", auth, roleGuard("AUTHOR"), upload.single("cover"), validate(createArticleValidator), Controller.create);
 router.put("/:id", auth, roleGuard("AUTHOR", "ADMIN"), validate(updateArticleValidator), Controller.update);
 router.delete("/:id", auth, roleGuard("AUTHOR", "ADMIN"), Controller.remove);
 
 router.get("/edit/:id", auth, roleGuard("AUTHOR", "ADMIN"), Controller.edit);
 
-// لایک و کامنت
+
 router.post("/:id/comment", auth, validate(commentValidator), Controller.addComment);
 
-// مقالات نویسنده
+
 router.get("/my/articles", auth, Controller.getMyArticles);
 
 

@@ -55,7 +55,7 @@ exports.createComment = async (req, res, next) => {
       replies: [],
     });
 
-    // populate کردن user برای ارسال اطلاعات کامل به کلاینت
+
     await newComment.populate('user', 'name avatar');
 
     return successResponse(res, 200, {

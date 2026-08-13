@@ -33,7 +33,7 @@ module.exports = async (req, res, next) => {
       });
     }
 
-    // حذف کپچا بعد از اعتبارسنجی
+
     await redis.del(`captcha:${uuid}`);
 
     next();

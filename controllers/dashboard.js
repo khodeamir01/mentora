@@ -17,7 +17,7 @@ exports.panel = async (req, res) => {
     return res.redirect("/dashboard/user");
 };
 
-// ========== ADMIN ==========
+
 exports.adminPanel = async (req, res) => {
     const [
         totalUsers, totalCourses, totalComments, 
@@ -57,7 +57,7 @@ exports.adminPanel = async (req, res) => {
     });
 };
 
-// تغییر نقش کاربر
+
 exports.adminChangeRole = async (req, res) => {
     try {
         const { userId, role } = req.body;
@@ -201,7 +201,7 @@ const mySessions = await Session.find({ creator: user._id }) // at Session model
         course: { $in: myCourses.map(c => c._id) } 
     });
     
-    // تعداد جلسات هر دوره
+
     for (let course of myCourses) {
         course.sessionCount = await Session.countDocuments({ course: course._id });
     }
@@ -226,7 +226,7 @@ exports.authorPanel = async (req, res) => {
 };
 
 
-// ========== USER ==========
+
 exports.userPanel = async (req, res) => {
     const user = req.user;
 

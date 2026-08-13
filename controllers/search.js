@@ -1,8 +1,8 @@
-// در فایل controllers/searchController.js
+
 const Course = require('../models/Course');
 const Category = require('../models/Category');
 
-// جستجوی پیشرفته
+
 exports.search = async (req, res) => {
     try {
         const query = req.query.q || '';
@@ -16,7 +16,7 @@ exports.search = async (req, res) => {
         
         const skip = (page - 1) * limit;
         
-        // آماده کردن عبارت جستجو
+
         const searchRegex = new RegExp(query, 'gi');
         
         let results = {
@@ -29,7 +29,7 @@ exports.search = async (req, res) => {
             query: query
         };
         
-        // جستجو در دوره‌ها
+
         if (type === 'all' || type === 'courses') {
             let courseQuery = {
                 price: { $gte: minPrice, $lte: maxPrice },
@@ -40,12 +40,12 @@ exports.search = async (req, res) => {
                 ]
             };
             
-            // فیلتر بر اساس سطح
+
             if (level !== 'all') {
                 courseQuery.level = level;
             }
             
-            // ترتیب‌بندی
+
             let sortOptions = {};
             switch (sortBy) {
                 case 'newest':
@@ -77,7 +77,7 @@ exports.search = async (req, res) => {
             results.totalCourses = totalCourses;
         }
         
-        // جستجو در دسته‌بندی‌ها
+
         if (type === 'all' || type === 'categories') {
             const categoryQuery = {
                 $or: [
@@ -88,7 +88,7 @@ exports.search = async (req, res) => {
             
             const categories = await Category.find(categoryQuery).limit(10);
             
-            // شمارش تعداد دوره‌های هر دسته
+
             for (let category of categories) {
                 category.courseCount = await Course.countDocuments({ 
                     categoryID: category._id,
@@ -99,13 +99,13 @@ exports.search = async (req, res) => {
             results.totalCategories = categories.length;
         }
         
-        // محاسبه تعداد کل صفحات
+
         const totalItems = type === 'courses' ? results.totalCourses : 
                           type === 'categories' ? results.totalCategories : 
                           results.totalCourses + results.totalCategories;
         results.totalPages = Math.ceil(totalItems / limit);
         
-        // آمار جستجو
+
         results.stats = {
             coursesFound: results.totalCourses,
             categoriesFound: results.totalCategories,
@@ -124,7 +124,7 @@ exports.search = async (req, res) => {
     }
 };
 
-// جستجوی سریع (برای هدر)
+
 exports.quickSearch = async (req, res) => {
     try {
         const query = req.query.q || '';
@@ -135,7 +135,7 @@ exports.quickSearch = async (req, res) => {
         
         const searchRegex = new RegExp(query, 'gi');
         
-        // جستجو در دوره‌ها
+
         const courses = await Course.find({
             $or: [
                 { name: searchRegex },
@@ -145,7 +145,7 @@ exports.quickSearch = async (req, res) => {
         .limit(5)
         .select('name href price cover');
         
-        // جستجو در دسته‌بندی‌ها
+
         const categories = await Category.find({
             $or: [
                 { title: searchRegex },
@@ -169,13 +169,13 @@ exports.quickSearch = async (req, res) => {
     }
 };
 
-// فیلترهای پیشرفته (گرفتن مقادیر برای فیلترها)
+
 exports.getFilterOptions = async (req, res) => {
     try {
-        // گرفتن سطوح مختلف
+
         const levels = ['مقدماتی', 'متوسط', 'پیشرفته', 'همه سطوح'];
         
-        // گرفتن محدوده قیمت
+
         const priceStats = await Course.aggregate([
             { 
                 $group: {

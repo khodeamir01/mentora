@@ -81,7 +81,7 @@
     <script src="/js/sweetAlert2.js"></script>
     
     <script>
-    // ========== کپچا ==========
+
     (async function () {
         const captcha = document.querySelector(".captcha");
         const uuid = document.querySelector(".uuid");
@@ -96,7 +96,7 @@
         }
     })();
 
-    // ========== لاگین ==========
+
     document.getElementById('loginForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         
@@ -142,7 +142,7 @@
                     confirmButtonColor: '#667eea'
                 });
                 
-                // رفرش کپچا
+
                 const captchaRes = await fetch("/captcha");
                 const captchaData = await captchaRes.json();
                 document.querySelector(".uuid").value = captchaData.uuid;

@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="/css/style.css">
 
+
 <div id="navigation" class="navbar-light bg-faded site-navigation">
     <div class="container-fluid">
         <div class="row">
@@ -125,41 +126,32 @@
 
     
 
-<ul class="mobile_menu">
+<!-- دکمه همبرگر جدید -->
+<button class="custom-hamburger" id="customHamburger" type="button">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
+
+<!-- منوی موبایل جدید -->
+<ul class="custom-mobile-menu" id="customMobileMenu">
     <li><a href="/">صفحه اصلی</a></li>
-    
     <li>
-        <a href="#">دوره‌ها</a>
-        <ul class="sub-menu">
+        <a href="#" class="has-children">دوره‌ها</a>
+        <ul class="custom-submenu">
             <li><a href="/course">همه دوره‌ها</a></li>
-            <% if (categories && categories.length > 0) { %>
-                <% categories.forEach(cat => { %>
-                    <li><a href="/course?category=<%= cat._id %>"><%= cat.title %></a></li>
-                <% }); %>
-            <% } %>
+            <% categories.forEach(cat => { %>
+                <li><a href="/course?category=<%= cat._id %>"><%= cat.title %></a></li>
+            <% }); %>
         </ul>
     </li>
-    
     <li><a href="/articles">مقالات</a></li>
     <li><a href="/teachers">مدرسین</a></li>
-
-    
+    <li><a href="/about">درباره</a></li>
+    <li><a href="/contact">تماس</a></li>
     <% if (user) { %>
-        <li>
-            <a href="#"><%= user.name %></a>
-            <ul class="sub-menu">
-                <% 
-                    let dashboardLink = '/dashboard/user';
-                    if (user.roles?.includes('ADMIN')) dashboardLink = '/dashboard/admin';
-                    else if (user.roles?.includes('AUTHOR')) dashboardLink = '/dashboard/author';
-                    else if (user.roles?.includes('TEACHER')) dashboardLink = '/dashboard/teacher';
-                %>
-                <li><a href="<%= dashboardLink %>">پنل کاربری</a></li>
-                <li><a href="/cart">سبد خرید</a></li>
-                <li><a href="/dashboard/profile">پروفایل</a></li>
-                <li><a href="/auth/logout">خروج</a></li>
-            </ul>
-        </li>
+        <li><a href="/dashboard">پنل کاربری</a></li>
+        <li><a href="/auth/logout">خروج</a></li>
     <% } else { %>
         <li><a href="/auth/login">ورود</a></li>
         <li><a href="/auth/register">ثبت نام</a></li>
@@ -169,13 +161,25 @@
 
 <script src="/js/sweetAlert2.js"></script>
 <script>
+document.getElementById('customHamburger').addEventListener('click', function(e) {
+    e.preventDefault();
+    var menu = document.getElementById('customMobileMenu');
+    
+    if (menu.style.display === 'block') {
+        menu.style.display = 'none';
+        this.classList.remove('active');
+    } else {
+        menu.style.display = 'block';
+        this.classList.add('active');
+    }
+});
 document.querySelectorAll('.mobile_menu > li > a').forEach(function(link) {
     link.addEventListener('click', function(e) {
         var subMenu = this.parentElement.querySelector('.sub-menu');
         if (subMenu) {
             e.preventDefault();
             
-            // بستن همه زیرمنوهای دیگه
+
             document.querySelectorAll('.mobile_menu > li.open').forEach(function(item) {
                 if (item !== this.parentElement) item.classList.remove('open');
             });
@@ -185,7 +189,7 @@ document.querySelectorAll('.mobile_menu > li > a').forEach(function(link) {
     });
 });
 
-// مگا منو
+
 document.addEventListener('DOMContentLoaded', function() {
     const catItems = document.querySelectorAll('.mega-cat-item');
     const catContents = document.querySelectorAll('.mega-cat-content');
@@ -209,14 +213,14 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// منوی کاربر
+
 function toggleUserMenu() { document.getElementById('userMenu').classList.toggle('show'); }
 document.addEventListener('click', e => {
     const menu = document.getElementById('userMenu');
     if (!e.target.closest('.user-dropdown-btn') && menu?.classList.contains('show')) menu.classList.remove('show');
 });
 
-// خروج
+
 document.querySelector('.logout-link')?.addEventListener('click', function(e) {
     e.preventDefault();
     Swal.fire({

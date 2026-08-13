@@ -32,8 +32,8 @@ const { setHeaders } = require("./middlewares/headers.js");
 const { errorHandler } = require("./middlewares/errorHandler.js");
 
 const app = express();
-// Nodemailer  TODO ------------------------------------------------------------------------->
-// app.use(helmet());
+
+
 
 app.use(session({
     secret: "Secret Key",
@@ -60,7 +60,7 @@ app.use(express.urlencoded({limit:"30mb", extended: true}));
 app.use(express.json({limit: "30mb"}))
 app.use(setHeaders);
 
-//* Routers
+
 app.use("/seed", require("./routes/seed"));
 app.use(checkBan);
 app.use(globalPartialData);

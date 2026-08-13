@@ -230,7 +230,7 @@ if (typeof Object.create !== "function") {
                 base.options.items = base.orignalItems;
             }
             if (base.options.itemsCustom !== false) {
-                //Reorder array by screen size
+
                 base.options.itemsCustom.sort(function (a, b) {return a[0] - b[0]; });
 
                 for (i = 0; i < base.options.itemsCustom.length; i += 1) {
@@ -262,7 +262,7 @@ if (typeof Object.create !== "function") {
                 }
             }
 
-            //if number of items is less than declared
+
             if (base.options.items > base.itemsAmount && base.options.itemsScaleUp === true) {
                 base.options.items = base.itemsAmount;
             }
@@ -1274,7 +1274,7 @@ if (typeof Object.create !== "function") {
 
         transitionTypes : function (className) {
             var base = this;
-            //Currently available: "fade", "backSlide", "goDown", "fadeUp"
+
             base.outClass = "owl-" + className + "-out";
             base.inClass = "owl-" + className + "-in";
         },

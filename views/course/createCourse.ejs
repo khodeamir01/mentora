@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('courseForm');
     const submitBtn = document.getElementById('submitBtn');
 
-    // بررسی پیام‌های موجود در URL (برای نمایش بعد از ریدایرکت)
+
     const urlParams = new URLSearchParams(window.location.search);
     const success = urlParams.get('success');
     const error = urlParams.get('error');
@@ -158,11 +158,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ارسال فرم با AJAX
+
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
-        // غیرفعال کردن دکمه برای جلوگیری از ارسال مجدد
+
         submitBtn.disabled = true;
         submitBtn.textContent = 'در حال ارسال...';
 
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
 
             if (response.ok) {
-                // نمایش پیام موفقیت
+
                 Swal.fire({
                     icon: 'success',
                     title: 'دوره با موفقیت ایجاد شد!',
@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     window.location.href = '/';
                 });
             } else {
-                // نمایش پیام خطا
+
                 Swal.fire({
                     icon: 'error',
                     title: 'خطا در ایجاد دوره!',

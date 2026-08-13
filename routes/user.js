@@ -1,4 +1,4 @@
-// روت‌های داشبورد
+
 const express = require("express");
 const Controller = require("./../controllers/user");
 const auth = require("./../middlewares/auth");

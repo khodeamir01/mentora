@@ -281,7 +281,7 @@ const articles = JSON.parse('<%- JSON.stringify(myArticles).replace(/\\/g, "\\\\
     const draftCount = articles.filter(a => a.status === 'draft').length;
     const totalViews = articles.reduce((sum, a) => sum + (a.views || 0), 0);
 
-    // Doughnut Chart - Status
+
     const statusCtx = document.getElementById('statusChart').getContext('2d');
     new Chart(statusCtx, {
         type: 'doughnut',
@@ -324,7 +324,7 @@ const articles = JSON.parse('<%- JSON.stringify(myArticles).replace(/\\/g, "\\\\
         }
     });
 
-    // Bar Chart - Views (با ستون‌های باریک)
+
     const viewsCtx = document.getElementById('viewsChart').getContext('2d');
 
     const labels = articles.slice(0, 8).map((a, index) => {

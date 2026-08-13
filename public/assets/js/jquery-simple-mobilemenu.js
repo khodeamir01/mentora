@@ -21,11 +21,11 @@
     var init = function() {
       smMenu.settings = $.extend({}, defaults, options);
       smMenu.styleClass = smMenu.settings.menuStyle.toLowerCase() === 'slide' ? "slide" : "accordion";
-      // Create Wrapper div & hamburger
+
       createWrapper_Ham();
-      // Create Back Menu for each sub menu
+
       createBackButton();
-      // Callback - Menu loaded
+
       if (typeof smMenu.settings.onMenuLoad == 'function') {
         smMenu.settings.onMenuLoad(ds);
       }
@@ -61,7 +61,7 @@
       if(smMenu.settings.menuStyle.toLowerCase() === 'accordion') {
         $("."+smMenu.settings.wrapperClass).find("ul."+smMenu.settings.submenuClass).hide();
       }
-      // Callback - Menu Toggle
+
       if (typeof smMenu.settings.onMenuToggle == 'function') {
         smMenu.settings.onMenuToggle(ds, $("#" + smMenu.settings.hamburgerId).hasClass("open"));
       }

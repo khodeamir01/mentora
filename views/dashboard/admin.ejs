@@ -182,7 +182,7 @@
 </div>
 
 <script>
-// ========== تغییر نقش ==========
+
 async function changeRole(userId, role) {
     if (!role) return;
     
@@ -240,7 +240,7 @@ async function changeRole(userId, role) {
     }).then(() => location.reload());
 }
 
-// ========== بن کردن ==========
+
 async function banUser(userId) {
     const { isConfirmed } = await Swal.fire({
         title: '🚫 مسدود کردن کاربر',
@@ -289,7 +289,7 @@ async function banUser(userId) {
     }).then(() => location.reload());
 }
 
-// ========== آنبن کردن ==========
+
 async function unbanUser(userId) {
     const { isConfirmed } = await Swal.fire({
         title: '🔓 رفع مسدودیت',

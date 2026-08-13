@@ -15,7 +15,7 @@ const upload = multer({
     })
 });
 
-// پنل ادمین
+
 router.get("/admin", auth, roleGuard("ADMIN"), dashboardController.adminPanel);
 router.get("/profile", auth, dashboardController.getProfile);
 
@@ -24,16 +24,16 @@ router.post("/admin/ban", auth, roleGuard("ADMIN"), dashboardController.adminBan
 router.post("/profile", auth, upload.single("avatar"), dashboardController.updateProfile);
 
 router.post("/admin/unban", auth, roleGuard("ADMIN"), dashboardController.adminUnbanUser);
-// پنل مدرس
+
 router.get("/teacher", auth, roleGuard("TEACHER"), dashboardController.teacherPanel);
 
-// پنل نویسنده
+
 router.get("/author", auth, roleGuard("AUTHOR"), dashboardController.authorPanel);
 
-// پنل کاربر عادی
+
 router.get("/user", auth, roleGuard("USER"), dashboardController.userPanel);
 
-// یا یه روت کلی که خودش تشخیص بده
+
 router.get("/", auth, dashboardController.panel);
 
 module.exports = router;

@@ -6,7 +6,7 @@ const redis = require("./../redis");
 const auth = async (req, res, next) => {
     const { accessToken, refreshToken } = req.cookies;
 
-    // اگر اکسس توکن وجود دارد
+
     if (accessToken) {
         try {
             const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET_KEY);
@@ -17,7 +17,7 @@ const auth = async (req, res, next) => {
         }
     }
 
-    // اگر رفرش توکن وجود دارد
+
     if (refreshToken) {
         try {
             const decodedRefresh = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY);
@@ -60,7 +60,7 @@ const auth = async (req, res, next) => {
         }
     }
 
-    // کاربر مهمان (بدون توکن) - به جای خطا، اجازه دسترسی بده
+
     req.user = null;
     next();
 };

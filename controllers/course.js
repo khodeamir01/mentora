@@ -12,7 +12,7 @@ exports.getAllCourses = async (req, res, next) => {
   try {
       const user = req.user;
       
-      // اول همه رو بدون هیچ فیلتری بشمار
+
       const allCoursesCount = await Course.countDocuments({});
       
       const allCourses = await Course.find({}).lean();
@@ -40,7 +40,7 @@ exports.getAllCourses = async (req, res, next) => {
       
       let totalCourses = await Course.countDocuments(filter);
       
-      // اگه صفر بود، بدون filter بگیر
+
       if (totalCourses === 0 && Object.keys(filter).length > 0) {
         filter = {};
         totalCourses = await Course.countDocuments(filter);
@@ -92,7 +92,7 @@ exports.showCreateCoursePanel = async (req, res, next) => {
   return res.render("course/createCourse.ejs", {categories, teachers})
 
 }
-// کنترلر ایجاد دوره - نسخه JSON
+
 exports.create = async (req, res) => {
   try {
     const {
@@ -107,7 +107,7 @@ exports.create = async (req, res) => {
       teacherId
     } = req.body;
 
-    // بررسی وجود فایل
+
     if (!req.file) {
       return res.status(400).json({
         success: false,
@@ -115,7 +115,7 @@ exports.create = async (req, res) => {
       });
     }
 
-    // ایجاد دوره جدید
+
     const newCourse = await Course.create({
       name,
       description,
@@ -130,7 +130,7 @@ exports.create = async (req, res) => {
       cover: `${req.file.filename}`
     });
 
-    // ارسال پاسخ JSON موفقیت
+
     return res.status(201).json({
       success: true,
       message: 'دوره با موفقیت ایجاد شد!',
@@ -141,7 +141,7 @@ exports.create = async (req, res) => {
   } catch (error) {
     console.error('Error creating course:', error);
     
-    // ارسال پاسخ JSON خطا
+
     return res.status(500).json({
       success: false,
       message: error.message || 'خطا در ایجاد دوره'

@@ -255,7 +255,7 @@
 <a href="#"><img src="/img/clients/1.png" alt="image"></a><a href="#"><img src="/img/clients/2.png" alt="image"></a><a href="#"><img src="/img/clients/3.png" alt="image"></a><a href="#"><img src="/img/clients/4.png" alt="image"></a><a href="#"><img src="/img/clients/5.png" alt="image"></a><a href="#"><img src="/img/clients/2.png" alt="image"></a><a href="#"><img src="/img/clients/1.png" alt="image"></a><a href="#"><img src="/img/clients/3.png" alt="image"></a><a href="#"><img src="/img/clients/4.png" alt="image"></a>
 </div></div>
 </div></div></div>
-<section class="vid_area section-padding"><div class="container"><div class="row"><div class="col-lg-12 vp_top wow fadeInUDown" data-wow-duration="1s" data-wow-delay="0.2s" data-wow-offset="0"><div class="video-area" style="background-image: url(/img/bg/video.jpg); background-size:cover; background-position: center center;"><a href="https://www.youtube.com/watch?v=RXv_uIN6e-Y" class="magnific_popup video-button"><i class="fa fa-play"></i></a></div></div></div></div></section><section class="team_area section-padding"><div class="container">
+<section class="team_area section-padding"><div class="container">
     <div class="section-title text-center">
         <h2>با مدرسین ما آشنا شوید</h2>
         <p>یادگیری از کسانی که خودشون مسیر رو طی کردن، همیشه نتیجه بهتری داره. مدرسین ما ترکیبی از دانش فنی و تجربه واقعی بازار کار رو بهت منتقل می‌کنن.</p>
@@ -499,7 +499,7 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('userMenu').classList.toggle('show');
   }
   
-  // بستن منو با کلیک بیرون
+
   document.addEventListener('click', function(e) {
       const menu = document.getElementById('userMenu');
       const btn = e.target.closest('.user-dropdown-btn');
@@ -523,14 +523,14 @@ document.addEventListener('DOMContentLoaded', function() {
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                // اول نشون بده در حال خروجه
+
                 Swal.fire({
                     title: 'در حال خروج...',
                     allowOutsideClick: false,
                     didOpen: () => Swal.showLoading()
                 });
                 
-                // بعد fetch به logout
+
                 fetch('/auth/logout')
                     .then(() => {
                         Swal.fire({
@@ -556,7 +556,7 @@ const slides = document.querySelectorAll('#testimonial-slider .testimonial');
 const dotsContainer = document.getElementById('slideDots');
 
 if (slides.length > 0) {
-    // ساختن نقطه‌ها
+
     slides.forEach((_, i) => {
         const dot = document.createElement('span');
         dot.style.cssText = `width: 10px; height: 10px; border-radius: 50%; background: ${i === 0 ? '#525fe1' : '#ddd'}; cursor: pointer; transition: all 0.3s; display: inline-block;`;

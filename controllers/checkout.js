@@ -12,7 +12,7 @@ exports.createCheckout = async (req, res, next) => {
         const user = req.user;
 
 
-        // populate با فیلدهای مدل خودت
+
         const cart = await Cart.findOne({ user: user._id })
             .populate("items.course")   // به جای items.Course
             .populate("items.teacher");  // به جای items.seller
@@ -45,7 +45,7 @@ exports.createCheckout = async (req, res, next) => {
 
         });
 
-        // محاسبه قیمت کل
+
         const totalPrice = checkoutItems.reduce((total, item) => {
             return total + item.priceAtTimeOfPurchase * 10       // *10  : Change Tooman to Rial
         }, 0);

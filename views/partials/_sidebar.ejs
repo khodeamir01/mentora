@@ -144,14 +144,14 @@
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                // اول نشون بده در حال خروجه
+
                 Swal.fire({
                     title: 'در حال خروج...',
                     allowOutsideClick: false,
                     didOpen: () => Swal.showLoading()
                 });
                 
-                // بعد fetch به logout
+
                 fetch('/auth/logout')
                     .then(() => {
                         Swal.fire({

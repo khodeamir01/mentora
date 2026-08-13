@@ -15,7 +15,7 @@ const seedSessions = async () => {
 
         const sessions = [];
 
-        // ==================== Node.js ====================
+
         if (courseMap["آموزش جامع Node.js"]) {
             const teacher = courseMap["آموزش جامع Node.js"].teacher;
             sessions.push(
@@ -27,7 +27,7 @@ const seedSessions = async () => {
             );
         }
 
-        // ==================== Python Django ====================
+
         if (courseMap["آموزش Python و Django"]) {
             const teacher = courseMap["آموزش Python و Django"].teacher;
             sessions.push(
@@ -38,7 +38,7 @@ const seedSessions = async () => {
             );
         }
 
-        // ==================== Kotlin ====================
+
         if (courseMap["دوره توسعه اندروید با کاتلین"]) {
             const teacher = courseMap["دوره توسعه اندروید با کاتلین"].teacher;
             sessions.push(
@@ -49,7 +49,7 @@ const seedSessions = async () => {
             );
         }
 
-        // ==================== Frontend ====================
+
         if (courseMap["دوره آموزش فرانت‌اند"]) {
             const teacher = courseMap["دوره آموزش فرانت‌اند"].teacher;
             sessions.push(
@@ -60,7 +60,7 @@ const seedSessions = async () => {
             );
         }
 
-        // ==================== Security 1 ====================
+
         if (courseMap["دوره جامع امنیت شبکه و وب"]) {
             const teacher = courseMap["دوره جامع امنیت شبکه و وب"].teacher;
             sessions.push(
@@ -71,7 +71,7 @@ const seedSessions = async () => {
             );
         }
 
-        // ==================== Security 2 ====================
+
         if (courseMap["دوره امنیت سایبری و هک اخلاقی"]) {
             const teacher = courseMap["دوره امنیت سایبری و هک اخلاقی"].teacher;
             sessions.push(
@@ -82,7 +82,7 @@ const seedSessions = async () => {
             );
         }
 
-        // ==================== Network ====================
+
         if (courseMap["دوره شبکه‌های کامپیوتری و زیرساخت"]) {
             const teacher = courseMap["دوره شبکه‌های کامپیوتری و زیرساخت"].teacher;
             sessions.push(
@@ -93,7 +93,7 @@ const seedSessions = async () => {
             );
         }
 
-        // ==================== DevOps ====================
+
         if (courseMap["دوره DevOps و Cloud"]) {
             const teacher = courseMap["دوره DevOps و Cloud"].teacher;
             sessions.push(
@@ -104,7 +104,7 @@ const seedSessions = async () => {
             );
         }
 
-        // ==================== React/Next.js ====================
+
         if (courseMap["دوره React و Next.js"]) {
             const teacher = courseMap["دوره React و Next.js"].teacher;
             sessions.push(
@@ -115,7 +115,7 @@ const seedSessions = async () => {
             );
         }
 
-        // ==================== Golang ====================
+
         if (courseMap["دوره Golang و میکروسرویس‌ها"]) {
             const teacher = courseMap["دوره Golang و میکروسرویس‌ها"].teacher;
             sessions.push(

@@ -496,7 +496,7 @@
   <script src="/js/scripts.js"></script>
 
   <script>
-    // ============= حذف از سبد خرید =============
+
     document.querySelectorAll('.remove-from-cart').forEach(button => {
       button.addEventListener('click', async function() {
         const courseId = this.getAttribute('data-course-id');
@@ -538,7 +538,7 @@
       });
     });
 
-    // ============= پرداخت =============
+
     async function goToPayment() {
       Swal.fire({ title: 'در حال اتصال به درگاه...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
 

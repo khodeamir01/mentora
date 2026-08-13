@@ -1,4 +1,4 @@
-// seeders/articleSeeder.js
+
 const mongoose = require("mongoose");
 const Article = require("../models/Article");
 const User = require("../models/User");

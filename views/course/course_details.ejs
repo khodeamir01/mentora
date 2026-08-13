@@ -795,13 +795,13 @@
     <script src="/js/wow.min.js"></script>
     <script src="/js/scripts.js"></script>
     <script>
-      // ============= افزودن به سبد خرید =============
+
 document.querySelector('.add-to-cart-btn')?.addEventListener('click', async function() {
   const btn = this;
   const courseId = btn.getAttribute('data-course-id');
   const teacherId = btn.getAttribute('data-teacher-id');
   
-  // غیرفعال کردن دکمه برای جلوگیری از کلیک مجدد
+
   btn.disabled = true;
   btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> در حال افزودن...';
   
@@ -821,11 +821,11 @@ document.querySelector('.add-to-cart-btn')?.addEventListener('click', async func
     const data = await response.json();
     
     if (data.success) {
-      // تغییر ظاهر دکمه
+
       btn.innerHTML = '<i class="fa fa-check"></i> اضافه شد ✓';
       btn.classList.add('added');
       
-      // نمایش پیام موفقیت
+
       Swal.fire({
         icon: 'success',
         title: 'به سبد خرید اضافه شد! 🎉',
@@ -842,7 +842,7 @@ document.querySelector('.add-to-cart-btn')?.addEventListener('click', async func
         }
       });
       
-      // برگشت دکمه به حالت اول بعد از 3 ثانیه
+
       setTimeout(() => {
         btn.innerHTML = '<i class="fa fa-cart-plus"></i> افزودن به سبد خرید';
         btn.classList.remove('added');
@@ -850,7 +850,7 @@ document.querySelector('.add-to-cart-btn')?.addEventListener('click', async func
       }, 3000);
       
     } else {
-      // خطا
+
       btn.disabled = false;
       btn.innerHTML = '<i class="fa fa-cart-plus"></i> افزودن به سبد خرید';
       
@@ -864,7 +864,7 @@ document.querySelector('.add-to-cart-btn')?.addEventListener('click', async func
       });
     }
   } catch (error) {
-    // خطای شبکه
+
     btn.disabled = false;
     btn.innerHTML = '<i class="fa fa-cart-plus"></i> افزودن به سبد خرید';
     
@@ -876,8 +876,8 @@ document.querySelector('.add-to-cart-btn')?.addEventListener('click', async func
     });
   }
 });
-      // نسخه ساده - فقط برای لینک‌های مستقیم
-// ============= مودال نمایش ویدیو =============
+
+
 document.querySelectorAll('.watch-session-btn').forEach(btn => {
   btn.addEventListener('click', function(e) {
     e.preventDefault();
@@ -888,7 +888,7 @@ document.querySelectorAll('.watch-session-btn').forEach(btn => {
     
     console.log('Video URL:', videoUrl); // دیباگ
     
-    // چک کردن خالی نبودن لینک
+
     if (!videoUrl || videoUrl === 'undefined' || videoUrl === 'null') {
       Swal.fire({
         icon: 'warning',
@@ -922,7 +922,7 @@ document.querySelectorAll('.watch-session-btn').forEach(btn => {
         popup: 'video-swal-popup'
       },
       didOpen: () => {
-        // اضافه کردن دکمه بستن سفارشی
+
         const closeBtn = document.createElement('button');
         closeBtn.innerHTML = '✕';
         closeBtn.style.cssText = `
@@ -951,7 +951,7 @@ document.querySelectorAll('.watch-session-btn').forEach(btn => {
         if (popup) popup.appendChild(closeBtn);
       },
       willClose: () => {
-        // قطع ویدیو موقع بستن
+
         const video = document.querySelector('.swal2-html-container video');
         if (video) {
           video.pause();
@@ -961,7 +961,7 @@ document.querySelectorAll('.watch-session-btn').forEach(btn => {
     });
   });
 });
-      // ============= حذف Reply با SweetAlert2 =============
+
 document.querySelectorAll(".delete-reply-btn").forEach((button) => {
   button.addEventListener("click", async function () {
     const commentId = this.getAttribute("data-comment-id");
@@ -1007,12 +1007,12 @@ document.querySelectorAll(".delete-reply-btn").forEach((button) => {
             showConfirmButton: false
           });
 
-          // حذف عنصر Reply از DOM
+
           const replyElement = document.getElementById(`reply-${replyId}`);
           if (replyElement) {
             replyElement.remove();
             
-            // بررسی کن آیا replies دیگه‌ای باقی مونده
+
             const repliesSection = replyElement.closest(".replies-section");
             if (repliesSection && repliesSection.children.length === 0) {
               repliesSection.remove();
@@ -1042,12 +1042,12 @@ document.querySelectorAll(".delete-reply-btn").forEach((button) => {
 });
       document.addEventListener("DOMContentLoaded", function () {
         
-        // ============= مدیریت ستاره‌های کامنت اصلی =============
+
         const mainStars = document.querySelectorAll("#reviewForm .star-selectable");
         const mainRatingInput = document.getElementById("selectedRating");
         setupStarSystem(mainStars, mainRatingInput);
       
-        // ============= مدیریت ستاره‌های Reply =============
+
         const replyStarGroups = document.querySelectorAll(".reply-stars");
         replyStarGroups.forEach((starGroup) => {
           const commentId = starGroup.getAttribute("data-comment-id");
@@ -1058,7 +1058,7 @@ document.querySelectorAll(".delete-reply-btn").forEach((button) => {
           setupStarSystem(replyStars, replyRatingInput);
         });
       
-        // ============= تابع اصلی مدیریت ستاره‌ها =============
+
         function setupStarSystem(stars, ratingInput) {
     function highlightStars(rating) {
         const starsArray = Array.from(stars);
@@ -1103,7 +1103,7 @@ document.querySelectorAll(".delete-reply-btn").forEach((button) => {
     });
 }
       
-        // ============= مدیریت نمایش/مخفی کردن فرم Reply =============
+
         const showReplyButtons = document.querySelectorAll(".show-reply-form");
         const cancelReplyButtons = document.querySelectorAll(".cancel-reply");
       
@@ -1131,7 +1131,7 @@ document.querySelectorAll(".delete-reply-btn").forEach((button) => {
               const textarea = replyForm.querySelector(".reply-textarea");
               const ratingInput = replyForm.querySelector(".reply-rating");
               
-              // اگر متنی نوشته شده، تأیید بگیر
+
               if (textarea && textarea.value.trim() !== "") {
                 Swal.fire({
                   title: "انصراف از پاسخ؟",
@@ -1168,7 +1168,7 @@ document.querySelectorAll(".delete-reply-btn").forEach((button) => {
           });
         }
       
-        // ============= ارسال فرم Reply با SweetAlert2 =============
+
         document.querySelectorAll(".reply-form-element").forEach((form) => {
           form.addEventListener("submit", async function (e) {
             e.preventDefault();
@@ -1180,7 +1180,7 @@ document.querySelectorAll(".delete-reply-btn").forEach((button) => {
             const rating = parseInt(ratingInput?.value || 0);
             const content = contentInput?.value?.trim() || "";
       
-            // اعتبارسنجی با SweetAlert2
+
             if (rating === 0) {
               Swal.fire({
                 icon: "warning",
@@ -1202,7 +1202,7 @@ document.querySelectorAll(".delete-reply-btn").forEach((button) => {
             }
       
             try {
-              // نمایش لودینگ
+
               Swal.fire({
                 title: "در حال ثبت پاسخ...",
                 allowOutsideClick: false,
@@ -1260,7 +1260,7 @@ document.querySelectorAll(".delete-reply-btn").forEach((button) => {
           });
         });
       
-        // ============= ارسال فرم کامنت اصلی با SweetAlert2 =============
+
         document.getElementById("reviewForm")?.addEventListener("submit", async (e) => {
           e.preventDefault();
       
@@ -1344,7 +1344,7 @@ document.querySelectorAll(".delete-reply-btn").forEach((button) => {
           }
         });
       
-        // ============= حذف کامنت با SweetAlert2 =============
+
         document.querySelectorAll(".delete-comment-btn").forEach((button) => {
           button.addEventListener("click", async function () {
             const commentId = this.getAttribute("data-comment-id");

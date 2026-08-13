@@ -36,23 +36,23 @@ module.exports = new localStrategy(
 );
 
 
-// const { User } = require("../db");
-// const localStrategy = require("passport-local").Strategy;
-// const bcryptjs = require("bcryptjs")
 
-// module.exports = new localStrategy (async (username, password, done) => {
-//     const user = await User.findOne({
-//         where: {
-//             username
-//         },
-//         raw: true
-//     });
-//     if (!user) return done(null, false);
 
-//     const isPasswordValid = await bcryptjs.compare(password, user.password);
-//     if (!isPasswordValid) return done (null, false);
 
-//     return done(null, user)
 
-// })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

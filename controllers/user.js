@@ -1,17 +1,17 @@
 const User = require('./../models/User');
 const CourseUser = require('./../models/Course-User');
 
-// نمایش داشبورد
+
 exports.dashboard = async (req, res) => {
     try {
         const user = req.user;
         
-        // دوره‌هایی که کاربر خریداری کرده
+
         const enrollments = await CourseUser.find({ user: user._id })
             .populate('course')
             .sort({ createdAt: -1 });
         
-        // آمار
+
         const totalCourses = enrollments.length;
         const totalSpent = enrollments.reduce((sum, item) => sum + item.price, 0);
         
@@ -29,7 +29,7 @@ exports.dashboard = async (req, res) => {
     }
 };
 
-// صفحه ویرایش پروفایل
+
 exports.editProfile = async (req, res) => {
     try {
         res.render('edit_profile', {
@@ -42,7 +42,7 @@ exports.editProfile = async (req, res) => {
     }
 };
 
-// به‌روزرسانی پروفایل
+
 exports.updateProfile = async (req, res) => {
     try {
         const { name, email, phone, bio } = req.body;
@@ -71,7 +71,7 @@ exports.updateProfile = async (req, res) => {
     }
 };
 
-// صفحه دوره‌های من
+
 exports.myCourses = async (req, res) => {
     try {
         const enrollments = await CourseUser.find({ user: req.user._id })

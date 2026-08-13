@@ -65,7 +65,7 @@ schema.virtual("comments",{
 });
 
 
-// مدل را به صورت شرطی تعریف کنید
+
 const model = mongoose.model("Course", schema);
 
 module.exports = model;

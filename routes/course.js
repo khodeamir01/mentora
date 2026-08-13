@@ -10,18 +10,18 @@ const upload = multerStorage("public/assets/img/cover");
 
 const router = express.Router();
 
-// 1. لیست همه دوره‌ها
+
 router.get("/",auth ,Controller.getAllCourses);
 
-// 2. ایجاد دوره (GET فرم + POST ثبت) - هر دو روی /create
+
 router.route("/create")
     .get(auth, roleGuard("ADMIN"), Controller.showCreateCoursePanel)
     .post(auth, roleGuard("ADMIN"), upload.single("cover"), validate(createCourseValidator), Controller.create);
 
-// 3. جزئیات دوره
+
 router.get("/:href", auth, Controller.getOneCourse);
 
-// 4. ایجاد جلسه
+
 router.post("/:courseId/sessions", auth, roleGuard("TEACHER"), upload.single("video"), validate(createSessionValidator) ,Controller.createSession)
 router.get("/:courseId/sessions/create", auth, roleGuard("TEACHER") ,Controller.createSessionPage);
 
