@@ -93,44 +93,7 @@
         </div>
     </div>
 </section>
-        <div class="row">
-            <div class="col-lg-12 col-sm-12 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.1s" data-wow-offset="0">
-                <div class="cat_list">
-                    <ul>
-                        <% if (categories && categories.length > 0) { %>
-                            <% categories.forEach(cat => { %>
-                                <li>
-                                    <a href="/course?category=<%= cat._id %>">
-                                        <span class="cat-icon">
-                                            <% 
-                                                const title = (cat.title || '').toLowerCase();
-                                                if (title.includes('front') || title.includes('فرانت')) { %>
-                                                    <i class="fa fa-desktop"></i>
-                                                <% } else if (title.includes('back') || title.includes('بک')) { %>
-                                                    <i class="fa fa-server"></i>
-                                                <% } else if (title.includes('security') || title.includes('امنیت')) { %>
-                                                    <i class="fa fa-shield"></i>
-                                                <% } else if (title.includes('network') || title.includes('شبکه')) { %>
-                                                    <i class="fa fa-sitemap"></i>
-                                                <% } else if (title.includes('desktop') || title.includes('دسکتاپ')) { %>
-                                                    <i class="fa fa-laptop"></i>
-                                                <% } else if (title.includes('mobile') || title.includes('موبایل')) { %>
-                                                    <i class="fa fa-mobile"></i>
-                                                <% } else if (title.includes('devops') || title.includes('دیوآپس')) { %>
-                                                    <i class="fa fa-cogs"></i>
-                                                <% } else { %>
-                                                    <i class="fa fa-folder"></i>
-                                                <% } %>
-                                        </span>
-                                        <%= cat.title %>
-                                    </a>
-                                </li>
-                            <% }); %>
-                        <% } %>
-                    </ul>
-                </div>
-            </div>
-        </div>
+     
 <section class="home_course section-padding">
     <div class="container">
         <div class="row">
@@ -291,6 +254,44 @@
         <h2>دسته‌بندی‌های محبوب</h2>
         <p>از برنامه‌نویسی و طراحی گرفته تا بازاریابی و کسب‌وکار، هر مهارتی که به دنبالشی توی دسته‌بندی‌های ما پیدا می‌کنی.</p>
         </div>
+   <div class="row">
+            <div class="col-lg-12 col-sm-12 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.1s" data-wow-offset="0">
+                <div class="cat_list">
+                    <ul>
+                        <% if (categories && categories.length > 0) { %>
+                            <% categories.forEach(cat => { %>
+                                <li>
+                                    <a href="/course?category=<%= cat._id %>">
+                                        <span class="cat-icon">
+                                            <% 
+                                                const title = (cat.title || '').toLowerCase();
+                                                if (title.includes('front') || title.includes('فرانت')) { %>
+                                                    <i class="fa fa-desktop"></i>
+                                                <% } else if (title.includes('back') || title.includes('بک')) { %>
+                                                    <i class="fa fa-server"></i>
+                                                <% } else if (title.includes('security') || title.includes('امنیت')) { %>
+                                                    <i class="fa fa-shield"></i>
+                                                <% } else if (title.includes('network') || title.includes('شبکه')) { %>
+                                                    <i class="fa fa-sitemap"></i>
+                                                <% } else if (title.includes('desktop') || title.includes('دسکتاپ')) { %>
+                                                    <i class="fa fa-laptop"></i>
+                                                <% } else if (title.includes('mobile') || title.includes('موبایل')) { %>
+                                                    <i class="fa fa-mobile"></i>
+                                                <% } else if (title.includes('devops') || title.includes('دیوآپس')) { %>
+                                                    <i class="fa fa-cogs"></i>
+                                                <% } else { %>
+                                                    <i class="fa fa-folder"></i>
+                                                <% } %>
+                                        </span>
+                                        <%= cat.title %>
+                                    </a>
+                                </li>
+                            <% }); %>
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+        </div>
 <div class="partner-logo section-padding"><div class="container"><div class="row part_bg">
 <div class="col-lg-4 col-sm-4 col-xs-12"><div class="partner_title"><h3><span>860+ </span>شرکت در سراسر جهان به ما اعتماد کردند</h3></div></div>
 <div class="col-lg-8 col-sm-8 col-xs-12 text-center"><div class="partner">
@@ -358,50 +359,7 @@
 </div>
 </div></div>
 </div></div></section>
-<section class="testi_area section-padding">
-    <div class="container">
-        <div class="section-title">
-            <h2>دانشجویان ما چی میگن؟</h2>
-        </div>
-        <div class="row">
-            <div class="col-lg-6 col-sm-12 col-xs-12">
-                <div class="ab_img"><img src="/img/review.png" class="img-fluid" alt="image"></div>
-            </div>
-            <div class="col-lg-6 col-sm-12 col-xs-12">
-                <div id="testimonial-slider">
-            
-                    <% if (comments && comments.length > 0) { %>
-                        <% comments.forEach(comment => { %>
-            
-                            <div class="testimonial">
-                                <img src="/img/quote.png" alt="">
-                                <div class="testimonial_content">
-                                    <% for (let i = 1; i <= 5; i++) { %>
-                                        <i class="fa fa-star star-<%= i <= comment.rating ? 'gold' : 'gray' %>"></i>
-                                    <% } %>
-                                    <p style="text-align: justify; direction: rtl; unicode-bidi: embed; line-height: 2.2; font-size: 15px;">
-                                        <%= comment.content %>
-                                    </p>
-                                </div>
-                                <div class="testi_pic_title">
-                                    <img src="<%= comment.user.avatar || '/img/defualtPic.png' %>" alt="" class="user-avatar">
-                                    <div class="user-info">
-                                        <h4><%= comment.user?.name || 'دانشجو' %></h4>
-                                        <p><%= comment.course?.name || 'دوره آموزشی' %></p>
-                                    </div>
-                                </div>
-                            </div>
-                        <% }); %>
-                    <% } %>
-            
-                </div>
-            
-
-            
-            </div>
-        </div>
-    </div>
-</section><section id="blog" class="blog_area" style="padding-bottom: 0 !important;"></section><div class="container">
+<section id="blog" class="blog_area" style="padding-bottom: 0 !important;"></section><div class="container">
 <div class="section-title text-center">
 <h2>آخرین وبلاگ و اخبار</h2>
 <p>ما یک رویکرد کاملاً جدید برای اساسی ترین پارادایم های یادگیری ارائه می دهیم. از میان طیف گسترده ای از گزینه های یادگیری انتخاب کنید و مهارت های جدیدی به دست آورید! مدرسه ما معلوم است</p>
